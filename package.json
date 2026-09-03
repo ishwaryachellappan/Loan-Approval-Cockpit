@@ -17,5 +17,50 @@
   },
   "sapux": [
     "app/loanapp"
-  ]
+  ],
+  "cds": {
+    "requires": {
+      "auth": {
+        "kind": "mocked",
+        "users": {
+          "officer1": {
+            "password": "pass",
+            "roles": [
+              "OperationsOfficer"
+            ]
+          },
+          "analyst1": {
+            "password": "pass",
+            "roles": [
+              "CreditAnalyst"
+            ]
+          },
+          "underwriter1": {
+            "password": "pass",
+            "roles": [
+              "Underwriter"
+            ]
+          },
+          "manager1": {
+            "password": "pass",
+            "roles": [
+              "Approver"
+            ]
+          },
+          "admin1": {
+            "password": "pass",
+            "roles": [
+              "Admin"
+            ]
+          }
+        }
+      }
+    },
+    "db": {
+      "kind": "sqlite",
+      "credentials": {
+        "url": "db.sqlite"
+      }
+    }
+  }
 }

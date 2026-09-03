@@ -319,11 +319,25 @@ annotate service.LoanApplications with @(UI.PresentationVariant: {
 });
 
 
-annotate service.ApprovalSteps with @(
-    UI.LineItem : [
-        { $Type: 'UI.DataField', Label: 'Decision', Value: decision },
-        { $Type: 'UI.DataField', Label: 'Approver', Value: approver },
-        { $Type: 'UI.DataField', Label: 'Decided At', Value: decidedAt },
-        { $Type: 'UI.DataField', Label: 'Comments', Value: comments }
-    ]
-);
+annotate service.ApprovalSteps with @(UI.LineItem: [
+    {
+        $Type: 'UI.DataField',
+        Label: 'Decision',
+        Value: decision
+    },
+    {
+        $Type: 'UI.DataField',
+        Label: 'Approver',
+        Value: approver
+    },
+    {
+        $Type: 'UI.DataField',
+        Label: 'Decided At',
+        Value: decidedAt
+    },
+    {
+        $Type: 'UI.DataField',
+        Label: 'Comments',
+        Value: comments
+    }
+]);

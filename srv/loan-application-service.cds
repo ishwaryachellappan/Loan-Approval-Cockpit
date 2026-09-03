@@ -64,32 +64,18 @@ service LoanApplicationService {
                 null as Timestamp
             )   as slaDueAt             : Timestamp
         }
-        actions {
-            action runValidation()            returns Boolean;
-            @(requires: [
-                'OperationsOfficer',
-                'CreditAnalyst',
-                'Underwriter',
-                'Approver',
-                'Admin'
-            ])
-            action approve(comments: String)  returns Boolean;
-            @(requires: [
-                'OperationsOfficer',
-                'CreditAnalyst',
-                'Underwriter',
-                'Approver',
-                'Admin'
-            ])
-            action reject(comments: String)   returns Boolean;
-            @(requires: [
-                'OperationsOfficer',
-                'Underwriter',
-                'Approver',
-                'Admin'
-            ])
-            action escalate(comments: String) returns Boolean;
-        };
+       actions {
+        action runValidation() returns Boolean;
+
+        @(requires: ['OperationsOfficer', 'CreditAnalyst', 'Underwriter', 'Approver', 'Admin'])
+        action approve(comments: String) returns Boolean;
+
+        @(requires: ['OperationsOfficer', 'CreditAnalyst', 'Underwriter', 'Approver', 'Admin'])
+        action reject(comments: String) returns Boolean;
+
+        @(requires: ['OperationsOfficer', 'Underwriter', 'Approver', 'Admin'])
+        action escalate(comments: String) returns Boolean;
+    };
 
     entity Documents        as
         projection on db.Documents {
@@ -144,6 +130,8 @@ service LoanApplicationService {
     entity SLAs             as projection on db.SLAs;
 
     function getDashboardKPIs() returns DashboardKPIs;
+
+    entity ApprovalSteps as projection on db.ApprovalSteps;
 
 
 }

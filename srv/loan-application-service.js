@@ -65,7 +65,6 @@ module.exports = cds.service.impl(async function () {
     let appID = req.params[0];
     if (typeof appID === 'object' && appID !== null) appID = appID.ID;
 
-    // --- Role check: only Approver or Admin may actually approve ---
     if (!req.user.is('Approver') && !req.user.is('Admin')) {
         req.error(403, 'Only an Approver or Admin may approve applications.');
         return false;
@@ -78,7 +77,7 @@ module.exports = cds.service.impl(async function () {
         req.error(400, `Cannot approve from status ${app.status}. Application must be READY_FOR_REVIEW.`);
         return false;
     }
-    const approver = req.user.id; // real logged-in user, not a typed string
+    const approver = req.user.id;
     const comments = req.data.comments || '';
     await recordApprovalStep(tx, appID, approver, 'APPROVED', comments);
     await tx.run(UPDATE(LoanApplications, appID).with({ status: 'APPROVED' }));
@@ -133,6 +132,7 @@ this.on('escalate', 'LoanApplications', async (req) => {
     await recordAudit(tx, appID, approver, app.status, 'ESCALATED', comments || 'Escalated for review');
     return true;
 });
+
 
     // --- READ handler: priority scoring ---
     this.on('READ', 'LoanApplications', async (req, next) => {
