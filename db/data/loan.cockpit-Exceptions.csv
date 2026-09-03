@@ -1,0 +1,4 @@
+ID,application_ID,rule_ID,reasonCode,severity,status,description,suggestedAction,resolvedAt
+f1f1f1f1-0005-0005-0005-000000000001,aaaaaaaa-1111-1111-1111-111111111111,b1b1b1b1-0001-0001-0001-000000000001,DOC_EXPIRED,Critical,OPEN,ID proof document expired on 2025-12-01,Request updated ID proof from applicant,
+f1f1f1f1-0005-0005-0005-000000000002,aaaaaaaa-1111-1111-1111-111111111111,b1b1b1b1-0001-0001-0001-000000000002,CREDIT_STALE,Major,OPEN,Credit check is older than the configured validity window,Re-run credit assessment,
+f1f1f1f1-0005-0005-0005-000000000003,bbbbbbbb-2222-2222-2222-222222222222,b1b1b1b1-0001-0001-0001-000000000003,EXPOSURE_EXCEEDED,Critical,OPEN,Requested amount 750000 exceeds product maximum 500000,Reduce requested amount or route to higher approval authority,

@@ -1,0 +1,104 @@
+<mvc:View
+    controllerName="loan.cockpit.loanapp.controller.Dashboard"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns="sap.m"
+    xmlns:f="sap.f"
+    xmlns:layout="sap.ui.layout"
+    xmlns:mc="sap.suite.ui.microchart"
+    displayBlock="true">
+
+    <Page id="_IDGenPage" title="Operations Dashboard" showNavButton="true" navButtonPress="onNavBack" class="sapUiContentPadding">
+        <content>
+
+            <!-- KPI Tiles, ordered by urgency -->
+            <f:GridContainer id="_IDGenGridContainer" class="sapUiSmallMarginBottom">
+                <GenericTile id="_IDGenGenericTile" header="SLA Breached" subheader="Past due date" press="onNavFilteredBreached" frameType="OneByOne">
+                    <layoutData><f:GridContainerItemLayoutData id="_IDGenGridContainerItemLayoutData" columns="2" rows="2"/></layoutData>
+                    <TileContent id="_IDGenTileContent">
+                        <NumericContent id="_IDGenNumericContent" value="{dashboard>/slaBreachedCount}" icon="sap-icon://alert" valueColor="Error" withMargin="false"/>
+                    </TileContent>
+                </GenericTile>
+
+                <GenericTile id="_IDGenGenericTile1" header="SLA Breach Rate" subheader="% of tracked applications" frameType="OneByOne">
+                    <layoutData><f:GridContainerItemLayoutData id="_IDGenGridContainerItemLayoutData1" columns="2" rows="2"/></layoutData>
+                    <TileContent id="_IDGenTileContent1" unit="%">
+                        <NumericContent id="_IDGenNumericContent1" value="{dashboard>/slaBreachRate}" icon="sap-icon://pending" valueColor="{= ${dashboard>/slaBreachRate} > 20 ? 'Error' : (${dashboard>/slaBreachRate} > 5 ? 'Critical' : 'Good') }" withMargin="false"/>
+                    </TileContent>
+                </GenericTile>
+
+                <GenericTile id="_IDGenGenericTile2" header="Open Exceptions" subheader="Needs attention" press="onNavFilteredException" frameType="OneByOne">
+                    <layoutData><f:GridContainerItemLayoutData id="_IDGenGridContainerItemLayoutData2" columns="2" rows="2"/></layoutData>
+                    <TileContent id="_IDGenTileContent2">
+                        <NumericContent id="_IDGenNumericContent2" value="{dashboard>/openExceptionsCount}" icon="sap-icon://message-warning" valueColor="Critical" withMargin="false"/>
+                    </TileContent>
+                </GenericTile>
+
+                <GenericTile id="_IDGenGenericTile3" header="Ageing Queue" subheader="Open &gt; 5 days" frameType="OneByOne">
+                    <layoutData><f:GridContainerItemLayoutData id="_IDGenGridContainerItemLayoutData3" columns="2" rows="2"/></layoutData>
+                    <TileContent id="_IDGenTileContent3">
+                        <NumericContent id="_IDGenNumericContent3" value="{dashboard>/agedApplicationsCount}" icon="sap-icon://history" valueColor="{= ${dashboard>/agedApplicationsCount} > 0 ? 'Critical' : 'Good' }" withMargin="false"/>
+                    </TileContent>
+                </GenericTile>
+
+                <GenericTile id="_IDGenGenericTile4" header="Total Applications" subheader="All statuses" press="onNavToList" frameType="OneByOne">
+                    <layoutData><f:GridContainerItemLayoutData id="_IDGenGridContainerItemLayoutData4" columns="2" rows="2"/></layoutData>
+                    <TileContent id="_IDGenTileContent4">
+                        <NumericContent id="_IDGenNumericContent4" value="{dashboard>/totalApplications}" icon="sap-icon://document" withMargin="false"/>
+                    </TileContent>
+                </GenericTile>
+
+                <GenericTile id="_IDGenGenericTile5" header="Avg. Priority Score" subheader="Across all applications" frameType="OneByOne">
+                    <layoutData><f:GridContainerItemLayoutData id="_IDGenGridContainerItemLayoutData5" columns="2" rows="2"/></layoutData>
+                    <TileContent id="_IDGenTileContent5">
+                        <NumericContent id="_IDGenNumericContent5" value="{dashboard>/avgPriorityScore}" icon="sap-icon://line-chart" withMargin="false"/>
+                    </TileContent>
+                </GenericTile>
+
+                <GenericTile id="_IDGenGenericTile6" header="Avg. Approval Cycle" subheader="Days to decision" frameType="OneByOne">
+                    <layoutData><f:GridContainerItemLayoutData id="_IDGenGridContainerItemLayoutData6" columns="2" rows="2"/></layoutData>
+                    <TileContent id="_IDGenTileContent6" unit="days">
+                        <NumericContent id="_IDGenNumericContent6" value="{dashboard>/avgApprovalCycleDays}" icon="sap-icon://time-entry-request" withMargin="false"/>
+                    </TileContent>
+                </GenericTile>
+            </f:GridContainer>
+
+            <!-- Charts + breakdowns -->
+            <layout:Grid id="_IDGenGrid" defaultSpan="L4 M6 S12" class="sapUiSmallMarginTop">
+
+                <Panel id="_IDGenPanel" headerText="Applications by Status" class="sapUiTinyMargin" width="100%">
+                    <mc:InteractiveBarChart id="_IDGenInteractiveBarChart"
+                        press="onStatusBarPress"
+                        bars="{path: 'dashboard>/byStatus', templateShareable: false}">
+                        <mc:bars>
+                            <mc:InteractiveBarChartBar id="_IDGenInteractiveBarChartBar" label="{dashboard>status}" value="{dashboard>count}" displayedValue="{dashboard>count}"/>
+                        </mc:bars>
+                    </mc:InteractiveBarChart>
+                </Panel>
+
+                <Panel id="_IDGenPanel1" headerText="Open Exceptions by Severity" class="sapUiTinyMargin" width="100%">
+                    <List id="_IDGenList" items="{dashboard>/openExceptionsBySeverity}" noDataText="No open exceptions" showSeparators="Inner">
+                        <StandardListItem id="_IDGenStandardListItem1"
+                            title="{dashboard>severity}"
+                            info="{dashboard>count}"
+                            infoState="{= ${dashboard>severity} === 'Critical' ? 'Error' : (${dashboard>severity} === 'Major' ? 'Warning' : 'None') }"
+                            icon="{= ${dashboard>severity} === 'Critical' ? 'sap-icon://message-error' : 'sap-icon://message-warning' }"
+                            press="onSeverityRowPress"
+                            type="Active"
+                        />
+                    </List>
+                </Panel>
+
+                <Panel id="_IDGenPanel2" headerText="Applications by Risk Band" class="sapUiTinyMargin" width="100%">
+                    <mc:InteractiveBarChart id="_IDGenInteractiveBarChart1"
+                        bars="{path: 'dashboard>/byRiskBand', templateShareable: false}">
+                        <mc:bars>
+                            <mc:InteractiveBarChartBar id="_IDGenInteractiveBarChartBar1" label="{dashboard>riskBand}" value="{dashboard>count}" displayedValue="{dashboard>count}"/>
+                        </mc:bars>
+                    </mc:InteractiveBarChart>
+                </Panel>
+
+            </layout:Grid>
+
+        </content>
+    </Page>
+</mvc:View>

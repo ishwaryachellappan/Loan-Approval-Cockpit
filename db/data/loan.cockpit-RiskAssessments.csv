@@ -1,0 +1,4 @@
+ID,application_ID,riskBand,riskScore,collateralCoverage,rationale
+e1e1e1e1-0004-0004-0004-000000000001,aaaaaaaa-1111-1111-1111-111111111111,MEDIUM,45,0,Moderate exposure with no collateral offered
+e1e1e1e1-0004-0004-0004-000000000002,bbbbbbbb-2222-2222-2222-222222222222,HIGH,50,10,High exposure relative to income with minimal collateral
+e1e1e1e1-0004-0004-0004-000000000003,cccccccc-3333-3333-3333-333333333333,LOW,15,80,Strong income and full collateral coverage

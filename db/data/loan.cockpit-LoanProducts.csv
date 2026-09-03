@@ -1,0 +1,4 @@
+ID,productCode,productName,minAmount,maxAmount,minTenureMonths,maxTenureMonths,active
+aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa,PL001,Personal Loan,50000,1000000,12,60,true
+bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb,HL001,Home Loan,500000,10000000,60,360,true
+cccccccc-cccc-cccc-cccc-cccccccccccc,AL001,Auto Loan,100000,2500000,12,84,true

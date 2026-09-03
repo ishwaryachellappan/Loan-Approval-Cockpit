@@ -1,0 +1,4 @@
+ID,code,layer,description,severity,active
+b1b1b1b1-0001-0001-0001-000000000001,L6-DOCUMENT-MISSING,L6,Required document does not exist or is expired,Block,true
+b1b1b1b1-0001-0001-0001-000000000002,L7-CREDIT-STALE,L7,Credit assessment missing or stale beyond validity window,Block,true
+b1b1b1b1-0001-0001-0001-000000000003,L5-EXPOSURE,L5,Requested amount vs product max and existing exposure,Block,true

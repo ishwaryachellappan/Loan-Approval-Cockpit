@@ -1,0 +1,21 @@
+{
+  "dependencies": {
+    "@cap-js/sqlite": "^3.0.2",
+    "@sap/cds": "^10.0.6",
+    "node.js": "^0.0.1-security"
+  },
+  "devDependencies": {
+    "@sap/cds-dk": "^10.0.7",
+    "@sap/ux-ui5-tooling": "^1.31.1",
+    "cds-plugin-ui5": "^0.17.0"
+  },
+  "workspaces": [
+    "app/*"
+  ],
+  "scripts": {
+    "watch-loanapp": "cds watch --open loan.cockpit.loanapp/index.html?sap-ui-xx-viewCache=false --livereload false"
+  },
+  "sapux": [
+    "app/loanapp"
+  ]
+}

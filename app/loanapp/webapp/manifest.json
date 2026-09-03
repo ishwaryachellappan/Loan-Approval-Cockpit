@@ -1,0 +1,187 @@
+{
+  "_version": "1.86.0",
+  "sap.app": {
+    "id": "loan.cockpit.loanapp",
+    "type": "application",
+    "i18n": "i18n/i18n.properties",
+    "applicationVersion": {
+      "version": "0.0.1"
+    },
+    "title": "{{appTitle}}",
+    "description": "{{appDescription}}",
+    "resources": "resources.json",
+    "sourceTemplate": {
+      "id": "@sap/generator-fiori:lrop",
+      "version": "1.31.1",
+      "toolsId": "a3ecd876-0973-4871-8544-0b0583755cf3"
+    },
+    "dataSources": {
+      "mainService": {
+        "uri": "/odata/v4/loan-application/",
+        "type": "OData",
+        "settings": {
+          "annotations": [],
+          "odataVersion": "4.0"
+        }
+      }
+    }
+  },
+  "sap.ui": {
+    "technology": "UI5",
+    "icons": {
+      "icon": "",
+      "favIcon": "",
+      "phone": "",
+      "phone@2": "",
+      "tablet": "",
+      "tablet@2": ""
+    },
+    "deviceTypes": {
+      "desktop": true,
+      "tablet": true,
+      "phone": true
+    }
+  },
+  "sap.ui5": {
+    "flexEnabled": true,
+    "dependencies": {
+      "minUI5Version": "1.151.0",
+      "libs": {
+        "sap.m": {},
+        "sap.ui.core": {},
+        "sap.fe.templates": {},
+        "sap.f": {},
+        "sap.suite.ui.microchart": {}
+      }
+    },
+    "contentDensities": {
+      "compact": true,
+      "cozy": true
+    },
+    "models": {
+      "i18n": {
+        "type": "sap.ui.model.resource.ResourceModel",
+        "settings": {
+          "bundleName": "loan.cockpit.loanapp.i18n.i18n"
+        }
+      },
+      "": {
+        "dataSource": "mainService",
+        "preload": true,
+        "settings": {
+          "operationMode": "Server",
+          "autoExpandSelect": true,
+          "earlyRequests": true
+        }
+      },
+      "@i18n": {
+        "type": "sap.ui.model.resource.ResourceModel",
+        "uri": "i18n/i18n.properties"
+      }
+    },
+    "resources": {
+      "css": [
+        {
+          "uri": "css/style.css"
+        }
+      ]
+    },
+    "routing": {
+      "config": {},
+      "routes": [
+        {
+          "pattern": ":?query:",
+          "name": "LoanApplicationsList",
+          "target": "LoanApplicationsList"
+        },
+        {
+          "pattern": "LoanApplications({key}):?query:",
+          "name": "LoanApplicationsObjectPage",
+          "target": "LoanApplicationsObjectPage"
+        },
+        {
+          "pattern": "Dashboard",
+          "name": "Dashboard",
+          "target": "Dashboard"
+        }
+      ],
+      "targets": {
+        "LoanApplicationsList": {
+          "type": "Component",
+          "id": "LoanApplicationsList",
+          "name": "sap.fe.templates.ListReport",
+          "options": {
+            "settings": {
+              "contextPath": "/LoanApplications",
+              "variantManagement": "Page",
+              
+              "navigation": {
+                "LoanApplications": {
+                  "detail": {
+                    "route": "LoanApplicationsObjectPage"
+                  }
+                }
+              },
+              "controlConfiguration": {
+                "@com.sap.vocabularies.UI.v1.LineItem": {
+                  "tableSettings": {
+                    "type": "ResponsiveTable"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "LoanApplicationsObjectPage": {
+          "type": "Component",
+          "id": "LoanApplicationsObjectPage",
+          "name": "sap.fe.templates.ObjectPage",
+          "options": {
+            "settings": {
+              "editableHeaderContent": false,
+              "contextPath": "/LoanApplications",
+              "controllerExtensions": {
+                "loan.cockpit.loanapp.ext.ObjectPageExt": {}
+              },
+              "content": {
+                "header": {
+                  "actions": {
+                    "customApprove": {
+                      "press": "loan.cockpit.loanapp.ext.ObjectPageExt.onApprove",
+                      "text": "Approve",
+                      "visible": true
+                    },
+                    "customReject": {
+                      "press": "loan.cockpit.loanapp.ext.ObjectPageExt.onReject",
+                      "text": "Reject",
+                      "visible": true
+                    },
+                    "customEscalate": {
+                      "press": "loan.cockpit.loanapp.ext.ObjectPageExt.onEscalate",
+                      "text": "Escalate",
+                      "visible": true
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "Dashboard": {
+          "type": "View",
+          "id": "Dashboard",
+          "name": "loan.cockpit.loanapp.view.Dashboard"
+        }
+      }
+    }
+  },
+  "sap.fiori": {
+    "registrationIds": [],
+    "archeType": "transactional"
+  },
+  "sap.fe": {
+    "app": {
+      "enableLazyLoading": true
+    }
+  }
+}

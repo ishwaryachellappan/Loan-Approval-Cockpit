@@ -1,0 +1,11 @@
+http://localhost:4004/loan-application/LoanApplications?$select=ID,applicationNumber
+###
+http://localhost:4004/loan-application/LoanApplications?$select=ID,applicationNumber,priorityScore
+
+###
+http://localhost:4004/loan-application/LoanApplications?$select=ID,applicationNumber,priorityScore
+
+###
+http://localhost:4004/loan-application/LoanApplications?$filter=applicationNumber eq 'LA-10003'&$select=applicationNumber,status
+###
+http://localhost:4004/odata/v4/loan-application/getDashboardKPIs
