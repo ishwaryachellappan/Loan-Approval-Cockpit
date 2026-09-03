@@ -7,13 +7,13 @@ type DashboardKPIs {
     byStatus                 : array of StatusCount;
     slaBreachedCount         : Integer;
     slaTotalWithSLA          : Integer;
-    slaBreachRate            : Decimal(5,1);
+    slaBreachRate            : Decimal(5, 1);
     openExceptionsCount      : Integer;
     openExceptionsBySeverity : array of SeverityCount;
-    avgPriorityScore         : Decimal(5,2);
+    avgPriorityScore         : Decimal(5, 2);
     byRiskBand               : array of RiskBandCount;
     agedApplicationsCount    : Integer;
-    avgApprovalCycleDays     : Decimal(5,1);
+    avgApprovalCycleDays     : Decimal(5, 1);
 }
 
 type StatusCount {
@@ -65,10 +65,30 @@ service LoanApplicationService {
             )   as slaDueAt             : Timestamp
         }
         actions {
-            action runValidation()                              returns Boolean;
-            action approve(approver: String, comments: String)  returns Boolean;
-            action reject(approver: String, comments: String)   returns Boolean;
-            action escalate(approver: String, comments: String) returns Boolean;
+            action runValidation()            returns Boolean;
+            @(requires: [
+                'OperationsOfficer',
+                'CreditAnalyst',
+                'Underwriter',
+                'Approver',
+                'Admin'
+            ])
+            action approve(comments: String)  returns Boolean;
+            @(requires: [
+                'OperationsOfficer',
+                'CreditAnalyst',
+                'Underwriter',
+                'Approver',
+                'Admin'
+            ])
+            action reject(comments: String)   returns Boolean;
+            @(requires: [
+                'OperationsOfficer',
+                'Underwriter',
+                'Approver',
+                'Admin'
+            ])
+            action escalate(comments: String) returns Boolean;
         };
 
     entity Documents        as

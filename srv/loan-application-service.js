@@ -61,58 +61,78 @@ module.exports = cds.service.impl(async function () {
     });
 
     // --- approve ---
-    this.on('approve', 'LoanApplications', async (req) => {
-        let appID = req.params[0];
-        if (typeof appID === 'object' && appID !== null) appID = appID.ID;
-        const tx = cds.transaction(req);
-        const app = await tx.run(SELECT.one.from(LoanApplications, appID));
+   this.on('approve', 'LoanApplications', async (req) => {
+    let appID = req.params[0];
+    if (typeof appID === 'object' && appID !== null) appID = appID.ID;
 
-        if (app.status !== 'READY_FOR_REVIEW') {
-            req.error(400, `Cannot approve from status ${app.status}. Application must be READY_FOR_REVIEW.`);
-            return false;
-        }
-        const { approver = 'unknown', comments = '' } = req.data;
-        await recordApprovalStep(tx, appID, approver, 'APPROVED', comments);
-        await tx.run(UPDATE(LoanApplications, appID).with({ status: 'APPROVED' }));
-        await recordAudit(tx, appID, approver, app.status, 'APPROVED', comments || 'Approved by officer');
-        return true;
-    });
+    // --- Role check: only Approver or Admin may actually approve ---
+    if (!req.user.is('Approver') && !req.user.is('Admin')) {
+        req.error(403, 'Only an Approver or Admin may approve applications.');
+        return false;
+    }
 
-    // --- reject ---
-    this.on('reject', 'LoanApplications', async (req) => {
-        let appID = req.params[0];
-        if (typeof appID === 'object' && appID !== null) appID = appID.ID;
-        const tx = cds.transaction(req);
-        const app = await tx.run(SELECT.one.from(LoanApplications, appID));
+    const tx = cds.transaction(req);
+    const app = await tx.run(SELECT.one.from(LoanApplications, appID));
 
-        if (!['READY_FOR_REVIEW', 'EXCEPTION', 'UNDERWRITING'].includes(app.status)) {
-            req.error(400, `Cannot reject from status ${app.status}.`);
-            return false;
-        }
-        const { approver = 'unknown', comments = '' } = req.data;
-        await recordApprovalStep(tx, appID, approver, 'REJECTED', comments);
-        await tx.run(UPDATE(LoanApplications, appID).with({ status: 'REJECTED' }));
-        await recordAudit(tx, appID, approver, app.status, 'REJECTED', comments || 'Rejected by officer');
-        return true;
-    });
+    if (app.status !== 'READY_FOR_REVIEW') {
+        req.error(400, `Cannot approve from status ${app.status}. Application must be READY_FOR_REVIEW.`);
+        return false;
+    }
+    const approver = req.user.id; // real logged-in user, not a typed string
+    const comments = req.data.comments || '';
+    await recordApprovalStep(tx, appID, approver, 'APPROVED', comments);
+    await tx.run(UPDATE(LoanApplications, appID).with({ status: 'APPROVED' }));
+    await recordAudit(tx, appID, approver, app.status, 'APPROVED', comments || 'Approved by officer');
+    return true;
+});
 
-    // --- escalate ---
-    this.on('escalate', 'LoanApplications', async (req) => {
-        let appID = req.params[0];
-        if (typeof appID === 'object' && appID !== null) appID = appID.ID;
-        const tx = cds.transaction(req);
-        const app = await tx.run(SELECT.one.from(LoanApplications, appID));
+this.on('reject', 'LoanApplications', async (req) => {
+    let appID = req.params[0];
+    if (typeof appID === 'object' && appID !== null) appID = appID.ID;
 
-        if (['APPROVED', 'REJECTED', 'CLOSED'].includes(app.status)) {
-            req.error(400, `Cannot escalate a ${app.status} application.`);
-            return false;
-        }
-        const { approver = 'unknown', comments = '' } = req.data;
-        await recordApprovalStep(tx, appID, approver, 'ESCALATED', comments);
-        await tx.run(UPDATE(LoanApplications, appID).with({ status: 'ESCALATED' }));
-        await recordAudit(tx, appID, approver, app.status, 'ESCALATED', comments || 'Escalated for review');
-        return true;
-    });
+    if (!req.user.is('Approver') && !req.user.is('Admin') && !req.user.is('Underwriter')) {
+        req.error(403, 'Only an Underwriter, Approver, or Admin may reject applications.');
+        return false;
+    }
+
+    const tx = cds.transaction(req);
+    const app = await tx.run(SELECT.one.from(LoanApplications, appID));
+
+    if (!['READY_FOR_REVIEW', 'EXCEPTION', 'UNDERWRITING'].includes(app.status)) {
+        req.error(400, `Cannot reject from status ${app.status}.`);
+        return false;
+    }
+    const approver = req.user.id;
+    const comments = req.data.comments || '';
+    await recordApprovalStep(tx, appID, approver, 'REJECTED', comments);
+    await tx.run(UPDATE(LoanApplications, appID).with({ status: 'REJECTED' }));
+    await recordAudit(tx, appID, approver, app.status, 'REJECTED', comments || 'Rejected by officer');
+    return true;
+});
+
+this.on('escalate', 'LoanApplications', async (req) => {
+    let appID = req.params[0];
+    if (typeof appID === 'object' && appID !== null) appID = appID.ID;
+
+    if (req.user.is('CreditAnalyst')) {
+        req.error(403, 'Credit Analysts may not escalate directly — route through an Officer or Underwriter.');
+        return false;
+    }
+
+    const tx = cds.transaction(req);
+    const app = await tx.run(SELECT.one.from(LoanApplications, appID));
+
+    if (['APPROVED', 'REJECTED', 'CLOSED'].includes(app.status)) {
+        req.error(400, `Cannot escalate a ${app.status} application.`);
+        return false;
+    }
+    const approver = req.user.id;
+    const comments = req.data.comments || '';
+    await recordApprovalStep(tx, appID, approver, 'ESCALATED', comments);
+    await tx.run(UPDATE(LoanApplications, appID).with({ status: 'ESCALATED' }));
+    await recordAudit(tx, appID, approver, app.status, 'ESCALATED', comments || 'Escalated for review');
+    return true;
+});
 
     // --- READ handler: priority scoring ---
     this.on('READ', 'LoanApplications', async (req, next) => {

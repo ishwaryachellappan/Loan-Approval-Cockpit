@@ -14,13 +14,10 @@ async function _callAction(oController, actionName, label) {
 
     try {
         const oOperation = oModel.bindContext(`${sPath}/${sActionName}(...)`, oContext);
-        oOperation.setParameter("approver", "Ishwarya");
         oOperation.setParameter("comments", `${label} via cockpit`);
         await oOperation.execute();
 
         MessageToast.show(`${label} successfully`);
-
-        // Correct V4 way to force this specific context to reload fresh data
         await oContext.requestRefresh();
     } catch (e) {
         console.error("Action failed:", e);

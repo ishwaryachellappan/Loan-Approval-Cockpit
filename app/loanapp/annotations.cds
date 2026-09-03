@@ -182,28 +182,31 @@ annotate service.LoanApplications with @(
             ID    : 'RiskAssessmentsFacet',
             Label : 'Risk Assessment',
             Target: 'riskAssessments/@UI.LineItem'
-        }
-    ],
-
-    UI.Identification                : [
+        },
         {
-            $Type : 'UI.DataFieldForAction',
-            Action: 'LoanApplicationService.runValidation',
-            Label : 'Run Validation'
+            $Type : 'UI.ReferenceFacet',
+            ID    : 'ApprovalStepsFacet',
+            Label : 'Approval History',
+            Target: 'approvalSteps/@UI.LineItem'
         }
-       
     ],
 
-    UI.SideEffects : {
-    TargetProperties: [
+    UI.Identification                : [{
+        $Type : 'UI.DataFieldForAction',
+        Action: 'LoanApplicationService.runValidation',
+        Label : 'Run Validation'
+    }
+
+    ],
+
+    UI.SideEffects                   : {TargetProperties: [
         'status',
         'statusCriticality',
         'priorityScore',
         'slaStatus',
         'slaStatusCriticality',
         'slaDueAt'
-    ]
-}
+    ]}
 );
 
 annotate service.Exceptions with @(UI.LineItem: [
@@ -314,3 +317,13 @@ annotate service.LoanApplications with @(UI.PresentationVariant: {
     }],
     Visualizations: ['@UI.LineItem']
 });
+
+
+annotate service.ApprovalSteps with @(
+    UI.LineItem : [
+        { $Type: 'UI.DataField', Label: 'Decision', Value: decision },
+        { $Type: 'UI.DataField', Label: 'Approver', Value: approver },
+        { $Type: 'UI.DataField', Label: 'Decided At', Value: decidedAt },
+        { $Type: 'UI.DataField', Label: 'Comments', Value: comments }
+    ]
+);
