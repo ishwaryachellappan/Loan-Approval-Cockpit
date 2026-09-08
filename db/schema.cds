@@ -16,6 +16,7 @@ entity Applicants : cuid, managed {
 entity LoanProducts : cuid, managed {
     productCode     : String(30) not null;
     productName     : String(100) not null;
+    category        : String(50); // HOME_LOAN, AUTO_LOAN, PERSONAL_LOAN — matches Officers.expertise
     minAmount       : Decimal(15, 2);
     maxAmount       : Decimal(15, 2);
     minTenureMonths : Integer;
@@ -46,6 +47,8 @@ entity LoanApplications : cuid, managed {
                             on approvalSteps.application = $self;
     auditLogs         : Composition of many AuditLogs
                             on auditLogs.application = $self;
+
+    assignedOfficer   : Association to Officers;
 }
 
 entity Documents : cuid, managed {
@@ -113,4 +116,13 @@ entity AuditLogs : cuid, managed {
     beforeValue : String(500);
     afterValue  : String(500);
     reason      : String(500);
+}
+
+entity Officers : cuid, managed {
+    name               : String(100);
+    authorityLevel     : String(20); // e.g. JUNIOR, SENIOR, SENIOR_MANAGER — caps max loan amount they can approve
+    maxApprovalAmt     : Decimal(15, 2);
+    expertise          : String(50); // e.g. HOME_LOAN, AUTO_LOAN, PERSONAL_LOAN — matches LoanProducts.category
+    activeApplications : Association to many LoanApplications
+                             on activeApplications.assignedOfficer = $self;
 }

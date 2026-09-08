@@ -9,3 +9,15 @@ http://localhost:4004/loan-application/LoanApplications?$select=ID,applicationNu
 http://localhost:4004/loan-application/LoanApplications?$filter=applicationNumber eq 'LA-10003'&$select=applicationNumber,status
 ###
 http://localhost:4004/odata/v4/loan-application/getDashboardKPIs
+
+###
+
+GET http://localhost:4004/odata/v4/loan-application/Exceptions?$filter=application_ID eq 'bbbbbbbb-2222-2222-2222-222222222222'
+###
+POST http://localhost:4004/odata/v4/loan-application/LoanApplications(ID=bbbbbbbb-2222-2222-2222-222222222222,IsActiveEntity=true)/LoanApplicationService.runValidation
+Content-Type: application/json
+
+{}
+
+###
+GET http://localhost:4004/odata/v4/loan-application/LoanApplications(bbbbbbbb-2222-2222-2222-222222222222)?$select=ID,status

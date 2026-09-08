@@ -1,7 +1,7 @@
 const cds = require('@sap/cds');
 
 module.exports = cds.service.impl(async function () {
-    const { Documents, CreditChecks, Exceptions, Rules, LoanApplications, ApprovalSteps, AuditLogs } = this.entities;
+    const { Documents, CreditChecks, Exceptions, Rules, LoanApplications, LoanProducts, Officers, ApprovalSteps, AuditLogs } = this.entities;
 
     // --- Helpers ---
     async function recordApprovalStep(tx, appID, approver, decision, comments) {
@@ -32,16 +32,32 @@ module.exports = cds.service.impl(async function () {
         await tx.run(DELETE.from(Exceptions).where({ application_ID: appID, status: 'OPEN' }));
 
         const newExceptions = [];
-        const expiredDoc = documents.find(d => d.status === 'EXPIRED');
-        if (expiredDoc) {
+
+        const REQUIRED_DOC_TYPES = ['ID_PROOF', 'INCOME_PROOF'];
+        const missingTypes = REQUIRED_DOC_TYPES.filter(
+            type => !documents.some(d => d.docType === type && d.status !== 'EXPIRED')
+        );
+        const expiredDocs = documents.filter(d => d.status === 'EXPIRED');
+
+        if (missingTypes.length) {
+            newExceptions.push({
+                application_ID: appID,
+                rule_ID: ruleByCode('L6-DOCUMENT-MISSING')?.ID,
+                reasonCode: 'DOC_MISSING', severity: 'Critical', status: 'OPEN',
+                description: `Required document(s) missing: ${missingTypes.join(', ')}`,
+                suggestedAction: 'Request missing documents from applicant'
+            });
+        }
+        expiredDocs.forEach(doc => {
             newExceptions.push({
                 application_ID: appID,
                 rule_ID: ruleByCode('L6-DOCUMENT-MISSING')?.ID,
                 reasonCode: 'DOC_EXPIRED', severity: 'Critical', status: 'OPEN',
-                description: `${expiredDoc.docType} expired on ${expiredDoc.expiryDate}`,
+                description: `${doc.docType} expired on ${doc.expiryDate}`,
                 suggestedAction: 'Request updated document from applicant'
             });
-        }
+        });
+
         if (creditCheck?.status === 'STALE') {
             newExceptions.push({
                 application_ID: appID,
@@ -58,80 +74,83 @@ module.exports = cds.service.impl(async function () {
         }));
 
         return true;
+
+       
+      
     });
 
     // --- approve ---
-   this.on('approve', 'LoanApplications', async (req) => {
-    let appID = req.params[0];
-    if (typeof appID === 'object' && appID !== null) appID = appID.ID;
+    this.on('approve', 'LoanApplications', async (req) => {
+        let appID = req.params[0];
+        if (typeof appID === 'object' && appID !== null) appID = appID.ID;
 
-    if (!req.user.is('Approver') && !req.user.is('Admin')) {
-        req.error(403, 'Only an Approver or Admin may approve applications.');
-        return false;
-    }
+        if (!req.user.is('Approver') && !req.user.is('Admin')) {
+            req.error(403, 'Only an Approver or Admin may approve applications.');
+            return false;
+        }
 
-    const tx = cds.transaction(req);
-    const app = await tx.run(SELECT.one.from(LoanApplications, appID));
+        const tx = cds.transaction(req);
+        const app = await tx.run(SELECT.one.from(LoanApplications, appID));
 
-    if (app.status !== 'READY_FOR_REVIEW') {
-        req.error(400, `Cannot approve from status ${app.status}. Application must be READY_FOR_REVIEW.`);
-        return false;
-    }
-    const approver = req.user.id;
-    const comments = req.data.comments || '';
-    await recordApprovalStep(tx, appID, approver, 'APPROVED', comments);
-    await tx.run(UPDATE(LoanApplications, appID).with({ status: 'APPROVED' }));
-    await recordAudit(tx, appID, approver, app.status, 'APPROVED', comments || 'Approved by officer');
-    return true;
-});
+        if (app.status !== 'READY_FOR_REVIEW') {
+            req.error(400, `Cannot approve from status ${app.status}. Application must be READY_FOR_REVIEW.`);
+            return false;
+        }
+        const approver = req.user.id;
+        const comments = req.data.comments || '';
+        await recordApprovalStep(tx, appID, approver, 'APPROVED', comments);
+        await tx.run(UPDATE(LoanApplications, appID).with({ status: 'APPROVED' }));
+        await recordAudit(tx, appID, approver, app.status, 'APPROVED', comments || 'Approved by officer');
+        return true;
+    });
 
-this.on('reject', 'LoanApplications', async (req) => {
-    let appID = req.params[0];
-    if (typeof appID === 'object' && appID !== null) appID = appID.ID;
+    this.on('reject', 'LoanApplications', async (req) => {
+        let appID = req.params[0];
+        if (typeof appID === 'object' && appID !== null) appID = appID.ID;
 
-    if (!req.user.is('Approver') && !req.user.is('Admin') && !req.user.is('Underwriter')) {
-        req.error(403, 'Only an Underwriter, Approver, or Admin may reject applications.');
-        return false;
-    }
+        if (!req.user.is('Approver') && !req.user.is('Admin') && !req.user.is('Underwriter')) {
+            req.error(403, 'Only an Underwriter, Approver, or Admin may reject applications.');
+            return false;
+        }
 
-    const tx = cds.transaction(req);
-    const app = await tx.run(SELECT.one.from(LoanApplications, appID));
+        const tx = cds.transaction(req);
+        const app = await tx.run(SELECT.one.from(LoanApplications, appID));
 
-    if (!['READY_FOR_REVIEW', 'EXCEPTION', 'UNDERWRITING'].includes(app.status)) {
-        req.error(400, `Cannot reject from status ${app.status}.`);
-        return false;
-    }
-    const approver = req.user.id;
-    const comments = req.data.comments || '';
-    await recordApprovalStep(tx, appID, approver, 'REJECTED', comments);
-    await tx.run(UPDATE(LoanApplications, appID).with({ status: 'REJECTED' }));
-    await recordAudit(tx, appID, approver, app.status, 'REJECTED', comments || 'Rejected by officer');
-    return true;
-});
+        if (!['READY_FOR_REVIEW', 'EXCEPTION', 'UNDERWRITING'].includes(app.status)) {
+            req.error(400, `Cannot reject from status ${app.status}.`);
+            return false;
+        }
+        const approver = req.user.id;
+        const comments = req.data.comments || '';
+        await recordApprovalStep(tx, appID, approver, 'REJECTED', comments);
+        await tx.run(UPDATE(LoanApplications, appID).with({ status: 'REJECTED' }));
+        await recordAudit(tx, appID, approver, app.status, 'REJECTED', comments || 'Rejected by officer');
+        return true;
+    });
 
-this.on('escalate', 'LoanApplications', async (req) => {
-    let appID = req.params[0];
-    if (typeof appID === 'object' && appID !== null) appID = appID.ID;
+    this.on('escalate', 'LoanApplications', async (req) => {
+        let appID = req.params[0];
+        if (typeof appID === 'object' && appID !== null) appID = appID.ID;
 
-    if (req.user.is('CreditAnalyst')) {
-        req.error(403, 'Credit Analysts may not escalate directly — route through an Officer or Underwriter.');
-        return false;
-    }
+        if (req.user.is('CreditAnalyst')) {
+            req.error(403, 'Credit Analysts may not escalate directly — route through an Officer or Underwriter.');
+            return false;
+        }
 
-    const tx = cds.transaction(req);
-    const app = await tx.run(SELECT.one.from(LoanApplications, appID));
+        const tx = cds.transaction(req);
+        const app = await tx.run(SELECT.one.from(LoanApplications, appID));
 
-    if (['APPROVED', 'REJECTED', 'CLOSED'].includes(app.status)) {
-        req.error(400, `Cannot escalate a ${app.status} application.`);
-        return false;
-    }
-    const approver = req.user.id;
-    const comments = req.data.comments || '';
-    await recordApprovalStep(tx, appID, approver, 'ESCALATED', comments);
-    await tx.run(UPDATE(LoanApplications, appID).with({ status: 'ESCALATED' }));
-    await recordAudit(tx, appID, approver, app.status, 'ESCALATED', comments || 'Escalated for review');
-    return true;
-});
+        if (['APPROVED', 'REJECTED', 'CLOSED'].includes(app.status)) {
+            req.error(400, `Cannot escalate a ${app.status} application.`);
+            return false;
+        }
+        const approver = req.user.id;
+        const comments = req.data.comments || '';
+        await recordApprovalStep(tx, appID, approver, 'ESCALATED', comments);
+        await tx.run(UPDATE(LoanApplications, appID).with({ status: 'ESCALATED' }));
+        await recordAudit(tx, appID, approver, app.status, 'ESCALATED', comments || 'Escalated for review');
+        return true;
+    });
 
 
     // --- READ handler: priority scoring ---
@@ -213,97 +232,161 @@ this.on('escalate', 'LoanApplications', async (req) => {
     });
 
     this.on('getDashboardKPIs', async (req) => {
-    const tx = cds.transaction(req);
-    const apps = await tx.run(SELECT.from(LoanApplications));
-    const slas = await tx.run(SELECT.from('SLAs'));
-    const exceptions = await tx.run(SELECT.from(Exceptions).where({ status: 'OPEN' }));
-    const risks = await tx.run(SELECT.from('RiskAssessments'));
-    const approvalSteps = await tx.run(SELECT.from(ApprovalSteps));
+        const tx = cds.transaction(req);
+        const apps = await tx.run(SELECT.from(LoanApplications));
+        const slas = await tx.run(SELECT.from('SLAs'));
+        const exceptions = await tx.run(SELECT.from(Exceptions).where({ status: 'OPEN' }));
+        const risks = await tx.run(SELECT.from('RiskAssessments'));
+        const approvalSteps = await tx.run(SELECT.from(ApprovalSteps));
 
-    const byStatus = {};
-    apps.forEach(a => byStatus[a.status] = (byStatus[a.status] || 0) + 1);
+        const byStatus = {};
+        apps.forEach(a => byStatus[a.status] = (byStatus[a.status] || 0) + 1);
 
-    const now = new Date();
-    let breached = 0;
-    slas.forEach(s => { if (new Date(s.dueAt) < now) breached++; });
-    const slaBreachRate = slas.length ? Math.round((breached / slas.length) * 1000) / 10 : 0;
+        const now = new Date();
+        let breached = 0;
+        slas.forEach(s => { if (new Date(s.dueAt) < now) breached++; });
+        const slaBreachRate = slas.length ? Math.round((breached / slas.length) * 1000) / 10 : 0;
 
-    const bySeverity = {};
-    exceptions.forEach(e => bySeverity[e.severity] = (bySeverity[e.severity] || 0) + 1);
+        const bySeverity = {};
+        exceptions.forEach(e => bySeverity[e.severity] = (bySeverity[e.severity] || 0) + 1);
 
-    const byRiskBand = {};
-    risks.forEach(r => byRiskBand[r.riskBand] = (byRiskBand[r.riskBand] || 0) + 1);
+        const byRiskBand = {};
+        risks.forEach(r => byRiskBand[r.riskBand] = (byRiskBand[r.riskBand] || 0) + 1);
 
-    // --- Queue ageing: applications older than 5 days, still not closed ---
-    const OPEN_STATUSES = ['DRAFT', 'SUBMITTED', 'VALIDATING', 'EXCEPTION', 'READY_FOR_REVIEW', 'UNDERWRITING'];
-    let agedCount = 0;
-    apps.forEach(a => {
-        if (OPEN_STATUSES.includes(a.status) && a.submittedAt) {
-            const ageDays = (now - new Date(a.submittedAt)) / (1000 * 60 * 60 * 24);
-            if (ageDays > 5) agedCount++;
-        }
+        // --- Queue ageing: applications older than 5 days, still not closed ---
+        const OPEN_STATUSES = ['DRAFT', 'SUBMITTED', 'VALIDATING', 'EXCEPTION', 'READY_FOR_REVIEW', 'UNDERWRITING'];
+        let agedCount = 0;
+        apps.forEach(a => {
+            if (OPEN_STATUSES.includes(a.status) && a.submittedAt) {
+                const ageDays = (now - new Date(a.submittedAt)) / (1000 * 60 * 60 * 24);
+                if (ageDays > 5) agedCount++;
+            }
+        });
+
+        // --- Approval cycle time: avg days from submittedAt to decidedAt ---
+        const appById = Object.fromEntries(apps.map(a => [a.ID, a]));
+        let totalCycleDays = 0, cycleCount = 0;
+        approvalSteps.forEach(step => {
+            const app = appById[step.application_ID];
+            if (app && app.submittedAt && step.decidedAt) {
+                const days = (new Date(step.decidedAt) - new Date(app.submittedAt)) / (1000 * 60 * 60 * 24);
+                totalCycleDays += days;
+                cycleCount++;
+            }
+        });
+        const avgCycleDays = cycleCount ? Math.round((totalCycleDays / cycleCount) * 10) / 10 : null;
+
+        // --- Priority score recompute (unchanged from before) ---
+        const RISK_SCORE = { LOW: 10, MEDIUM: 25, HIGH: 40, CRITICAL: 55 };
+        const EXCEPTION_SEVERITY_SCORE = { Minor: 5, Major: 15, Critical: 30 };
+        const riskByAppId = Object.fromEntries(risks.map(r => [r.application_ID, r]));
+        const slaByAppId = Object.fromEntries(slas.map(s => [s.application_ID, s]));
+        const exceptionsByAppId = {};
+        for (const ex of exceptions) (exceptionsByAppId[ex.application_ID] ||= []).push(ex);
+
+        let totalPriority = 0;
+        apps.forEach(app => {
+            const risk = riskByAppId[app.ID];
+            const riskScore = risk ? (RISK_SCORE[risk.riskBand] ?? 0) : 0;
+            const exList = exceptionsByAppId[app.ID] || [];
+            const exceptionScore = exList.reduce((max, ex) => Math.max(max, EXCEPTION_SEVERITY_SCORE[ex.severity] ?? 0), 0);
+            let ageScore = 0;
+            if (app.submittedAt) {
+                const ageDays = (now - new Date(app.submittedAt)) / (1000 * 60 * 60 * 24);
+                if (ageDays > 10) ageScore = 20;
+                else if (ageDays > 5) ageScore = 10;
+                else if (ageDays > 2) ageScore = 5;
+            }
+            let slaScore = 0;
+            const sla = slaByAppId[app.ID];
+            if (sla) {
+                const hoursRemaining = (new Date(sla.dueAt) - now) / (1000 * 60 * 60);
+                if (hoursRemaining <= 0) slaScore = 50;
+                else if (hoursRemaining <= 24) slaScore = 20;
+                else if (hoursRemaining <= 72) slaScore = 10;
+            }
+            totalPriority += riskScore + exceptionScore + ageScore + 5 + slaScore;
+        });
+        const avgPriority = apps.length ? totalPriority / apps.length : 0;
+
+        return {
+            totalApplications: apps.length,
+            byStatus: Object.entries(byStatus).map(([status, count]) => ({ status, count })),
+            slaBreachedCount: breached,
+            slaTotalWithSLA: slas.length,
+            slaBreachRate,
+            openExceptionsCount: exceptions.length,
+            openExceptionsBySeverity: Object.entries(bySeverity).map(([severity, count]) => ({ severity, count })),
+            avgPriorityScore: Math.round(avgPriority * 100) / 100,
+            byRiskBand: Object.entries(byRiskBand).map(([riskBand, count]) => ({ riskBand, count })),
+            agedApplicationsCount: agedCount,
+            avgApprovalCycleDays: avgCycleDays
+        };
     });
 
-    // --- Approval cycle time: avg days from submittedAt to decidedAt ---
-    const appById = Object.fromEntries(apps.map(a => [a.ID, a]));
-    let totalCycleDays = 0, cycleCount = 0;
-    approvalSteps.forEach(step => {
-        const app = appById[step.application_ID];
-        if (app && app.submittedAt && step.decidedAt) {
-            const days = (new Date(step.decidedAt) - new Date(app.submittedAt)) / (1000 * 60 * 60 * 24);
-            totalCycleDays += days;
-            cycleCount++;
+    this.on('recommendAssignment', 'LoanApplications', async (req) => {
+        let appID = req.params[0];
+        if (typeof appID === 'object' && appID !== null) {
+            appID = appID.ID;
         }
+
+        const tx = cds.transaction(req);
+        const app = await tx.run(SELECT.one.from(LoanApplications, appID));
+        const product = await tx.run(SELECT.one.from(LoanProducts).where({ ID: app.product_ID }));
+        const officers = await tx.run(SELECT.from(Officers));
+
+        const requestedAmount = parseFloat(app.requestedAmount);
+
+        // Eligibility gate: authority must cover the requested amount
+        const eligible = officers.filter(o => parseFloat(o.maxApprovalAmt) >= requestedAmount);
+
+        // Workload: count each officer's currently-open applications, computed live
+        const openStatuses = ['VALIDATING', 'EXCEPTION', 'READY_FOR_REVIEW', 'UNDERWRITING'];
+        const workloadCounts = {};
+        for (const officer of eligible) {
+            const openApps = await tx.run(
+                SELECT.from(LoanApplications).where({
+                    assignedOfficer_ID: officer.ID,
+                    status: { in: openStatuses }
+                })
+            );
+            workloadCounts[officer.ID] = openApps.length;
+        }
+
+        const maxWorkload = Math.max(1, ...Object.values(workloadCounts));
+
+        const scored = eligible.map(o => {
+            const expertiseMatch = o.expertise === product.category;
+            const workload = workloadCounts[o.ID];
+
+            // Weighted score: expertise 40%, workload 40% (inverted, fewer = better), authority headroom 20%
+            const expertiseScore = expertiseMatch ? 40 : 0;
+            const workloadScore = 40 * (1 - workload / maxWorkload);
+            const headroom = parseFloat(o.maxApprovalAmt) - requestedAmount;
+            const authorityScore = 20 * Math.min(1, headroom / requestedAmount);
+
+            const score = expertiseScore + workloadScore + authorityScore;
+
+            const rationaleParts = [];
+            rationaleParts.push(expertiseMatch ? `${o.expertise} expertise matches` : `no expertise match (has ${o.expertise})`);
+            rationaleParts.push(`${workload} open application(s)`);
+            rationaleParts.push(`${o.authorityLevel} authority`);
+
+            return {
+                officerID: o.ID,
+                name: o.name,
+                authorityLevel: o.authorityLevel,
+                expertiseMatch,
+                openWorkload: workload,
+                score: Math.round(score * 100) / 100,
+                rationale: rationaleParts.join(', ')
+            };
+        });
+
+        scored.sort((a, b) => b.score - a.score);
+
+        return scored.slice(0, 3);
     });
-    const avgCycleDays = cycleCount ? Math.round((totalCycleDays / cycleCount) * 10) / 10 : null;
-
-    // --- Priority score recompute (unchanged from before) ---
-    const RISK_SCORE = { LOW: 10, MEDIUM: 25, HIGH: 40, CRITICAL: 55 };
-    const EXCEPTION_SEVERITY_SCORE = { Minor: 5, Major: 15, Critical: 30 };
-    const riskByAppId = Object.fromEntries(risks.map(r => [r.application_ID, r]));
-    const slaByAppId = Object.fromEntries(slas.map(s => [s.application_ID, s]));
-    const exceptionsByAppId = {};
-    for (const ex of exceptions) (exceptionsByAppId[ex.application_ID] ||= []).push(ex);
-
-    let totalPriority = 0;
-    apps.forEach(app => {
-        const risk = riskByAppId[app.ID];
-        const riskScore = risk ? (RISK_SCORE[risk.riskBand] ?? 0) : 0;
-        const exList = exceptionsByAppId[app.ID] || [];
-        const exceptionScore = exList.reduce((max, ex) => Math.max(max, EXCEPTION_SEVERITY_SCORE[ex.severity] ?? 0), 0);
-        let ageScore = 0;
-        if (app.submittedAt) {
-            const ageDays = (now - new Date(app.submittedAt)) / (1000 * 60 * 60 * 24);
-            if (ageDays > 10) ageScore = 20;
-            else if (ageDays > 5) ageScore = 10;
-            else if (ageDays > 2) ageScore = 5;
-        }
-        let slaScore = 0;
-        const sla = slaByAppId[app.ID];
-        if (sla) {
-            const hoursRemaining = (new Date(sla.dueAt) - now) / (1000 * 60 * 60);
-            if (hoursRemaining <= 0) slaScore = 50;
-            else if (hoursRemaining <= 24) slaScore = 20;
-            else if (hoursRemaining <= 72) slaScore = 10;
-        }
-        totalPriority += riskScore + exceptionScore + ageScore + 5 + slaScore;
-    });
-    const avgPriority = apps.length ? totalPriority / apps.length : 0;
-
-    return {
-        totalApplications: apps.length,
-        byStatus: Object.entries(byStatus).map(([status, count]) => ({ status, count })),
-        slaBreachedCount: breached,
-        slaTotalWithSLA: slas.length,
-        slaBreachRate,
-        openExceptionsCount: exceptions.length,
-        openExceptionsBySeverity: Object.entries(bySeverity).map(([severity, count]) => ({ severity, count })),
-        avgPriorityScore: Math.round(avgPriority * 100) / 100,
-        byRiskBand: Object.entries(byRiskBand).map(([riskBand, count]) => ({ riskBand, count })),
-        agedApplicationsCount: agedCount,
-        avgApprovalCycleDays: avgCycleDays
-    };
-});
 
 
 });

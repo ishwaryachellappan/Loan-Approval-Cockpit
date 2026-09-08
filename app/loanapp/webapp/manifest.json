@@ -114,7 +114,6 @@
             "settings": {
               "contextPath": "/LoanApplications",
               "variantManagement": "Page",
-              
               "navigation": {
                 "LoanApplications": {
                   "detail": {
@@ -146,6 +145,11 @@
               "content": {
                 "header": {
                   "actions": {
+                    "customRunValidation": {
+                      "press": "loan.cockpit.loanapp.ext.ObjectPageExt.onRunValidation",
+                      "text": "Run Validation",
+                      "visible": true
+                    },
                     "customApprove": {
                       "press": "loan.cockpit.loanapp.ext.ObjectPageExt.onApprove",
                       "text": "Approve",

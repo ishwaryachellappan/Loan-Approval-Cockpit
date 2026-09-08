@@ -3,7 +3,7 @@ sap.ui.define([
 ], function (MessageToast) {
     "use strict";
 
-async function _callAction(oController, actionName, label) {
+async function _callAction(oController, actionName, label, params) {
     const oView = oController.getView ? oController.getView() : oController;
     const oContext = oView.getBindingContext();
     if (!oContext) return;
@@ -14,7 +14,9 @@ async function _callAction(oController, actionName, label) {
 
     try {
         const oOperation = oModel.bindContext(`${sPath}/${sActionName}(...)`, oContext);
-        oOperation.setParameter("comments", `${label} via cockpit`);
+        if (params) {
+            Object.keys(params).forEach(key => oOperation.setParameter(key, params[key]));
+        }
         await oOperation.execute();
 
         MessageToast.show(`${label} successfully`);
@@ -26,15 +28,17 @@ async function _callAction(oController, actionName, label) {
 }
 
     return {
+        onRunValidation: function (oEvent) {
+            _callAction(this, "runValidation", "Validation run");
+        },
         onApprove: function (oEvent) {
-            const oController = this; // FPMHelper binds `this` to the controller context
-            _callAction(oController, "approve", "Approved");
+            _callAction(this, "approve", "Approved", { comments: "Approved via cockpit" });
         },
         onReject: function (oEvent) {
-            _callAction(this, "reject", "Rejected");
+            _callAction(this, "reject", "Rejected", { comments: "Rejected via cockpit" });
         },
         onEscalate: function (oEvent) {
-            _callAction(this, "escalate", "Escalated");
+            _callAction(this, "escalate", "Escalated", { comments: "Escalated via cockpit" });
         }
     };
 });
