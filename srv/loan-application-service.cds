@@ -131,6 +131,7 @@ service LoanApplicationService {
                 else 0
             end as severityCriticality : Integer
         };
+        
 
     entity SLAs             as projection on db.SLAs;
 

@@ -103,6 +103,11 @@
           "pattern": "Dashboard",
           "name": "Dashboard",
           "target": "Dashboard"
+        },
+        {
+          "pattern": "FilteredList/{filterType}",
+          "name": "FilteredList",
+          "target": "FilteredList"
         }
       ],
       "targets": {
@@ -114,6 +119,9 @@
             "settings": {
               "contextPath": "/LoanApplications",
               "variantManagement": "Page",
+              "controllerExtensions": {
+                "loan.cockpit.loanapp.ext.ListReportExt": {}
+              },
               "navigation": {
                 "LoanApplications": {
                   "detail": {
@@ -175,7 +183,12 @@
           "type": "View",
           "id": "Dashboard",
           "name": "loan.cockpit.loanapp.view.Dashboard"
-        }
+        },
+        "FilteredList": {
+        "type": "View",
+        "id": "FilteredList",
+        "name": "loan.cockpit.loanapp.view.FilteredList"
+    }
       }
     }
   },

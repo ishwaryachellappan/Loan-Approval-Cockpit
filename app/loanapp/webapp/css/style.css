@@ -61,3 +61,76 @@
 .kpiValueBlue    { color: #185FA5; }
 .kpiValuePurple  { color: #3C3489; }
 .kpiValueGreen   { color: #3B6D11; }
+
+.kpiCard {
+    height: 110px !important;
+    justify-content: space-between;
+}
+
+/* Clickable tiles: cursor + lift + border tint on hover.
+   .kpiCardNoClick is the existing marker for non-interactive tiles,
+   so :not() here targets only the three that actually navigate. */
+.kpiCard:not(.kpiCardNoClick) {
+    cursor: pointer;
+    transition: transform 0.15s ease, box-shadow 0.15s ease, border-color 0.15s ease;
+    border: 1px solid transparent;
+}
+.kpiCard:not(.kpiCardNoClick):hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 18px rgba(0, 0, 0, 0.12);
+    border-color: #d0d7e2;
+}
+.kpiCard:not(.kpiCardNoClick):active {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.10);
+}
+
+/* Static tiles explicitly get no pointer, no lift */
+.kpiCardNoClick {
+    cursor: default;
+}
+.kpiCardNoClick:hover {
+    transform: none;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
+}
+
+.filteredListPage {
+    background: #f5f6f8;
+}
+.filteredListSubtext {
+    font-size: 12px;
+    color: #6a6d70;
+}
+.filteredListCard {
+    background: #fff;
+    border-radius: 12px;
+    padding: 0.5rem;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
+}
+.filteredListRow:hover {
+    background: #f7f9fb;
+}
+.filteredListAppNo {
+    font-weight: 500;
+    color: #1c1c1c;
+}
+.filteredStatusPill {
+    padding: 3px 10px;
+    border-radius: 10px;
+    font-size: 12px;
+    font-weight: 500;
+    display: inline-flex;
+    align-items: center;
+}
+.filteredStatusRed {
+    background: #FCEBEB;
+    color: #A32D2D;
+}
+.filteredStatusGreen {
+    background: #EAF3DE;
+    color: #3B6D11;
+}
+.filteredStatusBlue {
+    background: #E6F1FB;
+    color: #185FA5;
+}

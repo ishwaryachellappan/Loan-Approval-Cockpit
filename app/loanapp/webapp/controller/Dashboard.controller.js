@@ -28,13 +28,12 @@ sap.ui.define([
         onNavToList: function () {
             this.getOwnerComponent().getRouter().navTo("LoanApplicationsList");
         },
-
         onNavFilteredBreached: function () {
-            this._navWithFilter({ slaStatus: "BREACHED" });
+            this.getOwnerComponent().getRouter().navTo("FilteredList", { filterType: "slaBreached" });
         },
 
         onNavFilteredException: function () {
-            this._navWithFilter({ status: "EXCEPTION" });
+            this.getOwnerComponent().getRouter().navTo("FilteredList", { filterType: "exception" });
         },
 
         onStatusBarPress: function (oEvent) {
@@ -54,16 +53,17 @@ sap.ui.define([
                 "?query": oFilters
             });
         },
-
         onAfterRendering: function () {
-    this.byId("kpiSlaBreached").attachBrowserEvent("click", this.onNavFilteredBreached, this);
-    this.byId("kpiOpenExceptions").attachBrowserEvent("click", this.onNavFilteredException, this);
-    this.byId("kpiTotalApps").attachBrowserEvent("click", this.onNavToList, this);
-},
+            if (this._kpiClicksWired) return;
+            this._kpiClicksWired = true;
+            this.byId("kpiSlaBreached").attachBrowserEvent("click", this.onNavFilteredBreached, this);
+            this.byId("kpiOpenExceptions").attachBrowserEvent("click", this.onNavFilteredException, this);
+            this.byId("kpiTotalApps").attachBrowserEvent("click", this.onNavToList, this);
+        },
 
-formatCycleDays: function (v) {
-    return (v === null || v === undefined ? 0 : v) + " days";
-},
+        formatCycleDays: function (v) {
+            return (v === null || v === undefined ? 0 : v) + " days";
+        },
 
 
     });

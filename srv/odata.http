@@ -21,3 +21,6 @@ Content-Type: application/json
 
 ###
 GET http://localhost:4004/odata/v4/loan-application/LoanApplications(bbbbbbbb-2222-2222-2222-222222222222)?$select=ID,status
+
+###
+GET http://localhost:4004/odata/v4/loan-application/LoanApplications?$filter=slas/any(s:s/dueAt le 2026-09-08T00:00:00Z)

@@ -11,74 +11,70 @@
     <Page id="_IDGenPage" title="Operations Dashboard" showNavButton="true" navButtonPress="onNavBack" class="sapUiContentPadding">
         <content>
 
-            <VBox id="_IDGenKpiSection" class="kpiSectionContainer">
-    <FlexBox id="_IDGenKpiRow" wrap="Wrap" fitContainer="true" renderType="Bare" class="kpiSummaryRow">
+           <ScrollContainer id="_IDGenKpiScroll" horizontal="false" vertical="false" width="100%" height="auto" class="sapUiSmallMarginBottom">
+    <VBox id="_IDGenKpiSection" class="kpiSectionContainer">
+        <FlexBox id="_IDGenKpiRow" wrap="Wrap" fitContainer="true" renderType="Bare"
+            justifyContent="SpaceBetween" alignItems="Stretch" width="100%" class="kpiSummaryRow">
 
-        <VBox id="kpiSlaBreached" class="kpiCard kpiClickable">
-            <HBox id="_IDGenHBox1" class="kpiCardTopRow">
-                <Text id="_IDGenText" text="SLA Breached" class="kpiCardLabel"/>
-                <HBox id="_IDGenHBox2" class="kpiIconBox kpiIconDarkRed"><core:Icon id="_IDGenIcon" src="sap-icon://alert"/></HBox>
-            </HBox>
-            <Text id="_IDGenText1" text="{dashboard>/slaBreachedCount}" class="kpiCardValue kpiValueDarkRed"/>
-            <Text id="_IDGenText2" text="Past due date" class="kpiCardSubtext"/>
-        </VBox>
-
-        <VBox id="_IDGenVBox" class="kpiCard">
-            <HBox id="_IDGenHBox3" class="kpiCardTopRow">
-                <Text id="_IDGenText3" text="SLA Breach Rate" class="kpiCardLabel"/>
-                <HBox id="_IDGenHBox4" class="kpiIconBox kpiIconOrange"><core:Icon id="_IDGenIcon1" src="sap-icon://pending"/></HBox>
-            </HBox>
-            <Text id="_IDGenText4" text="{dashboard>/slaBreachRate}%" class="kpiCardValue kpiValueOrange"/>
-            <Text id="_IDGenText5" text="% of tracked applications" class="kpiCardSubtext"/>
-        </VBox>
-
-        <VBox id="kpiOpenExceptions" class="kpiCard kpiClickable">
-            <HBox id="_IDGenHBox5" class="kpiCardTopRow">
-                <Text id="_IDGenText6" text="Open Exceptions" class="kpiCardLabel"/>
-                <HBox id="_IDGenHBox6" class="kpiIconBox kpiIconDarkRed"><core:Icon id="_IDGenIcon2" src="sap-icon://message-warning"/></HBox>
-            </HBox>
-            <Text id="_IDGenText7" text="{dashboard>/openExceptionsCount}" class="kpiCardValue kpiValueDarkRed"/>
-            <Text id="_IDGenText8" text="Needs attention" class="kpiCardSubtext"/>
-        </VBox>
-
-        <VBox id="_IDGenVBox1" class="kpiCard">
-            <HBox id="_IDGenHBox7" class="kpiCardTopRow">
-                <Text id="_IDGenText9" text="Ageing Queue" class="kpiCardLabel"/>
-                <HBox id="_IDGenHBox8" class="kpiIconBox kpiIconBlue"><core:Icon id="_IDGenIcon3" src="sap-icon://history"/></HBox>
-            </HBox>
-            <Text id="_IDGenText10" text="{dashboard>/agedApplicationsCount}" class="kpiCardValue kpiValueBlue"/>
-            <Text id="_IDGenText11" text="Open &gt; 5 days" class="kpiCardSubtext"/>
-        </VBox>
-
-        <VBox id="kpiTotalApps" class="kpiCard kpiClickable">
-            <HBox id="_IDGenHBox9" class="kpiCardTopRow">
-                <Text id="_IDGenText12" text="Total Applications" class="kpiCardLabel"/>
-                <HBox id="_IDGenHBox10" class="kpiIconBox kpiIconBlue"><core:Icon id="_IDGenIcon4" src="sap-icon://document"/></HBox>
-            </HBox>
-            <Text id="_IDGenText13" text="{dashboard>/totalApplications}" class="kpiCardValue kpiValueBlue"/>
-            <Text id="_IDGenText14" text="All statuses" class="kpiCardSubtext"/>
-        </VBox>
-
-        <VBox id="_IDGenVBox2" class="kpiCard">
-            <HBox id="_IDGenHBox11" class="kpiCardTopRow">
-                <Text id="_IDGenText15" text="Avg. Priority Score" class="kpiCardLabel"/>
-                <HBox id="_IDGenHBox12" class="kpiIconBox kpiIconPurple"><core:Icon id="_IDGenIcon5" src="sap-icon://line-chart"/></HBox>
-            </HBox>
-            <Text id="_IDGenText16" text="{dashboard>/avgPriorityScore}" class="kpiCardValue kpiValuePurple"/>
-            <Text id="_IDGenText17" text="Across all applications" class="kpiCardSubtext"/>
-        </VBox>
-
-        <VBox id="_IDGenVBox3" class="kpiCard">
-            <HBox id="_IDGenHBox13" class="kpiCardTopRow">
-                <Text id="_IDGenText18" text="Avg. Approval Cycle" class="kpiCardLabel"/>
-                <HBox id="_IDGenHBox14" class="kpiIconBox kpiIconGreen"><core:Icon id="_IDGenIcon6" src="sap-icon://time-entry-request"/></HBox>
-            </HBox>
-            <Text id="_IDGenText19" text="{ path: 'dashboard>/avgApprovalCycleDays', formatter: '.formatCycleDays' }" class="kpiCardValue kpiValueGreen"/>
-            <Text id="_IDGenText20" text="Days to decision" class="kpiCardSubtext"/>
-        </VBox>
-
-    </FlexBox>
+            <VBox id="kpiSlaBreached" class="kpiCard" width="100%" height="100%">
+    <HBox id="_IDGenHBox" class="kpiCardTopRow">
+        <Text id="_IDGenText" text="SLA Breached" class="kpiCardLabel"/>
+        <HBox id="_IDGenHBox1" class="kpiIconBox kpiIconDarkRed"><core:Icon id="_IDGenIcon" src="sap-icon://alert"/></HBox>
+    </HBox>
+    <Text id="_IDGenText1" text="{dashboard>/slaBreachedCount}" class="kpiCardValue kpiValueDarkRed"/>
 </VBox>
+
+<VBox id="_IDGenVBox1" class="kpiCard kpiCardNoClick" width="100%" height="100%">
+    <HBox id="_IDGenHBox2" class="kpiCardTopRow">
+        <Text id="_IDGenText2" text="SLA Breach Rate" class="kpiCardLabel"/>
+        <HBox id="_IDGenHBox3" class="kpiIconBox kpiIconOrange"><core:Icon id="_IDGenIcon1" src="sap-icon://pending"/></HBox>
+    </HBox>
+    <Text id="_IDGenText3" text="{dashboard>/slaBreachRate}%" class="kpiCardValue kpiValueOrange"/>
+</VBox>
+
+<VBox id="kpiOpenExceptions" class="kpiCard" width="100%" height="100%">
+    <HBox id="_IDGenHBox4" class="kpiCardTopRow">
+        <Text id="_IDGenText4" text="Open Exceptions" class="kpiCardLabel"/>
+        <HBox id="_IDGenHBox5" class="kpiIconBox kpiIconRed"><core:Icon id="_IDGenIcon2" src="sap-icon://message-warning"/></HBox>
+    </HBox>
+    <Text id="_IDGenText5" text="{dashboard>/openExceptionsCount}" class="kpiCardValue kpiValueRed"/>
+</VBox>
+
+<VBox id="_IDGenVBox2" class="kpiCard kpiCardNoClick" width="100%" height="100%">
+    <HBox id="_IDGenHBox6" class="kpiCardTopRow">
+        <Text id="_IDGenText6" text="Ageing Queue" class="kpiCardLabel"/>
+        <HBox id="_IDGenHBox7" class="kpiIconBox kpiIconBlue"><core:Icon id="_IDGenIcon3" src="sap-icon://history"/></HBox>
+    </HBox>
+    <Text id="_IDGenText7" text="{dashboard>/agedApplicationsCount}" class="kpiCardValue kpiValueBlue"/>
+</VBox>
+
+<VBox id="kpiTotalApps" class="kpiCard" width="100%" height="100%">
+    <HBox id="_IDGenHBox8" class="kpiCardTopRow">
+        <Text id="_IDGenText8" text="Total Applications" class="kpiCardLabel"/>
+        <HBox id="_IDGenHBox9" class="kpiIconBox kpiIconBlue"><core:Icon id="_IDGenIcon4" src="sap-icon://document"/></HBox>
+    </HBox>
+    <Text id="_IDGenText9" text="{dashboard>/totalApplications}" class="kpiCardValue kpiValueBlue"/>
+</VBox>
+
+<VBox id="_IDGenVBox3" class="kpiCard kpiCardNoClick" width="100%" height="100%">
+    <HBox id="_IDGenHBox10" class="kpiCardTopRow">
+        <Text id="_IDGenText10" text="Avg. Priority Score" class="kpiCardLabel"/>
+        <HBox id="_IDGenHBox11" class="kpiIconBox kpiIconPurple"><core:Icon id="_IDGenIcon5" src="sap-icon://line-chart"/></HBox>
+    </HBox>
+    <Text id="_IDGenText11" text="{dashboard>/avgPriorityScore}" class="kpiCardValue kpiValuePurple"/>
+</VBox>
+
+<VBox id="_IDGenVBox4" class="kpiCard kpiCardNoClick" width="100%" height="100%">
+    <HBox id="_IDGenHBox12" class="kpiCardTopRow">
+        <Text id="_IDGenText12" text="Avg. Approval Cycle" class="kpiCardLabel"/>
+        <HBox id="_IDGenHBox13" class="kpiIconBox kpiIconGreen"><core:Icon id="_IDGenIcon6" src="sap-icon://time-entry-request"/></HBox>
+    </HBox>
+    <Text id="_IDGenText13" text="{ path: 'dashboard>/avgApprovalCycleDays', formatter: '.formatCycleDays' }" class="kpiCardValue kpiValueGreen"/>
+</VBox>
+
+        </FlexBox>
+    </VBox>
+</ScrollContainer>
 
            
 

@@ -191,13 +191,12 @@ annotate service.LoanApplications with @(
         }
     ],
 
-    UI.Identification                : [{
-        $Type : 'UI.DataFieldForAction',
-        Action: 'LoanApplicationService.runValidation',
-        Label : 'Run Validation'
-    }
-
-    ],
+   UI.HeaderInfo : {
+    TypeName      : 'Loan Application',
+    TypeNamePlural: 'Loan Applications',
+    Title         : { Value: applicationNumber },
+    Description   : { Value: status }
+},
 
     UI.SideEffects                   : {TargetProperties: [
         'status',
@@ -206,7 +205,9 @@ annotate service.LoanApplications with @(
         'slaStatus',
         'slaStatusCriticality',
         'slaDueAt'
-    ]}
+    ]},
+
+    UI.SelectionFields                : [status]
 );
 
 annotate service.Exceptions with @(UI.LineItem: [
