@@ -53,6 +53,18 @@ sap.ui.define([
             this.getOwnerComponent().getRouter().navTo("LoanApplicationsList", {
                 "?query": oFilters
             });
-        }
+        },
+
+        onAfterRendering: function () {
+    this.byId("kpiSlaBreached").attachBrowserEvent("click", this.onNavFilteredBreached, this);
+    this.byId("kpiOpenExceptions").attachBrowserEvent("click", this.onNavFilteredException, this);
+    this.byId("kpiTotalApps").attachBrowserEvent("click", this.onNavToList, this);
+},
+
+formatCycleDays: function (v) {
+    return (v === null || v === undefined ? 0 : v) + " days";
+},
+
+
     });
 });

@@ -1,0 +1,63 @@
+.kpiSummaryRow { display: flex; gap: 12px; }
+.kpiCard,
+.kpiGenericTile {
+    flex: 0 0 calc((100% - 48px) / 5);
+    box-sizing: border-box;
+}
+.kpiGenericTile { background: transparent !important; box-shadow: none !important; border: none !important; }
+.kpiCard,
+.kpiCardInner {
+    background: #fff;
+    border-radius: 12px;
+    padding: 1rem;
+    box-sizing: border-box;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+.kpiCardTopRow { justify-content: space-between; align-items: center; margin-bottom: 10px; }
+.kpiCardLabel { font-size: 12px; color: #666; }
+.kpiCardSubtext { font-size: 11px; color: #999; margin-top: 4px; }
+.kpiCardValue { font-size: 24px; font-weight: 500; }
+.kpiIconBox { width: 28px; height: 28px; border-radius: 8px; align-items: center; justify-content: center; }
+.kpiIconDarkRed { background: #FCEBEB; color: #A32D2D; }
+.kpiIconOrange  { background: #FAEEDA; color: #854F0B; }
+.kpiIconBlue    { background: #E6F1FB; color: #185FA5; }
+.kpiIconPurple  { background: #EEEDFE; color: #3C3489; }
+.kpiIconGreen   { background: #EAF3DE; color: #3B6D11; }
+.kpiValueDarkRed { color: #A32D2D; }
+.kpiValueOrange  { color: #854F0B; }
+.kpiValueBlue    { color: #185FA5; }
+.kpiValuePurple  { color: #3C3489; }
+.kpiValueGreen   { color: #3B6D11; }
+
+.kpiSummaryRow {
+    display: grid !important;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 12px;
+    width: 100%;
+}
+.kpiCard {
+    background: #fff;
+    border-radius: 12px;
+    padding: 1rem;
+    box-sizing: border-box;
+    min-height: 110px;
+    justify-content: space-between;
+}
+.kpiClickable { cursor: pointer; }
+.kpiCardTopRow { justify-content: space-between; align-items: center; margin-bottom: 10px; }
+.kpiCardLabel { font-size: 12px; color: #666; }
+.kpiCardSubtext { font-size: 11px; color: #999; margin-top: 4px; }
+.kpiCardValue { font-size: 24px; font-weight: 500; }
+.kpiIconBox { width: 28px; height: 28px; border-radius: 8px; align-items: center; justify-content: center; }
+.kpiIconDarkRed { background: #FCEBEB; color: #A32D2D; }
+.kpiIconOrange  { background: #FAEEDA; color: #854F0B; }
+.kpiIconBlue    { background: #E6F1FB; color: #185FA5; }
+.kpiIconPurple  { background: #EEEDFE; color: #3C3489; }
+.kpiIconGreen   { background: #EAF3DE; color: #3B6D11; }
+.kpiValueDarkRed { color: #A32D2D; }
+.kpiValueOrange  { color: #854F0B; }
+.kpiValueBlue    { color: #185FA5; }
+.kpiValuePurple  { color: #3C3489; }
+.kpiValueGreen   { color: #3B6D11; }
