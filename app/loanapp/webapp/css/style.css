@@ -1,119 +1,476 @@
-.kpiSummaryRow { display: flex; gap: 12px; }
-.kpiCard,
-.kpiGenericTile {
-    flex: 0 0 calc((100% - 48px) / 5);
-    box-sizing: border-box;
+/* ===== Shell layout ===== */
+.cockpitShell {
+    background: #eef2f9;
 }
-.kpiGenericTile { background: transparent !important; box-shadow: none !important; border: none !important; }
-.kpiCard,
-.kpiCardInner {
+
+.cockpitSidebar {
     background: #fff;
-    border-radius: 12px;
-    padding: 1rem;
-    box-sizing: border-box;
+    border-right: 1px solid #e5e7eb;
     height: 100%;
-    display: flex;
-    flex-direction: column;
+    padding: 1rem 0;
 }
-.kpiCardTopRow { justify-content: space-between; align-items: center; margin-bottom: 10px; }
-.kpiCardLabel { font-size: 12px; color: #666; }
-.kpiCardSubtext { font-size: 11px; color: #999; margin-top: 4px; }
-.kpiCardValue { font-size: 24px; font-weight: 500; }
-.kpiIconBox { width: 28px; height: 28px; border-radius: 8px; align-items: center; justify-content: center; }
-.kpiIconDarkRed { background: #FCEBEB; color: #A32D2D; }
-.kpiIconOrange  { background: #FAEEDA; color: #854F0B; }
-.kpiIconBlue    { background: #E6F1FB; color: #185FA5; }
-.kpiIconPurple  { background: #EEEDFE; color: #3C3489; }
-.kpiIconGreen   { background: #EAF3DE; color: #3B6D11; }
-.kpiValueDarkRed { color: #A32D2D; }
-.kpiValueOrange  { color: #854F0B; }
-.kpiValueBlue    { color: #185FA5; }
-.kpiValuePurple  { color: #3C3489; }
-.kpiValueGreen   { color: #3B6D11; }
+
+.sidebarLogo {
+    padding: 0 1.2rem 1.5rem;
+}
+
+.sidebarLogoText {
+    font-weight: 700;
+    font-size: 20px;
+    color: #0a6ed1;
+}
+
+.sidebarNavItem {
+    padding: 10px 1.2rem;
+    gap: 10px;
+    align-items: center;
+    cursor: pointer;
+    color: #444;
+    font-size: 14px;
+}
+
+.sidebarNavItem:hover {
+    background: #f0f4fa;
+}
+
+.sidebarNavItemActive {
+    background: #e6f1fb;
+    color: #185FA5;
+    font-weight: 500;
+    border-right: 3px solid #0a6ed1;
+}
+
+.sidebarNavIcon {
+    font-size: 16px;
+    margin-right: 4px;
+}
+
+.sidebarFooter {
+    margin-top: auto;
+    padding: 10px 1.2rem;
+}
+
+.cockpitMain {
+    background: #eef2f9;
+}
+
+.cockpitTopBar {
+    background: #fff;
+    padding: 12px 24px;
+    border-bottom: 1px solid #e5e7eb;
+}
+
+.topBarTitle {
+    font-size: 18px;
+    font-weight: 700;
+    color: #1c1c1c;
+}
+
+.topBarSubtitle {
+    font-size: 12px;
+    color: #888;
+}
+
+.topBarBellIcon {
+    font-size: 18px;
+    color: #555;
+    margin-right: 16px;
+}
+
+.topBarAvatar {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: #0a6ed1;
+    margin-right: 8px;
+    justify-content: center;
+}
+
+.topBarAvatarInitials {
+    color: #fff;
+    font-weight: 600;
+    font-size: 13px;
+}
+
+.topBarUserName {
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.topBarUserRole {
+    font-size: 11px;
+    color: #888;
+}
+
+.cockpitBody {
+    padding: 24px;
+}
+
+.greetingRow {
+    margin-bottom: 20px;
+}
+
+.greetingTitle {
+    font-size: 22px;
+    font-weight: 700;
+    color: #1c1c1c;
+}
+
+.greetingSubtitle {
+    font-size: 13px;
+    color: #6a6d70;
+    margin-top: 2px;
+}
+
+.greetingDate {
+    font-size: 13px;
+    color: #6a6d70;
+}
+
+/* ===== KPI tiles ===== */
+.kpiSectionContainer {
+    width: 100%;
+    margin-bottom: 20px;
+}
 
 .kpiSummaryRow {
     display: grid !important;
-    grid-template-columns: repeat(5, 1fr);
+    grid-template-columns: repeat(4, 1fr);
     gap: 12px;
     width: 100%;
 }
+
 .kpiCard {
     background: #fff;
     border-radius: 12px;
     padding: 1rem;
     box-sizing: border-box;
     min-height: 110px;
-    justify-content: space-between;
-}
-.kpiClickable { cursor: pointer; }
-.kpiCardTopRow { justify-content: space-between; align-items: center; margin-bottom: 10px; }
-.kpiCardLabel { font-size: 12px; color: #666; }
-.kpiCardSubtext { font-size: 11px; color: #999; margin-top: 4px; }
-.kpiCardValue { font-size: 24px; font-weight: 500; }
-.kpiIconBox { width: 28px; height: 28px; border-radius: 8px; align-items: center; justify-content: center; }
-.kpiIconDarkRed { background: #FCEBEB; color: #A32D2D; }
-.kpiIconOrange  { background: #FAEEDA; color: #854F0B; }
-.kpiIconBlue    { background: #E6F1FB; color: #185FA5; }
-.kpiIconPurple  { background: #EEEDFE; color: #3C3489; }
-.kpiIconGreen   { background: #EAF3DE; color: #3B6D11; }
-.kpiValueDarkRed { color: #A32D2D; }
-.kpiValueOrange  { color: #854F0B; }
-.kpiValueBlue    { color: #185FA5; }
-.kpiValuePurple  { color: #3C3489; }
-.kpiValueGreen   { color: #3B6D11; }
-
-.kpiCard {
-    height: 110px !important;
+    display: flex;
+    flex-direction: column;
     justify-content: space-between;
 }
 
-/* Clickable tiles: cursor + lift + border tint on hover.
-   .kpiCardNoClick is the existing marker for non-interactive tiles,
-   so :not() here targets only the three that actually navigate. */
+.kpiCardTopRow {
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.kpiCardLabel {
+    font-size: 12px;
+    color: #666;
+}
+
+.kpiCardValue {
+    font-size: 26px;
+    font-weight: 700;
+}
+
+.kpiIconBox {
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+    align-items: center;
+    justify-content: center;
+}
+
+.kpiIconDarkRed {
+    background: #FCEBEB;
+    color: #A32D2D;
+}
+
+.kpiIconOrange {
+    background: #FAEEDA;
+    color: #854F0B;
+}
+
+.kpiIconBlue {
+    background: #E6F1FB;
+    color: #185FA5;
+}
+
+.kpiIconPurple {
+    background: #EEEDFE;
+    color: #3C3489;
+}
+
+.kpiIconGreen {
+    background: #EAF3DE;
+    color: #3B6D11;
+}
+
+.kpiValueDarkRed {
+    color: #A32D2D;
+}
+
+.kpiValueOrange {
+    color: #854F0B;
+}
+
+.kpiValueBlue {
+    color: #185FA5;
+}
+
+.kpiValuePurple {
+    color: #3C3489;
+}
+
+.kpiValueGreen {
+    color: #3B6D11;
+}
+
+/* Clickable tiles: cursor + lift + border tint on hover. */
 .kpiCard:not(.kpiCardNoClick) {
     cursor: pointer;
     transition: transform 0.15s ease, box-shadow 0.15s ease, border-color 0.15s ease;
     border: 1px solid transparent;
 }
+
 .kpiCard:not(.kpiCardNoClick):hover {
     transform: translateY(-3px);
     box-shadow: 0 8px 18px rgba(0, 0, 0, 0.12);
     border-color: #d0d7e2;
 }
+
 .kpiCard:not(.kpiCardNoClick):active {
     transform: translateY(-1px);
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.10);
 }
 
-/* Static tiles explicitly get no pointer, no lift */
 .kpiCardNoClick {
     cursor: default;
 }
+
 .kpiCardNoClick:hover {
     transform: none;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
+    box-shadow: none;
 }
 
+.trendGood {
+    display: flex;
+    align-items: center;
+    gap: 3px;
+    margin-top: 6px;
+    color: #3B6D11;
+    font-size: 12px;
+}
+
+.trendBad {
+    display: flex;
+    align-items: center;
+    gap: 3px;
+    margin-top: 6px;
+    color: #A32D2D;
+    font-size: 12px;
+}
+
+.trendNeutral {
+    display: flex;
+    align-items: center;
+    gap: 3px;
+    margin-top: 6px;
+    color: #6a6d70;
+    font-size: 12px;
+}
+
+.kpiPromoCard {
+    background: linear-gradient(135deg, #dceafd, #eaf3ff);
+    justify-content: center;
+    align-items: flex-start;
+}
+
+.promoTitle {
+    font-size: 16px;
+    font-weight: 700;
+    color: #185FA5;
+}
+
+.promoIconBox {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background: #fff;
+    margin-top: 10px;
+}
+
+.promoIcon {
+    color: #3B6D11;
+    font-size: 20px;
+}
+
+/* ===== Dashboard panels ===== */
+.dashboardPanel {
+    border-radius: 12px;
+    height: 320px;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+}
+
+.dashboardPanel .sapMPanelContent {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.dashboardRow3col {
+    display: grid !important;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    width: 100%;
+}
+
+.dashboardRow2col {
+    display: grid !important;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+    width: 100%;
+}
+
+.dashboardRow3col>.sapMPanel,
+.dashboardRow2col>.sapMPanel {
+    margin: 0 !important;
+    width: 100% !important;
+    box-sizing: border-box;
+}
+
+.dashboardRow2col .dashboardPanel {
+    height: 340px;
+}
+
+.dashboardRow2col .dashboardPanel .sapMTable {
+    max-height: 240px;
+    overflow-y: auto;
+}
+
+/* Donut + legend */
+.donutRow {
+    gap: 20px;
+    align-items: center;
+}
+
+.donutLegend {
+    gap: 10px;
+}
+
+.donutLegendRow {
+    gap: 8px;
+    white-space: nowrap;
+}
+
+.donutLegendDot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    flex-shrink: 0;
+}
+
+.donutLegendLabel {
+    font-size: 13px;
+    min-width: 110px;
+}
+
+.donutLegendValue {
+    color: #6a6d70;
+    font-size: 13px;
+}
+
+.donutDotBlue {
+    background: #2a78d6;
+}
+
+.donutDotTeal {
+    background: #1baf7a;
+}
+
+.donutDotPurple {
+    background: #6250d6;
+}
+
+.donutDotGray {
+    background: #c3c2b7;
+}
+
+/* Risk band bars */
+.riskBarList {
+    gap: 14px;
+    padding: 8px 0;
+}
+
+.riskBarRow {
+    gap: 10px;
+}
+
+.riskBarLabel {
+    width: 70px;
+    font-size: 13px;
+}
+
+.riskBarTrack {
+    flex: 1;
+    height: 10px;
+    background: #eef1f4;
+    border-radius: 5px;
+    overflow: hidden;
+}
+
+.riskBarFill {
+    height: 10px;
+    background: #2a78d6;
+    border-radius: 5px;
+}
+
+.riskBarValue {
+    width: 24px;
+    text-align: right;
+    font-weight: 600;
+    font-size: 13px;
+}
+
+/* Officer + Needs Attention tables */
+.officerRoleBadge {
+    background: #FAEEDA;
+    color: #854F0B;
+    padding: 2px 8px;
+    border-radius: 8px;
+    font-size: 12px;
+    font-weight: 500;
+}
+
+.attentionAlertIcon {
+    color: #A32D2D;
+    font-size: 14px;
+    margin-right: 6px;
+}
+
+/* ===== FilteredList page ===== */
 .filteredListPage {
     background: #f5f6f8;
 }
+
 .filteredListSubtext {
     font-size: 12px;
     color: #6a6d70;
 }
+
 .filteredListCard {
     background: #fff;
     border-radius: 12px;
     padding: 0.5rem;
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
 }
+
 .filteredListRow:hover {
     background: #f7f9fb;
 }
+
 .filteredListAppNo {
     font-weight: 500;
     color: #1c1c1c;
 }
+
 .filteredStatusPill {
     padding: 3px 10px;
     border-radius: 10px;
@@ -122,15 +479,55 @@
     display: inline-flex;
     align-items: center;
 }
+
 .filteredStatusRed {
     background: #FCEBEB;
     color: #A32D2D;
 }
+
 .filteredStatusGreen {
     background: #EAF3DE;
     color: #3B6D11;
 }
+
 .filteredStatusBlue {
     background: #E6F1FB;
     color: #185FA5;
+}
+
+.donutWrapper { position: relative; }
+.donutCenterText {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    align-items: center;
+    pointer-events: none;
+}
+.donutCenterValue { font-size: 20px; font-weight: 700; color: #1c1c1c; }
+.donutCenterLabel { font-size: 11px; color: #6a6d70; }
+
+.dashboardRow3col > .sapMPanel.dashboardPanel,
+.dashboardRow2col > .sapMPanel.dashboardPanel {
+    height: 320px !important;
+    max-height: 320px !important;
+    overflow: hidden;
+    display: flex !important;
+    flex-direction: column !important;
+    box-sizing: border-box !important;
+}
+
+.dashboardPanel > .sapMPanelWrappingDiv,
+.dashboardPanel .sapMPanelContent {
+    flex: 1 1 auto !important;
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: center !important;
+    overflow: hidden !important;
+    min-height: 0 !important;
+}
+
+.dashboardRow2col .sapMPanel.dashboardPanel {
+    height: 340px !important;
+    max-height: 340px !important;
 }

@@ -10,13 +10,12 @@ sap.ui.define([
                 .getRoute("FilteredList")
                 .attachPatternMatched(this._onMatched, this);
         },
-
         _onMatched: function (oEvent) {
-            const sType = oEvent.getParameter("arguments").filterType;
-            this._loadFiltered(sType);
+            const oArgs = oEvent.getParameter("arguments");
+            this._loadFiltered(oArgs.filterType, oArgs.filterValue);
         },
 
-        _loadFiltered: async function (sType) {
+        _loadFiltered: async function (sType, sValue) {
             let sFilter = "";
             let sTitle = "Filtered Applications";
 
@@ -27,6 +26,12 @@ sap.ui.define([
                 const sNowIso = new Date().toISOString();
                 sFilter = `$filter=slas/any(s:s/dueAt le ${sNowIso})`;
                 sTitle = "SLA Breached Applications";
+            } else if (sType === "status") {
+                sFilter = `$filter=status eq '${sValue}'`;
+                sTitle = `Applications — ${sValue}`;
+            } else if (sType === "severity") {
+                sFilter = `$filter=exceptions/any(e:e/severity eq '${sValue}' and e/status eq 'OPEN')`;
+                sTitle = `Applications with ${sValue} Exceptions`;
             }
 
             this.getView().setModel(new JSONModel({ title: sTitle, rows: [] }), "filtered");

@@ -26,6 +26,16 @@ type DashboardKPIs {
     byRiskBand               : array of RiskBandCount;
     agedApplicationsCount    : Integer;
     avgApprovalCycleDays     : Decimal(5, 1);
+    submissionTrend          : array of TrendPoint;
+    officerWorkload           : array of OfficerWorkload;
+    topPriorityApplications   : array of PriorityApplication;
+     totalApplicationsTrend     : Decimal(5,1);
+    slaBreachedCountTrend      : Decimal(5,1);
+    slaBreachRateTrend         : Decimal(5,1);
+    openExceptionsCountTrend   : Decimal(5,1);
+    agedApplicationsCountTrend : Decimal(5,1);
+    avgPriorityScoreTrend      : Decimal(5,1);
+    avgApprovalCycleDaysTrend  : Decimal(5,1);
 }
 
 type StatusCount {
@@ -41,6 +51,27 @@ type SeverityCount {
 type RiskBandCount {
     riskBand : String;
     count    : Integer;
+}
+
+
+
+type TrendPoint {
+    date  : String;
+    count : Integer;
+}
+
+type OfficerWorkload {
+    name           : String;
+    authorityLevel : String;
+    openCount      : Integer;
+}
+
+type PriorityApplication {
+    ID                : UUID;
+    applicationNumber : String;
+    score             : Integer;
+    slaBreached       : Boolean;
+    riskBand          : String;
 }
 
 

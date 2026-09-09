@@ -4,80 +4,365 @@
     xmlns="sap.m"
     xmlns:f="sap.f"
     xmlns:layout="sap.ui.layout"
-    xmlns:mc="sap.suite.ui.microchart"
     xmlns:core="sap.ui.core"
+    xmlns:viz="sap.viz.ui5.controls"
+    xmlns:viz.data="sap.viz.ui5.data"
+    xmlns:viz.feeds="sap.viz.ui5.controls.common.feeds"
     displayBlock="true">
 
-    <Page id="_IDGenPage" title="Operations Dashboard" showNavButton="true" navButtonPress="onNavBack" class="sapUiContentPadding">
-        <content>
+    <HBox id="_IDGenHBox" class="cockpitShell" height="100%">
 
-           <ScrollContainer id="_IDGenKpiScroll" horizontal="false" vertical="false" width="100%" height="auto" class="sapUiSmallMarginBottom">
-    <VBox id="_IDGenKpiSection" class="kpiSectionContainer">
-        <FlexBox id="_IDGenKpiRow" wrap="Wrap" fitContainer="true" renderType="Bare"
-            justifyContent="SpaceBetween" alignItems="Stretch" width="100%" class="kpiSummaryRow">
+        <!-- Sidebar -->
+        <VBox id="_IDGenVBox1" class="cockpitSidebar" width="220px">
+            <VBox id="_IDGenVBox2" class="sidebarLogo">
+                <Text id="_IDGenText" text="SAP" class="sidebarLogoText"/>
+            </VBox>
+            <VBox id="_IDGenVBox3" class="sidebarNav">
+                <HBox id="_IDGenHBox1" class="sidebarNavItem sidebarNavItemActive">
+                    <core:Icon id="_IDGenIcon" src="sap-icon://grid" class="sidebarNavIcon"/>
+                    <Text id="_IDGenText1" text="Dashboard"/>
+                </HBox>
+               <HBox id="sidebarNavApplications" class="sidebarNavItem">
+    <core:Icon id="_IDGenIcon1" src="sap-icon://document" class="sidebarNavIcon"/>
+    <Text id="_IDGenText2" text="Applications"/>
+</HBox>
+<HBox id="sidebarNavExceptions" class="sidebarNavItem">
+    <core:Icon id="_IDGenIcon2" src="sap-icon://alert" class="sidebarNavIcon"/>
+    <Text id="_IDGenText3" text="Exceptions"/>
+</HBox>
+                <HBox id="_IDGenHBox4" class="sidebarNavItem">
+                    <core:Icon id="_IDGenIcon3" src="sap-icon://list" class="sidebarNavIcon"/>
+                    <Text id="_IDGenText4" text="Queues"/>
+                </HBox>
+                <HBox id="_IDGenHBox5" class="sidebarNavItem">
+                    <core:Icon id="_IDGenIcon4" src="sap-icon://business-objects-experience" class="sidebarNavIcon"/>
+                    <Text id="_IDGenText5" text="Reports"/>
+                </HBox>
+                <HBox id="_IDGenHBox6" class="sidebarNavItem">
+                    <core:Icon id="_IDGenIcon5" src="sap-icon://action-settings" class="sidebarNavIcon"/>
+                    <Text id="_IDGenText6" text="Administration"/>
+                </HBox>
+            </VBox>
+            <VBox id="_IDGenVBox4" class="sidebarFooter">
+                <HBox id="_IDGenHBox7" class="sidebarNavItem">
+                    <core:Icon id="_IDGenIcon6" src="sap-icon://sys-help" class="sidebarNavIcon"/>
+                    <Text id="_IDGenText7" text="Help"/>
+                </HBox>
+            </VBox>
+        </VBox>
 
-            <VBox id="kpiSlaBreached" class="kpiCard" width="100%" height="100%">
-    <HBox id="_IDGenHBox" class="kpiCardTopRow">
-        <Text id="_IDGenText" text="SLA Breached" class="kpiCardLabel"/>
-        <HBox id="_IDGenHBox1" class="kpiIconBox kpiIconDarkRed"><core:Icon id="_IDGenIcon" src="sap-icon://alert"/></HBox>
-    </HBox>
-    <Text id="_IDGenText1" text="{dashboard>/slaBreachedCount}" class="kpiCardValue kpiValueDarkRed"/>
-</VBox>
+        <!-- Main content -->
+        <VBox id="_IDGenVBox6" class="cockpitMain" width="100%">
 
-<VBox id="_IDGenVBox1" class="kpiCard kpiCardNoClick" width="100%" height="100%">
-    <HBox id="_IDGenHBox2" class="kpiCardTopRow">
-        <Text id="_IDGenText2" text="SLA Breach Rate" class="kpiCardLabel"/>
-        <HBox id="_IDGenHBox3" class="kpiIconBox kpiIconOrange"><core:Icon id="_IDGenIcon1" src="sap-icon://pending"/></HBox>
-    </HBox>
-    <Text id="_IDGenText3" text="{dashboard>/slaBreachRate}%" class="kpiCardValue kpiValueOrange"/>
-</VBox>
+            <!-- Top header bar -->
+            <HBox id="_IDGenHBox8" class="cockpitTopBar" alignItems="Center" justifyContent="SpaceBetween">
+                <VBox id="_IDGenVBox7">
+                    <Text id="_IDGenText8" text="Loan Operations Cockpit" class="topBarTitle"/>
+                    <Text id="_IDGenText9" text="Monitor · Manage · Accelerate" class="topBarSubtitle"/>
+                </VBox>
+                <SearchField id="_IDGenSearchField" placeholder="Search applications, applicants, or reference number..." width="380px" class="topBarSearch"/>
+                <HBox id="_IDGenHBox9" alignItems="Center" class="topBarRight">
+                    <core:Icon id="_IDGenIcon7" src="sap-icon://bell" class="topBarBellIcon"/>
+                    <HBox id="_IDGenHBox10" class="topBarAvatar" alignItems="Center">
+                        <Text id="_IDGenText10" text="{user>/initials}" class="topBarAvatarInitials"/>
+                    </HBox>
+                    <VBox id="_IDGenVBox8">
+                        <Text id="_IDGenText11" text="{user>/name}" class="topBarUserName"/>
+                        <Text id="_IDGenText12" text="{user>/role}" class="topBarUserRole"/>
+                    </VBox>
+                </HBox>
+            </HBox>
 
-<VBox id="kpiOpenExceptions" class="kpiCard" width="100%" height="100%">
-    <HBox id="_IDGenHBox4" class="kpiCardTopRow">
-        <Text id="_IDGenText4" text="Open Exceptions" class="kpiCardLabel"/>
-        <HBox id="_IDGenHBox5" class="kpiIconBox kpiIconRed"><core:Icon id="_IDGenIcon2" src="sap-icon://message-warning"/></HBox>
-    </HBox>
-    <Text id="_IDGenText5" text="{dashboard>/openExceptionsCount}" class="kpiCardValue kpiValueRed"/>
-</VBox>
+            <ScrollContainer id="_IDGenScrollContainer" horizontal="false" vertical="true" height="100%" width="100%">
+            <VBox id="_IDGenVBox9" class="cockpitBody">
 
-<VBox id="_IDGenVBox2" class="kpiCard kpiCardNoClick" width="100%" height="100%">
-    <HBox id="_IDGenHBox6" class="kpiCardTopRow">
-        <Text id="_IDGenText6" text="Ageing Queue" class="kpiCardLabel"/>
-        <HBox id="_IDGenHBox7" class="kpiIconBox kpiIconBlue"><core:Icon id="_IDGenIcon3" src="sap-icon://history"/></HBox>
-    </HBox>
-    <Text id="_IDGenText7" text="{dashboard>/agedApplicationsCount}" class="kpiCardValue kpiValueBlue"/>
-</VBox>
+                <HBox id="_IDGenHBox11" justifyContent="SpaceBetween" alignItems="End" class="greetingRow">
+                    <VBox id="_IDGenVBox10">
+                        <Text id="_IDGenText13" text="{= 'Good ' + ${user>/dayPart} + ', ' + ${user>/firstName} + '!' }" class="greetingTitle"/>
+                        <Text id="_IDGenText14" text="Here's what's happening with your loan operations today." class="greetingSubtitle"/>
+                    </VBox>
+                    <Text id="_IDGenText25" text="{user>/todayLabel}" class="greetingDate"/>
+                </HBox>
 
-<VBox id="kpiTotalApps" class="kpiCard" width="100%" height="100%">
-    <HBox id="_IDGenHBox8" class="kpiCardTopRow">
-        <Text id="_IDGenText8" text="Total Applications" class="kpiCardLabel"/>
-        <HBox id="_IDGenHBox9" class="kpiIconBox kpiIconBlue"><core:Icon id="_IDGenIcon4" src="sap-icon://document"/></HBox>
-    </HBox>
-    <Text id="_IDGenText9" text="{dashboard>/totalApplications}" class="kpiCardValue kpiValueBlue"/>
-</VBox>
+                <!-- KPI Tiles -->
+                <VBox id="_IDGenVBox11" class="kpiSectionContainer">
+                    <FlexBox id="_IDGenFlexBox" wrap="Wrap" fitContainer="true" renderType="Bare" justifyContent="SpaceBetween" alignItems="Stretch" width="100%" class="kpiSummaryRow">
 
-<VBox id="_IDGenVBox3" class="kpiCard kpiCardNoClick" width="100%" height="100%">
-    <HBox id="_IDGenHBox10" class="kpiCardTopRow">
-        <Text id="_IDGenText10" text="Avg. Priority Score" class="kpiCardLabel"/>
-        <HBox id="_IDGenHBox11" class="kpiIconBox kpiIconPurple"><core:Icon id="_IDGenIcon5" src="sap-icon://line-chart"/></HBox>
-    </HBox>
-    <Text id="_IDGenText11" text="{dashboard>/avgPriorityScore}" class="kpiCardValue kpiValuePurple"/>
-</VBox>
+                        <VBox id="kpiTotalApps" class="kpiCard" width="100%" height="100%">
+                            <HBox id="_IDGenHBox12" class="kpiCardTopRow">
+                                <Text id="_IDGenText26" text="Total Applications" class="kpiCardLabel"/>
+                                <HBox id="_IDGenHBox13" class="kpiIconBox kpiIconBlue"><core:Icon id="_IDGenIcon8" src="sap-icon://document"/></HBox>
+                            </HBox>
+                            <Text id="_IDGenText27" text="{dashboard>/totalApplications}" class="kpiCardValue kpiValueBlue"/>
+                            <HBox id="_IDGenHBox16" class="{ path: 'dashboard>/totalApplicationsTrend', formatter: '.formatTrendClassHigherGood' }">
+                                <core:Icon id="_IDGenIcon9" src="{ path: 'dashboard>/totalApplicationsTrend', formatter: '.formatTrendIcon' }"/>
+                                <Text id="_IDGenText28" text="{ path: 'dashboard>/totalApplicationsTrend', formatter: '.formatTrendText' }"/>
+                            </HBox>
+                        </VBox>
 
-<VBox id="_IDGenVBox4" class="kpiCard kpiCardNoClick" width="100%" height="100%">
-    <HBox id="_IDGenHBox12" class="kpiCardTopRow">
-        <Text id="_IDGenText12" text="Avg. Approval Cycle" class="kpiCardLabel"/>
-        <HBox id="_IDGenHBox13" class="kpiIconBox kpiIconGreen"><core:Icon id="_IDGenIcon6" src="sap-icon://time-entry-request"/></HBox>
-    </HBox>
-    <Text id="_IDGenText13" text="{ path: 'dashboard>/avgApprovalCycleDays', formatter: '.formatCycleDays' }" class="kpiCardValue kpiValueGreen"/>
-</VBox>
+                        <VBox id="kpiSlaBreached" class="kpiCard" width="100%" height="100%">
+                            <HBox id="_IDGenHBox17" class="kpiCardTopRow">
+                                <Text id="_IDGenText29" text="SLA Breached" class="kpiCardLabel"/>
+                                <HBox id="_IDGenHBox18" class="kpiIconBox kpiIconDarkRed"><core:Icon id="_IDGenIcon10" src="sap-icon://alert"/></HBox>
+                            </HBox>
+                            <Text id="_IDGenText30" text="{dashboard>/slaBreachedCount}" class="kpiCardValue kpiValueDarkRed"/>
+                            <HBox id="_IDGenHBox19" class="{ path: 'dashboard>/slaBreachedCountTrend', formatter: '.formatTrendClassLowerGood' }">
+                                <core:Icon id="_IDGenIcon11" src="{ path: 'dashboard>/slaBreachedCountTrend', formatter: '.formatTrendIcon' }"/>
+                                <Text id="_IDGenText31" text="{ path: 'dashboard>/slaBreachedCountTrend', formatter: '.formatTrendText' }"/>
+                            </HBox>
+                        </VBox>
 
-        </FlexBox>
+                        <VBox id="_IDGenVBox12" class="kpiCard kpiCardNoClick" width="100%" height="100%">
+                            <HBox id="_IDGenHBox20" class="kpiCardTopRow">
+                                <Text id="_IDGenText32" text="SLA Breach Rate" class="kpiCardLabel"/>
+                                <HBox id="_IDGenHBox21" class="kpiIconBox kpiIconOrange"><core:Icon id="_IDGenIcon12" src="sap-icon://pending"/></HBox>
+                            </HBox>
+                            <Text id="_IDGenText33" text="{dashboard>/slaBreachRate}%" class="kpiCardValue kpiValueOrange"/>
+                            <HBox id="_IDGenHBox22" class="{ path: 'dashboard>/slaBreachRateTrend', formatter: '.formatTrendClassLowerGood' }">
+                                <core:Icon id="_IDGenIcon13" src="{ path: 'dashboard>/slaBreachRateTrend', formatter: '.formatTrendIcon' }"/>
+                                <Text id="_IDGenText34" text="{ path: 'dashboard>/slaBreachRateTrend', formatter: '.formatTrendText' }"/>
+                            </HBox>
+                        </VBox>
+
+                        <VBox id="kpiOpenExceptions" class="kpiCard" width="100%" height="100%">
+                            <HBox id="_IDGenHBox23" class="kpiCardTopRow">
+                                <Text id="_IDGenText35" text="Open Exceptions" class="kpiCardLabel"/>
+                                <HBox id="_IDGenHBox24" class="kpiIconBox kpiIconPurple"><core:Icon id="_IDGenIcon14" src="sap-icon://alert"/></HBox>
+                            </HBox>
+                            <Text id="_IDGenText36" text="{dashboard>/openExceptionsCount}" class="kpiCardValue kpiValuePurple"/>
+                            <HBox id="_IDGenHBox25" class="{ path: 'dashboard>/openExceptionsCountTrend', formatter: '.formatTrendClassLowerGood' }">
+                                <core:Icon id="_IDGenIcon15" src="{ path: 'dashboard>/openExceptionsCountTrend', formatter: '.formatTrendIcon' }"/>
+                                <Text id="_IDGenText37" text="{ path: 'dashboard>/openExceptionsCountTrend', formatter: '.formatTrendText' }"/>
+                            </HBox>
+                        </VBox>
+
+                        <VBox id="_IDGenVBox13" class="kpiCard kpiCardNoClick" width="100%" height="100%">
+                            <HBox id="_IDGenHBox26" class="kpiCardTopRow">
+                                <Text id="_IDGenText38" text="Ageing Queue" class="kpiCardLabel"/>
+                                <HBox id="_IDGenHBox27" class="kpiIconBox kpiIconBlue"><core:Icon id="_IDGenIcon16" src="sap-icon://history"/></HBox>
+                            </HBox>
+                            <Text id="_IDGenText39" text="{dashboard>/agedApplicationsCount}" class="kpiCardValue kpiValueBlue"/>
+                            <HBox id="_IDGenHBox28" class="{ path: 'dashboard>/agedApplicationsCountTrend', formatter: '.formatTrendClassLowerGood' }">
+                                <core:Icon id="_IDGenIcon17" src="{ path: 'dashboard>/agedApplicationsCountTrend', formatter: '.formatTrendIcon' }"/>
+                                <Text id="_IDGenText40" text="{ path: 'dashboard>/agedApplicationsCountTrend', formatter: '.formatTrendText' }"/>
+                            </HBox>
+                        </VBox>
+
+                        <VBox id="_IDGenVBox14" class="kpiCard kpiCardNoClick" width="100%" height="100%">
+                            <HBox id="_IDGenHBox29" class="kpiCardTopRow">
+                                <Text id="_IDGenText41" text="Avg. Priority Score" class="kpiCardLabel"/>
+                                <HBox id="_IDGenHBox30" class="kpiIconBox kpiIconPurple"><core:Icon id="_IDGenIcon18" src="sap-icon://target-group"/></HBox>
+                            </HBox>
+                            <Text id="_IDGenText42" text="{dashboard>/avgPriorityScore}" class="kpiCardValue kpiValuePurple"/>
+                            <HBox id="_IDGenHBox31" class="{ path: 'dashboard>/avgPriorityScoreTrend', formatter: '.formatTrendClassLowerGood' }">
+                                <core:Icon id="_IDGenIcon19" src="{ path: 'dashboard>/avgPriorityScoreTrend', formatter: '.formatTrendIcon' }"/>
+                                <Text id="_IDGenText43" text="{ path: 'dashboard>/avgPriorityScoreTrend', formatter: '.formatTrendText' }"/>
+                            </HBox>
+                        </VBox>
+
+                        <VBox id="_IDGenVBox15" class="kpiCard kpiCardNoClick" width="100%" height="100%">
+                            <HBox id="_IDGenHBox32" class="kpiCardTopRow">
+                                <Text id="_IDGenText44" text="Avg. Approval Cycle" class="kpiCardLabel"/>
+                                <HBox id="_IDGenHBox33" class="kpiIconBox kpiIconGreen"><core:Icon id="_IDGenIcon20" src="sap-icon://cycle"/></HBox>
+                            </HBox>
+                            <Text id="_IDGenText45" text="{ path: 'dashboard>/avgApprovalCycleDays', formatter: '.formatCycleDays' }" class="kpiCardValue kpiValueGreen"/>
+                            <HBox id="_IDGenHBox34" class="{ path: 'dashboard>/avgApprovalCycleDaysTrend', formatter: '.formatTrendClassLowerGood' }">
+                                <core:Icon id="_IDGenIcon21" src="{ path: 'dashboard>/avgApprovalCycleDaysTrend', formatter: '.formatTrendIcon' }"/>
+                                <Text id="_IDGenText46" text="{ path: 'dashboard>/avgApprovalCycleDaysTrend', formatter: '.formatTrendText' }"/>
+                            </HBox>
+                        </VBox>
+
+                        <VBox id="_IDGenVBox16" class="kpiCard kpiPromoCard" width="100%" height="100%">
+                            <Text id="_IDGenText47" text="Faster Decisions" class="promoTitle"/>
+                            <Text id="_IDGenText48" text="Stronger Customers" class="promoTitle"/>
+                            <HBox id="_IDGenHBox35" class="promoIconBox" justifyContent="Center" alignItems="Center">
+                                <core:Icon id="_IDGenIcon22" src="sap-icon://accept" class="promoIcon"/>
+                            </HBox>
+                        </VBox>
+
+                    </FlexBox>
+                </VBox>
+
+               
+
+                               <!-- Charts row -->
+                <HBox id="_IDGenHBox37" class="dashboardRow3col sapUiSmallMarginTop">
+
+                    <Panel id="_IDGenPanel" headerText="Applications by Status" class="sapUiTinyMargin dashboardPanel" width="100%">
+                        <headerToolbar>
+        <Toolbar id="_IDGenToolbar1">
+            <Title id="_IDGenTitle1" text="Applications by Status" level="H3"/>
+            <ToolbarSpacer id="_IDGenToolbarSpacer"/>
+            <Link id="_IDGenLink" text="View All" press="onNavToList"/>
+        </Toolbar>
+    </headerToolbar>
+
+
+    <HBox id="_IDGenHBox2" alignItems="Center" class="donutRow">
+    <VBox id="_IDGenVBox20" class="donutWrapper">
+        <viz:VizFrame id="_IDGenVizFrame" vizType="donut" width="160px" height="160px"
+            vizProperties="{
+                'plotArea': { 'colorPalette': ['#2a78d6','#1baf7a','#6250d6','#c3c2b7'], 'dataLabel': { 'visible': false } },
+                'legend': { 'visible': false },
+                'title': { 'visible': false },
+                'tooltip': { 'visible': true }
+            }">
+            <viz:dataset>
+                <viz.data:FlattenedDataset id="_IDGenFlattenedDataset" data="{dashboard>/byStatusChart}">
+                    <viz.data:dimensions>
+                        <viz.data:DimensionDefinition id="_IDGenDimensionDefinition" name="Status" value="{dashboard>label}"/>
+                    </viz.data:dimensions>
+                    <viz.data:measures>
+                        <viz.data:MeasureDefinition id="_IDGenMeasureDefinition" name="Count" value="{dashboard>count}"/>
+                    </viz.data:measures>
+                </viz.data:FlattenedDataset>
+            </viz:dataset>
+            <viz:feeds>
+                <viz.feeds:FeedItem id="_IDGenFeedItem1" uid="size" type="Measure" values="Count"/>
+                <viz.feeds:FeedItem id="_IDGenFeedItem6" uid="color" type="Dimension" values="Status"/>
+            </viz:feeds>
+        </viz:VizFrame>
+        <VBox id="_IDGenVBox21" class="donutCenterText">
+            <Text id="_IDGenText72" text="{dashboard>/totalApplications}" class="donutCenterValue"/>
+            <Text id="_IDGenText73" text="Applications" class="donutCenterLabel"/>
+        </VBox>
     </VBox>
-</ScrollContainer>
+    <VBox id="_IDGenVBox17" items="{dashboard>/byStatusChart}" class="donutLegend">
+        <HBox id="_IDGenHBox3" alignItems="Center" class="donutLegendRow">
+            <HBox id="_IDGenHBox36" class="donutLegendDot {dashboard>colorClass}"/>
+            <Text id="_IDGenText49" text="{dashboard>label}" class="donutLegendLabel"/>
+            <Text id="_IDGenText50" text="{dashboard>count} ({dashboard>pct}%)" class="donutLegendValue"/>
+        </HBox>
+    </VBox>
+</HBox>
+                    </Panel>
 
-           
+                    <Panel id="_IDGenPanel1" headerText="Open Exceptions by Severity" class="sapUiTinyMargin dashboardPanel" width="100%">
+                     <viz:VizFrame id="_IDGenVizFrame1" vizType="column" height="220px" width="100%"
+    vizProperties="{
+        'plotArea': { 'colorPalette': ['#e34948','#eb9c4b','#c3c2b7','#c3c2b7'] },
+        'legend': { 'visible': false },
+        'title': { 'visible': false },
+        'categoryAxis': { 'title': { 'visible': false } },
+        'valueAxis': { 'title': { 'visible': false } }
+    }">
+    <viz:dataset>
+        <viz.data:FlattenedDataset id="_IDGenFlattenedDataset1" data="{dashboard>/severityChart}">
+            <viz.data:dimensions>
+                <viz.data:DimensionDefinition id="_IDGenDimensionDefinition1" name="Severity" value="{dashboard>severity}"/>
+            </viz.data:dimensions>
+            <viz.data:measures>
+                <viz.data:MeasureDefinition id="_IDGenMeasureDefinition1" name="Count" value="{dashboard>count}"/>
+            </viz.data:measures>
+        </viz.data:FlattenedDataset>
+    </viz:dataset>
+    <viz:feeds>
+        <viz.feeds:FeedItem id="_IDGenFeedItem2" uid="valueAxis" type="Measure" values="Count"/>
+        <viz.feeds:FeedItem id="_IDGenFeedItem3" uid="categoryAxis" type="Dimension" values="Severity"/>
+        <viz.feeds:FeedItem id="_IDGenFeedItem7" uid="color" type="Dimension" values="Severity"/>
+    </viz:feeds>
+</viz:VizFrame>
+                    </Panel>
 
-        </content>
-    </Page>
+                    <Panel id="_IDGenPanel2" headerText="Applications by Risk Band" class="sapUiTinyMargin dashboardPanel" width="100%">
+                        <VBox id="_IDGenVBox18" items="{dashboard>/byRiskBand}" class="riskBarList">
+                            <HBox id="_IDGenHBox40" alignItems="Center" class="riskBarRow">
+                                <Text id="_IDGenText51" text="{dashboard>riskBand}" class="riskBarLabel"/>
+                                <HBox id="_IDGenHBox41" class="riskBarTrack">
+                                    <HBox id="_IDGenHBox42" class="riskBarFill" width="{= ${dashboard>count} * 33 + '%' }"/>
+                                </HBox>
+                                <Text id="_IDGenText52" text="{dashboard>count}" class="riskBarValue"/>
+                            </HBox>
+                        </VBox>
+                    </Panel>
+
+                </HBox>
+
+                <!-- Trend + officer table -->
+                <HBox id="_IDGenHBox38" class="dashboardRow2col sapUiSmallMarginTop">
+
+                    <Panel id="_IDGenPanel3" headerText="Applications Submitted (Last 7 Days)" class="sapUiTinyMargin dashboardPanel" width="100%">
+                        <viz:VizFrame id="_IDGenVizFrame2" vizType="line" height="240px" width="100%"
+                            vizProperties="{
+                                'plotArea': { 'colorPalette': ['#2a78d6'], 'dataLabel': { 'visible': true } },
+                                'legend': { 'visible': false },
+                                'title': { 'visible': false },
+                                'categoryAxis': { 'title': { 'visible': false } },
+                                'valueAxis': { 'title': { 'visible': false } }
+                            }">
+                            <viz:dataset>
+                                <viz.data:FlattenedDataset id="_IDGenFlattenedDataset2" data="{dashboard>/submissionTrend}">
+                                    <viz.data:dimensions>
+                                        <viz.data:DimensionDefinition id="_IDGenDimensionDefinition2" name="Date" value="{dashboard>shortDate}"/>
+                                    </viz.data:dimensions>
+                                    <viz.data:measures>
+                                        <viz.data:MeasureDefinition id="_IDGenMeasureDefinition2" name="Applications" value="{dashboard>count}"/>
+                                    </viz.data:measures>
+                                </viz.data:FlattenedDataset>
+                            </viz:dataset>
+                            <viz:feeds>
+                                <viz.feeds:FeedItem id="_IDGenFeedItem4" uid="valueAxis" type="Measure" values="Applications"/>
+                                <viz.feeds:FeedItem id="_IDGenFeedItem5" uid="categoryAxis" type="Dimension" values="Date"/>
+                            </viz:feeds>
+                        </viz:VizFrame>
+                    </Panel>
+
+                    <Panel id="_IDGenPanel4" headerText="Officer Workload" class="sapUiTinyMargin dashboardPanel" width="100%">
+                        <Table id="_IDGenTable1" items="{dashboard>/officerWorkload}" noDataText="No officers found">
+                            <columns>
+                                <Column id="_IDGenColumn6"><Text id="_IDGenText53" text="Officer"/></Column>
+                                <Column id="_IDGenColumn7"><Text id="_IDGenText54" text="Role"/></Column>
+                                <Column id="_IDGenColumn8" hAlign="Center"><Text id="_IDGenText55" text="Open Applications"/></Column>
+                                <Column id="_IDGenColumn9" hAlign="Center"><Text id="_IDGenText56" text="Avg Age (Days)"/></Column>
+                                <Column id="_IDGenColumn10" hAlign="Center"><Text id="_IDGenText57" text="SLA Breached"/></Column>
+                            </columns>
+                            <items>
+                                <ColumnListItem id="_IDGenColumnListItem2">
+                                    <cells>
+                                        <Text id="_IDGenText58" text="{dashboard>name}"/>
+                                        <HBox id="_IDGenHBox43"><Text id="_IDGenText59" text="{dashboard>authorityLevel}" class="officerRoleBadge"/></HBox>
+                                        <Text id="_IDGenText60" text="{dashboard>openCount}"/>
+                                        <Text id="_IDGenText61" text="{= ${dashboard>avgAgeDays} === null ? '—' : ${dashboard>avgAgeDays} }"/>
+                                        <Text id="_IDGenText62" text="{dashboard>slaBreachedCount}"/>
+                                    </cells>
+                                </ColumnListItem>
+                            </items>
+                        </Table>
+                    </Panel>
+
+                </HBox>
+
+
+                <!-- Needs attention -->
+                <Panel id="_IDGenPanel5" headerText="Needs Attention (Top Priority)" class="sapUiTinyMargin sapUiSmallMarginTop dashboardPanel" width="100%">
+                    <Table id="_IDGenTable2" items="{dashboard>/topPriorityApplications}" noDataText="No applications">
+                        <columns>
+                            <Column id="_IDGenColumn11"><Text id="_IDGenText63" text="Application ID"/></Column>
+                            <Column id="_IDGenColumn12"><Text id="_IDGenText64" text="Applicant Name"/></Column>
+                            <Column id="_IDGenColumn13"><Text id="_IDGenText65" text="Risk Level"/></Column>
+                            <Column id="_IDGenColumn14"><Text id="_IDGenText66" text="Issue"/></Column>
+                            <Column id="_IDGenColumn15" hAlign="Center"><Text id="_IDGenText67" text="Days Pending"/></Column>
+                            <Column id="_IDGenColumn16"/>
+                        </columns>
+                        <items>
+                            <ColumnListItem id="_IDGenColumnListItem3" type="Navigation" press="onPriorityAppPress">
+                                <cells>
+                                    <HBox id="_IDGenHBox44" alignItems="Center">
+                                        <core:Icon id="_IDGenIcon23" src="sap-icon://alert" visible="{dashboard>slaBreached}" class="attentionAlertIcon"/>
+                                        <Text id="_IDGenText68" text="{dashboard>applicationNumber}"/>
+                                    </HBox>
+                                    <Text id="_IDGenText69" text="{= ${dashboard>applicantName} || '—' }"/>
+                                    <ObjectStatus id="_IDGenObjectStatus" text="{= ${dashboard>riskBand} || '—' }" state="{= ${dashboard>riskBand} === 'HIGH' ? 'Error' : (${dashboard>riskBand} === 'MEDIUM' ? 'Warning' : 'Success') }"/>
+                                    <Text id="_IDGenText70" text="{dashboard>issueText}"/>
+                                    <Text id="_IDGenText71" text="{= ${dashboard>daysPending} === null ? '—' : ${dashboard>daysPending} }"/>
+                                </cells>
+                            </ColumnListItem>
+                        </items>
+                    </Table>
+                </Panel>
+
+            </VBox>
+            </ScrollContainer>
+        </VBox>
+    </HBox>
 </mvc:View>

@@ -46,13 +46,14 @@
     "flexEnabled": true,
     "dependencies": {
       "minUI5Version": "1.151.0",
-      "libs": {
-        "sap.m": {},
-        "sap.ui.core": {},
-        "sap.fe.templates": {},
-        "sap.f": {},
-        "sap.suite.ui.microchart": {}
-      }
+     "libs": {
+    "sap.m": {},
+    "sap.ui.core": {},
+    "sap.fe.templates": {},
+    "sap.f": {},
+    "sap.suite.ui.microchart": {},
+    "sap.viz": {}
+}
     },
     "contentDensities": {
       "compact": true,
@@ -105,7 +106,7 @@
           "target": "Dashboard"
         },
         {
-          "pattern": "FilteredList/{filterType}",
+          "pattern": "FilteredList/{filterType}/{filterValue}",
           "name": "FilteredList",
           "target": "FilteredList"
         }
@@ -185,10 +186,10 @@
           "name": "loan.cockpit.loanapp.view.Dashboard"
         },
         "FilteredList": {
-        "type": "View",
-        "id": "FilteredList",
-        "name": "loan.cockpit.loanapp.view.FilteredList"
-    }
+          "type": "View",
+          "id": "FilteredList",
+          "name": "loan.cockpit.loanapp.view.FilteredList"
+        }
       }
     }
   },

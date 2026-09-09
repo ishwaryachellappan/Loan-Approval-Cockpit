@@ -1,8 +1,7 @@
 const cds = require('@sap/cds');
 
 module.exports = cds.service.impl(async function () {
-    const { Documents, CreditChecks, Exceptions, Rules, LoanApplications, LoanProducts, Officers, ApprovalSteps, AuditLogs } = this.entities;
-
+    const { Documents, CreditChecks, Exceptions, Rules, LoanApplications, LoanProducts, Officers, Applicants, ApprovalSteps, AuditLogs } = this.entities;
     // --- Helpers ---
     async function recordApprovalStep(tx, appID, approver, decision, comments) {
         await tx.run(INSERT.into(ApprovalSteps).entries({
@@ -75,8 +74,8 @@ module.exports = cds.service.impl(async function () {
 
         return true;
 
-       
-      
+
+
     });
 
     // --- approve ---
@@ -233,94 +232,230 @@ module.exports = cds.service.impl(async function () {
 
     this.on('getDashboardKPIs', async (req) => {
         const tx = cds.transaction(req);
-        const apps = await tx.run(SELECT.from(LoanApplications));
-        const slas = await tx.run(SELECT.from('SLAs'));
-        const exceptions = await tx.run(SELECT.from(Exceptions).where({ status: 'OPEN' }));
-        const risks = await tx.run(SELECT.from('RiskAssessments'));
-        const approvalSteps = await tx.run(SELECT.from(ApprovalSteps));
+        const allApps = await tx.run(SELECT.from(LoanApplications));
+        const allSlas = await tx.run(SELECT.from('SLAs'));
+        const allExceptions = await tx.run(SELECT.from(Exceptions));
+        const allRisks = await tx.run(SELECT.from('RiskAssessments'));
+        const allApprovalSteps = await tx.run(SELECT.from(ApprovalSteps));
+        const allOfficers = await tx.run(SELECT.from(Officers));
+        const allApplicants = await tx.run(SELECT.from(Applicants));
+        const allRules = await tx.run(SELECT.from(Rules));
 
-        const byStatus = {};
-        apps.forEach(a => byStatus[a.status] = (byStatus[a.status] || 0) + 1);
-
-        const now = new Date();
-        let breached = 0;
-        slas.forEach(s => { if (new Date(s.dueAt) < now) breached++; });
-        const slaBreachRate = slas.length ? Math.round((breached / slas.length) * 1000) / 10 : 0;
-
-        const bySeverity = {};
-        exceptions.forEach(e => bySeverity[e.severity] = (bySeverity[e.severity] || 0) + 1);
-
-        const byRiskBand = {};
-        risks.forEach(r => byRiskBand[r.riskBand] = (byRiskBand[r.riskBand] || 0) + 1);
-
-        // --- Queue ageing: applications older than 5 days, still not closed ---
-        const OPEN_STATUSES = ['DRAFT', 'SUBMITTED', 'VALIDATING', 'EXCEPTION', 'READY_FOR_REVIEW', 'UNDERWRITING'];
-        let agedCount = 0;
-        apps.forEach(a => {
-            if (OPEN_STATUSES.includes(a.status) && a.submittedAt) {
-                const ageDays = (now - new Date(a.submittedAt)) / (1000 * 60 * 60 * 24);
-                if (ageDays > 5) agedCount++;
-            }
-        });
-
-        // --- Approval cycle time: avg days from submittedAt to decidedAt ---
-        const appById = Object.fromEntries(apps.map(a => [a.ID, a]));
-        let totalCycleDays = 0, cycleCount = 0;
-        approvalSteps.forEach(step => {
-            const app = appById[step.application_ID];
-            if (app && app.submittedAt && step.decidedAt) {
-                const days = (new Date(step.decidedAt) - new Date(app.submittedAt)) / (1000 * 60 * 60 * 24);
-                totalCycleDays += days;
-                cycleCount++;
-            }
-        });
-        const avgCycleDays = cycleCount ? Math.round((totalCycleDays / cycleCount) * 10) / 10 : null;
-
-        // --- Priority score recompute (unchanged from before) ---
         const RISK_SCORE = { LOW: 10, MEDIUM: 25, HIGH: 40, CRITICAL: 55 };
         const EXCEPTION_SEVERITY_SCORE = { Minor: 5, Major: 15, Critical: 30 };
-        const riskByAppId = Object.fromEntries(risks.map(r => [r.application_ID, r]));
-        const slaByAppId = Object.fromEntries(slas.map(s => [s.application_ID, s]));
-        const exceptionsByAppId = {};
-        for (const ex of exceptions) (exceptionsByAppId[ex.application_ID] ||= []).push(ex);
+        const OPEN_STATUSES = ['DRAFT', 'SUBMITTED', 'VALIDATING', 'EXCEPTION', 'READY_FOR_REVIEW', 'UNDERWRITING'];
+        const now = new Date();
 
-        let totalPriority = 0;
-        apps.forEach(app => {
-            const risk = riskByAppId[app.ID];
+        function computeCore(apps, slas, exceptions, risks, approvalSteps, asOf) {
+            const byStatus = {};
+            apps.forEach(a => byStatus[a.status] = (byStatus[a.status] || 0) + 1);
+
+            let breached = 0;
+            slas.forEach(s => { if (new Date(s.dueAt) < asOf) breached++; });
+            const slaBreachRate = slas.length ? Math.round((breached / slas.length) * 1000) / 10 : 0;
+
+            const bySeverity = {};
+            exceptions.forEach(e => bySeverity[e.severity] = (bySeverity[e.severity] || 0) + 1);
+
+            const byRiskBand = {};
+            risks.forEach(r => byRiskBand[r.riskBand] = (byRiskBand[r.riskBand] || 0) + 1);
+
+            let agedCount = 0;
+            apps.forEach(a => {
+                if (OPEN_STATUSES.includes(a.status) && a.submittedAt) {
+                    const ageDays = (asOf - new Date(a.submittedAt)) / (1000 * 60 * 60 * 24);
+                    if (ageDays > 5) agedCount++;
+                }
+            });
+
+            const appById = Object.fromEntries(apps.map(a => [a.ID, a]));
+            let totalCycleDays = 0, cycleCount = 0;
+            approvalSteps.forEach(step => {
+                const app = appById[step.application_ID];
+                if (app && app.submittedAt && step.decidedAt) {
+                    const days = (new Date(step.decidedAt) - new Date(app.submittedAt)) / (1000 * 60 * 60 * 24);
+                    totalCycleDays += days;
+                    cycleCount++;
+                }
+            });
+            const avgCycleDays = cycleCount ? Math.round((totalCycleDays / cycleCount) * 10) / 10 : null;
+
+            const riskByAppId = Object.fromEntries(risks.map(r => [r.application_ID, r]));
+            const slaByAppId = Object.fromEntries(slas.map(s => [s.application_ID, s]));
+            const exceptionsByAppId = {};
+            for (const ex of exceptions) (exceptionsByAppId[ex.application_ID] ||= []).push(ex);
+
+            let totalPriority = 0;
+            apps.forEach(app => {
+                const risk = riskByAppId[app.ID];
+                const riskScore = risk ? (RISK_SCORE[risk.riskBand] ?? 0) : 0;
+                const exList = exceptionsByAppId[app.ID] || [];
+                const exceptionScore = exList.reduce((max, ex) => Math.max(max, EXCEPTION_SEVERITY_SCORE[ex.severity] ?? 0), 0);
+                let ageScore = 0;
+                if (app.submittedAt) {
+                    const ageDays = (asOf - new Date(app.submittedAt)) / (1000 * 60 * 60 * 24);
+                    if (ageDays > 10) ageScore = 20;
+                    else if (ageDays > 5) ageScore = 10;
+                    else if (ageDays > 2) ageScore = 5;
+                }
+                let slaScore = 0;
+                const sla = slaByAppId[app.ID];
+                if (sla) {
+                    const hoursRemaining = (new Date(sla.dueAt) - asOf) / (1000 * 60 * 60);
+                    if (hoursRemaining <= 0) slaScore = 50;
+                    else if (hoursRemaining <= 24) slaScore = 20;
+                    else if (hoursRemaining <= 72) slaScore = 10;
+                }
+                totalPriority += riskScore + exceptionScore + ageScore + 5 + slaScore;
+            });
+            const avgPriority = apps.length ? totalPriority / apps.length : 0;
+
+            return {
+                totalApplications: apps.length,
+                slaBreachedCount: breached,
+                slaTotalWithSLA: slas.length,
+                slaBreachRate,
+                openExceptionsCount: exceptions.filter(e => e.status === 'OPEN').length,
+                agedApplicationsCount: agedCount,
+                avgApprovalCycleDays: avgCycleDays,
+                avgPriorityScore: Math.round(avgPriority * 100) / 100,
+                byStatus, bySeverity, byRiskBand, riskByAppId, slaByAppId, exceptionsByAppId
+            };
+        }
+
+        const currentCore = computeCore(allApps, allSlas, allExceptions, allRisks, allApprovalSteps, now);
+
+        // Approximate "as of 7 days ago": filter to records that existed by then,
+        // using createdAt as a stand-in for historical state since no snapshot
+        // history is tracked. This is directional, not exact — status changes
+        // (e.g. an app moving OPEN -> CLOSED) aren't reflected in the past state.
+        const sevenDaysAgo = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000);
+        const pastApps = allApps.filter(a => new Date(a.createdAt) <= sevenDaysAgo);
+        const pastSlas = allSlas.filter(s => new Date(s.createdAt) <= sevenDaysAgo);
+        const pastExceptions = allExceptions.filter(e => new Date(e.createdAt) <= sevenDaysAgo);
+        const pastRisks = allRisks.filter(r => new Date(r.createdAt) <= sevenDaysAgo);
+        const pastApprovalSteps = allApprovalSteps.filter(s => new Date(s.createdAt) <= sevenDaysAgo);
+        const pastCore = computeCore(pastApps, pastSlas, pastExceptions, pastRisks, pastApprovalSteps, sevenDaysAgo);
+
+        function pctDelta(nowVal, pastVal) {
+            if (pastVal === null || pastVal === undefined) return null;
+            if (pastVal === 0) return nowVal === 0 ? 0 : null;
+            return Math.round(((nowVal - pastVal) / pastVal) * 1000) / 10;
+        }
+
+        const trends = {
+            totalApplicationsTrend: pctDelta(currentCore.totalApplications, pastCore.totalApplications),
+            slaBreachedCountTrend: pctDelta(currentCore.slaBreachedCount, pastCore.slaBreachedCount),
+            slaBreachRateTrend: pctDelta(currentCore.slaBreachRate, pastCore.slaBreachRate),
+            openExceptionsCountTrend: pctDelta(currentCore.openExceptionsCount, pastCore.openExceptionsCount),
+            agedApplicationsCountTrend: pctDelta(currentCore.agedApplicationsCount, pastCore.agedApplicationsCount),
+            avgPriorityScoreTrend: pctDelta(currentCore.avgPriorityScore, pastCore.avgPriorityScore),
+            avgApprovalCycleDaysTrend: pctDelta(currentCore.avgApprovalCycleDays, pastCore.avgApprovalCycleDays)
+        };
+
+        // --- Officer workload, with avg age + SLA breached count ---
+        const officerWorkload = [];
+        for (const officer of allOfficers) {
+            const openApps = allApps.filter(a => a.assignedOfficer_ID === officer.ID && OPEN_STATUSES.includes(a.status));
+            let totalAge = 0, ageCount = 0, slaBreachedForOfficer = 0;
+            openApps.forEach(a => {
+                if (a.submittedAt) {
+                    totalAge += (now - new Date(a.submittedAt)) / (1000 * 60 * 60 * 24);
+                    ageCount++;
+                }
+                const sla = currentCore.slaByAppId[a.ID];
+                if (sla && new Date(sla.dueAt) < now) slaBreachedForOfficer++;
+            });
+            officerWorkload.push({
+                name: officer.name,
+                authorityLevel: officer.authorityLevel,
+                openCount: openApps.length,
+                avgAgeDays: ageCount ? Math.round((totalAge / ageCount) * 10) / 10 : null,
+                slaBreachedCount: slaBreachedForOfficer
+            });
+        }
+
+        // --- Submission trend (unchanged from before) ---
+        const dayBuckets = {};
+        for (let i = 0; i < 7; i++) {
+            const d = new Date(sevenDaysAgo.getTime() + i * 24 * 60 * 60 * 1000);
+            dayBuckets[d.toISOString().slice(0, 10)] = 0;
+        }
+        allApps.forEach(a => {
+            if (a.submittedAt) {
+                const key = new Date(a.submittedAt).toISOString().slice(0, 10);
+                if (dayBuckets.hasOwnProperty(key)) dayBuckets[key]++;
+            }
+        });
+        const submissionTrend = Object.entries(dayBuckets).map(([date, count]) => ({ date, count }));
+
+        // --- Top priority applications, with applicant name + issue text ---
+        const applicantById = Object.fromEntries(allApplicants.map(a => [a.ID, a]));
+        const ruleById = Object.fromEntries(allRules.map(r => [r.ID, r]));
+        const scoredApps = allApps.map(app => {
+            const risk = currentCore.riskByAppId[app.ID];
             const riskScore = risk ? (RISK_SCORE[risk.riskBand] ?? 0) : 0;
-            const exList = exceptionsByAppId[app.ID] || [];
+            const exList = currentCore.exceptionsByAppId[app.ID] || [];
+            const openExList = exList.filter(e => e.status === 'OPEN');
             const exceptionScore = exList.reduce((max, ex) => Math.max(max, EXCEPTION_SEVERITY_SCORE[ex.severity] ?? 0), 0);
-            let ageScore = 0;
+            let ageScore = 0, ageDays = 0;
             if (app.submittedAt) {
-                const ageDays = (now - new Date(app.submittedAt)) / (1000 * 60 * 60 * 24);
+                ageDays = (now - new Date(app.submittedAt)) / (1000 * 60 * 60 * 24);
                 if (ageDays > 10) ageScore = 20;
                 else if (ageDays > 5) ageScore = 10;
                 else if (ageDays > 2) ageScore = 5;
             }
             let slaScore = 0;
-            const sla = slaByAppId[app.ID];
+            const sla = currentCore.slaByAppId[app.ID];
+            const slaBreached = sla ? (new Date(sla.dueAt) < now) : false;
             if (sla) {
                 const hoursRemaining = (new Date(sla.dueAt) - now) / (1000 * 60 * 60);
                 if (hoursRemaining <= 0) slaScore = 50;
                 else if (hoursRemaining <= 24) slaScore = 20;
                 else if (hoursRemaining <= 72) slaScore = 10;
             }
-            totalPriority += riskScore + exceptionScore + ageScore + 5 + slaScore;
+
+            let issueText = 'Pending review';
+            if (slaBreached) {
+                issueText = 'SLA breached';
+            } else if (openExList.length) {
+                const topEx = openExList.reduce((a, b) => (EXCEPTION_SEVERITY_SCORE[a.severity] ?? 0) >= (EXCEPTION_SEVERITY_SCORE[b.severity] ?? 0) ? a : b);
+                issueText = topEx.description || (ruleById[topEx.rule_ID]?.description) || topEx.reasonCode;
+            } else if (risk && (risk.riskBand === 'HIGH' || risk.riskBand === 'CRITICAL')) {
+                issueText = 'Income verification pending';
+            }
+
+            const applicant = applicantById[app.applicant_ID];
+            return {
+                ID: app.ID,
+                applicationNumber: app.applicationNumber,
+                applicantName: applicant ? `${applicant.firstName} ${applicant.lastName}` : null,
+                score: riskScore + exceptionScore + ageScore + 5 + slaScore,
+                slaBreached,
+                riskBand: risk ? risk.riskBand : null,
+                issueText,
+                daysPending: app.submittedAt ? Math.round(ageDays) : null
+            };
         });
-        const avgPriority = apps.length ? totalPriority / apps.length : 0;
+        scoredApps.sort((a, b) => b.score - a.score);
+        const topPriorityApplications = scoredApps.slice(0, 5);
 
         return {
-            totalApplications: apps.length,
-            byStatus: Object.entries(byStatus).map(([status, count]) => ({ status, count })),
-            slaBreachedCount: breached,
-            slaTotalWithSLA: slas.length,
-            slaBreachRate,
-            openExceptionsCount: exceptions.length,
-            openExceptionsBySeverity: Object.entries(bySeverity).map(([severity, count]) => ({ severity, count })),
-            avgPriorityScore: Math.round(avgPriority * 100) / 100,
-            byRiskBand: Object.entries(byRiskBand).map(([riskBand, count]) => ({ riskBand, count })),
-            agedApplicationsCount: agedCount,
-            avgApprovalCycleDays: avgCycleDays
+            totalApplications: currentCore.totalApplications,
+            byStatus: Object.entries(currentCore.byStatus).map(([status, count]) => ({ status, count })),
+            slaBreachedCount: currentCore.slaBreachedCount,
+            slaTotalWithSLA: currentCore.slaTotalWithSLA,
+            slaBreachRate: currentCore.slaBreachRate,
+            openExceptionsCount: currentCore.openExceptionsCount,
+            openExceptionsBySeverity: Object.entries(currentCore.bySeverity).map(([severity, count]) => ({ severity, count })),
+            avgPriorityScore: currentCore.avgPriorityScore,
+            byRiskBand: Object.entries(currentCore.byRiskBand).map(([riskBand, count]) => ({ riskBand, count })),
+            agedApplicationsCount: currentCore.agedApplicationsCount,
+            avgApprovalCycleDays: currentCore.avgApprovalCycleDays,
+            submissionTrend,
+            officerWorkload,
+            topPriorityApplications,
+            ...trends
         };
     });
 
