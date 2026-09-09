@@ -1,0 +1,214 @@
+<mvc:View
+    controllerName="loan.cockpit.loanapp.controller.Applications"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns="sap.m"
+    xmlns:core="sap.ui.core"
+    displayBlock="true">
+
+    <HBox id="_IDGenHBox39" class="cockpitShell" height="100%">
+
+        <!-- Sidebar -->
+        <core:Fragment fragmentName="loan.cockpit.loanapp.fragment.Sidebar" type="XML"/>
+
+        <!-- Main content -->
+        <VBox id="_IDGenVBox25" class="cockpitMain" width="100%">
+
+            <HBox id="_IDGenHBox50" class="cockpitTopBar" alignItems="Center" justifyContent="SpaceBetween">
+                <VBox id="_IDGenVBox26">
+                    <Text id="_IDGenText82" text="Loan Operations Cockpit" class="topBarTitle"/>
+                    <Text id="_IDGenText83" text="Monitor · Manage · Accelerate" class="topBarSubtitle"/>
+                </VBox>
+                <SearchField id="_IDGenSearchField1" placeholder="Search applications, applicants, or reference number..." width="380px" class="topBarSearch"/>
+                <HBox id="_IDGenHBox51" alignItems="Center" class="topBarRight">
+                    <core:Icon id="_IDGenIcon31" src="sap-icon://bell" class="topBarBellIcon"/>
+                    <HBox id="_IDGenHBox52" class="topBarAvatar" alignItems="Center"><Text id="_IDGenText84" text="{user>/initials}" class="topBarAvatarInitials"/></HBox>
+                    <VBox id="_IDGenVBox27">
+                        <Text id="_IDGenText85" text="{user>/name}" class="topBarUserName"/>
+                        <Text id="_IDGenText86" text="{user>/role}" class="topBarUserRole"/>
+                    </VBox>
+                </HBox>
+            </HBox>
+
+            <ScrollContainer id="_IDGenScrollContainer1" horizontal="false" vertical="true" height="100%" width="100%">
+            <VBox id="_IDGenVBox28" class="cockpitBody">
+
+                <HBox id="_IDGenHBox53" alignItems="Center" class="appsBackRow">
+                    <Link id="_IDGenLink6" text="Back to Dashboard" press="onNavBack" class="appsBackLink"/>
+                     <SegmentedButton id="_IDGenSegmentedButton" selectedKey="{apps>/viewMode}" selectionChange="onViewModeChange" class="appsViewToggle">
+                            <items>
+                                <SegmentedButtonItem id="_IDGenSegBtnTable" key="table" icon="sap-icon://table-view" text="Table"/>
+                                <SegmentedButtonItem id="_IDGenSegBtnCards" key="cards" icon="sap-icon://grid" text="Cards"/>
+                            </items>
+                        </SegmentedButton>
+                </HBox>
+                <HBox id="_IDGenHBox54" justifyContent="SpaceBetween" alignItems="End" class="greetingRow">
+                    <VBox id="_IDGenVBox29">
+                        <Text id="_IDGenText87" text="Loan Applications" class="greetingTitle"/>
+                        <Text id="_IDGenText88" text="Review, monitor and manage all loan applications." class="greetingSubtitle"/>
+                    </VBox>
+                    <HBox id="_IDGenHBox1"  alignItems="Center" class="appsHeaderRight">
+                        <Text id="_IDGenText89" text="{user>/todayLabel}" class="greetingDate"/>
+                       
+                    </HBox>
+                </HBox>
+
+                <!-- Scoped KPI row -->
+                <HBox id="_IDGenHBox55" class="appsKpiRow">
+                    <VBox id="_IDGenVBox30" class="appsKpiCard appsKpiBlue">
+                        <HBox id="_IDGenHBox56" class="appsKpiIconBox appsKpiIconBlue"><core:Icon id="_IDGenIcon32" src="sap-icon://document"/></HBox>
+                        <VBox id="_IDGenVBox31">
+                            <Text id="_IDGenText90" text="Total Applications" class="kpiCardLabel"/>
+                            <Text id="_IDGenText91" text="{apps>/kpi/total}" class="kpiCardValue kpiValueBlue"/>
+                            <HBox id="_IDGenHBox57" class="{ path: 'apps>/kpi/totalTrend', formatter: '.formatTrendClassHigherGood' }">
+                                <core:Icon id="_IDGenIcon33" src="{ path: 'apps>/kpi/totalTrend', formatter: '.formatTrendIcon' }"/>
+                                <Text id="_IDGenText92" text="{ path: 'apps>/kpi/totalTrend', formatter: '.formatTrendText' }"/>
+                            </HBox>
+                        </VBox>
+                    </VBox>
+                    <VBox id="_IDGenVBox32" class="appsKpiCard appsKpiGreen">
+                        <HBox id="_IDGenHBox58" class="appsKpiIconBox appsKpiIconGreen"><core:Icon id="_IDGenIcon34" src="sap-icon://accept"/></HBox>
+                        <VBox id="_IDGenVBox33">
+                            <Text id="_IDGenText93" text="Ready for Review" class="kpiCardLabel"/>
+                            <Text id="_IDGenText94" text="{apps>/kpi/ready}" class="kpiCardValue kpiValueGreen"/>
+                            <Text id="_IDGenText95" text="—" class="trendNeutral"/>
+                        </VBox>
+                    </VBox>
+                    <VBox id="_IDGenVBox34" class="appsKpiCard appsKpiRed">
+                        <HBox id="_IDGenHBox59" class="appsKpiIconBox appsKpiIconRed"><core:Icon id="_IDGenIcon35" src="sap-icon://alert"/></HBox>
+                        <VBox id="_IDGenVBox35">
+                            <Text id="_IDGenText96" text="Exceptions" class="kpiCardLabel"/>
+                            <Text id="_IDGenText97" text="{apps>/kpi/exceptions}" class="kpiCardValue kpiValueDarkRed"/>
+                            <Text id="_IDGenText98" text="—" class="trendNeutral"/>
+                        </VBox>
+                    </VBox>
+                    <VBox id="_IDGenVBox36" class="appsKpiCard appsKpiPurple">
+                        <HBox id="_IDGenHBox60" class="appsKpiIconBox appsKpiIconPurple"><core:Icon id="_IDGenIcon36" src="sap-icon://time-entry-request"/></HBox>
+                        <VBox id="_IDGenVBox37">
+                            <Text id="_IDGenText99" text="Submitted" class="kpiCardLabel"/>
+                            <Text id="_IDGenText100" text="{apps>/kpi/submitted}" class="kpiCardValue kpiValuePurple"/>
+                            <Text id="_IDGenText101" text="—" class="trendNeutral"/>
+                        </VBox>
+                    </VBox>
+                </HBox>
+
+                <!-- Search + filter bar -->
+                <VBox id="_IDGenVBox38" class="appsFilterCard">
+                    <HBox id="_IDGenHBox61" alignItems="End" class="appsFilterRow">
+                        <VBox id="_IDGenVBox39" class="appsFilterField appsFilterSearch">
+                            <Label id="_IDGenLabel" text="Search"/>
+                            <SearchField id="_IDGenSearchField2" value="{apps>/searchTerm}" liveChange="onSearchChange" placeholder="Search by application no., applicant name..."/>
+                        </VBox>
+                        <VBox id="_IDGenVBox40" class="appsFilterField">
+                            <Label id="_IDGenLabel1" text="Status"/>
+                            <Select id="_IDGenSelect" selectedKey="{apps>/filterStatus}" change="onFilterChange">
+                                <core:Item id="_IDGenItem" key="ALL" text="All"/>
+                                <core:Item id="_IDGenItem1" key="New" text="New"/>
+                                <core:Item id="_IDGenItem2" key="In Review" text="In Review"/>
+                                <core:Item id="_IDGenItem3" key="Pending Info" text="Pending Info"/>
+                                <core:Item id="_IDGenItem4" key="Ready" text="Ready"/>
+                                <core:Item id="_IDGenItem5" key="Approved" text="Approved"/>
+                                <core:Item id="_IDGenItem6" key="Rejected" text="Rejected"/>
+                            </Select>
+                        </VBox>
+                        <VBox id="_IDGenVBox41" class="appsFilterField">
+                            <Label id="_IDGenLabel2" text="Risk Level"/>
+                            <Select id="_IDGenSelect1" selectedKey="{apps>/filterRisk}" change="onFilterChange">
+                                <core:Item id="_IDGenItem7" key="ALL" text="All"/>
+                                <core:Item id="_IDGenItem8" key="LOW" text="Low"/>
+                                <core:Item id="_IDGenItem9" key="MEDIUM" text="Medium"/>
+                                <core:Item id="_IDGenItem10" key="HIGH" text="High"/>
+                                <core:Item id="_IDGenItem11" key="CRITICAL" text="Critical"/>
+                            </Select>
+                        </VBox>
+                        <VBox id="_IDGenVBox42" class="appsFilterField">
+                            <Label id="_IDGenLabel3" text="Product"/>
+                            <Select id="_IDGenSelect2" selectedKey="{apps>/filterProduct}" change="onFilterChange">
+                                <core:Item id="_IDGenItem12" key="ALL" text="All"/>
+                                <core:Item id="_IDGenItem13" key="Personal Loan" text="Personal Loan"/>
+                                <core:Item id="_IDGenItem14" key="Home Loan" text="Home Loan"/>
+                                <core:Item id="_IDGenItem15" key="Auto Loan" text="Auto Loan"/>
+                            </Select>
+                        </VBox>
+                        <Button id="_IDGenButton1" text="Go" type="Emphasized" press="onFilterChange" class="appsFilterGo"/>
+                        <Button id="_IDGenButton2" text="Reset" type="Transparent" press="onFilterReset"/>
+                    </HBox>
+                    <HBox id="_IDGenHBox62" class="appsFilterBadgeRow">
+                        <HBox id="_IDGenHBox63" class="appsCountBadge"><Text id="_IDGenText102" text="{= ${apps>/filteredRows}.length + ' applications' }"/></HBox>
+                    </HBox>
+                </VBox>
+
+                <!-- Table view -->
+                <VBox id="_IDGenVBox43" class="appsTableCard" visible="{= ${apps>/viewMode} === 'table' }">
+                    <HBox id="_IDGenHBox64" justifyContent="SpaceBetween" alignItems="Center" class="appsTableHeader">
+                        <Title id="_IDGenTitle6" text="{= 'Applications (' + ${apps>/filteredRows}.length + ')' }" level="H3"/>
+                        <HBox id="_IDGenHBox65">
+                            <Button id="_IDGenButton3" icon="sap-icon://excel-attachment" text="Export" type="Transparent"/>
+                        </HBox>
+                    </HBox>
+                    <Table id="_IDGenTable3" items="{apps>/filteredRows}" noDataText="No applications found">
+                        <columns>
+                            <Column id="_IDGenColumn17"><Text id="_IDGenText103" text="Application No."/></Column>
+                            <Column id="_IDGenColumn18"><Text id="_IDGenText104" text="Applicant"/></Column>
+                            <Column id="_IDGenColumn19"><Text id="_IDGenText105" text="Product"/></Column>
+                            <Column id="_IDGenColumn20" hAlign="End"><Text id="_IDGenText106" text="Requested Amount"/></Column>
+                            <Column id="_IDGenColumn21" hAlign="Center"><Text id="_IDGenText107" text="Tenure (months)"/></Column>
+                            <Column id="_IDGenColumn22" hAlign="Center"><Text id="_IDGenText108" text="Risk Level"/></Column>
+                            <Column id="_IDGenColumn23" hAlign="Center"><Text id="_IDGenText109" text="Status"/></Column>
+                            <Column id="_IDGenColumn24" hAlign="Center"><Text id="_IDGenText110" text="Priority"/></Column>
+                            <Column id="_IDGenColumn25"/>
+                        </columns>
+                        <items>
+                            <ColumnListItem id="_IDGenColumnListItem4">
+                                <cells>
+                                    <Text id="_IDGenText111" text="{apps>applicationNumber}"/>
+                                    <Text id="_IDGenText112" text="{= ${apps>applicantName} || '—' }"/>
+                                    <Text id="_IDGenText113" text="{apps>productName}"/>
+                                    <ObjectNumber id="_IDGenObjectNumber1" number="{apps>requestedAmount}" unit="INR"/>
+                                    <Text id="_IDGenText114" text="{apps>tenureMonths}"/>
+                                    <HBox id="_IDGenHBox66" justifyContent="Center"><HBox id="_IDGenHBox67" class="appsPill {apps>riskClass}"><Text id="_IDGenText115" text="{= ${apps>riskLevel} || '—' }"/></HBox></HBox>
+                                    <HBox id="_IDGenHBox68" justifyContent="Center"><HBox id="_IDGenHBox69" class="appsPill {apps>statusClass}"><Text id="_IDGenText116" text="{apps>statusLabel}"/></HBox></HBox>
+                                    <HBox id="_IDGenHBox70" justifyContent="Center"><HBox id="_IDGenHBox71" class="appsPill {apps>priorityClass}"><Text id="_IDGenText117" text="{apps>priorityLabel}"/></HBox></HBox>
+                                    <Button id="_IDGenButton4" text="View" type="Transparent" press="onCardPress"/>
+                                </cells>
+                            </ColumnListItem>
+                        </items>
+                    </Table>
+                </VBox>
+
+                <!-- Card / kanban view -->
+                <ScrollContainer id="_IDGenKanbanScroll" horizontal="true" vertical="false" width="100%" visible="{= ${apps>/viewMode} === 'cards' }" class="kanbanScroll">
+                    <HBox id="_IDGenKanbanRow" items="{apps>/columns}" class="kanbanRow">
+                        <VBox id="_IDGenKanbanColumn" class="kanbanColumn">
+                            <HBox id="_IDGenKanbanColumnHeader" alignItems="Center" class="kanbanColumnHeader">
+                                <HBox id="_IDGenKanbanColumnBadge" class="kanbanColumnBadge {apps>badgeClass}"><Text id="_IDGenKanbanColumnBadgeText" text="{apps>label}"/></HBox>
+                                <Text id="_IDGenKanbanColumnCount" text="{apps>count}" class="kanbanColumnCount"/>
+                            </HBox>
+                            <List id="_IDGenKanbanCardList" items="{apps>items}" showSeparators="None" class="kanbanCardList">
+                                <CustomListItem id="_IDGenKanbanCardListItem" type="Active" press="onCardPress" class="kanbanCardListItem">
+                                    <VBox id="_IDGenKanbanCard" class="kanbanCard">
+                                        <HBox id="_IDGenKanbanCardTop" alignItems="Center" class="kanbanCardTop">
+                                            <core:Icon id="_IDGenKanbanCardIcon" src="sap-icon://building" class="kanbanCardIcon"/>
+                                            <VBox id="_IDGenKanbanCardNameBox">
+                                                <Text id="_IDGenKanbanCardName" text="{apps>applicantName}" class="kanbanCardName"/>
+                                                <Text id="_IDGenKanbanCardSub" text="{apps>applicationNumber}" class="kanbanCardSub"/>
+                                            </VBox>
+                                        </HBox>
+                                        <HBox id="_IDGenKanbanCardAmountRow" justifyContent="SpaceBetween" class="kanbanCardAmountRow">
+                                            <Text id="_IDGenKanbanCardAmount" text="{= '₹' + ${apps>requestedAmount} }" class="kanbanCardAmount"/>
+                                        </HBox>
+                                        <HBox id="_IDGenKanbanCardFooter" justifyContent="SpaceBetween" class="kanbanCardFooter">
+                                            <Text id="_IDGenKanbanCardProduct" text="{apps>productName}" class="kanbanCardMeta"/>
+                                            <Text id="_IDGenKanbanCardIssue" text="{apps>issueText}" class="kanbanCardMeta"/>
+                                        </HBox>
+                                    </VBox>
+                                </CustomListItem>
+                            </List>
+                        </VBox>
+                    </HBox>
+                </ScrollContainer>
+
+            </VBox>
+            </ScrollContainer>
+        </VBox>
+    </HBox>
+</mvc:View>

@@ -1,0 +1,239 @@
+<mvc:View
+    controllerName="loan.cockpit.loanapp.controller.ApplicationDetail"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns="sap.m"
+    xmlns:core="sap.ui.core"
+    displayBlock="true">
+
+    <HBox id="_IDGenHBox4" class="cockpitShell" height="100%">
+        <core:Fragment fragmentName="loan.cockpit.loanapp.fragment.Sidebar" type="XML"/>
+
+        <VBox id="_IDGenVBox2" class="cockpitMain" width="100%">
+            <HBox id="_IDGenHBox5" class="cockpitTopBar" alignItems="Center" justifyContent="SpaceBetween">
+                <VBox id="_IDGenVBox3">
+                    <Text id="_IDGenText" text="Loan Operations Cockpit" class="topBarTitle"/>
+                    <Text id="_IDGenText1" text="Monitor · Manage · Accelerate" class="topBarSubtitle"/>
+                </VBox>
+                <SearchField id="_IDGenSearchField3" placeholder="Search applications, applicants, or reference number..." width="380px" class="topBarSearch"/>
+                <HBox id="_IDGenHBox6" alignItems="Center" class="topBarRight">
+                    <core:Icon id="_IDGenIcon" src="sap-icon://bell" class="topBarBellIcon"/>
+                    <HBox id="_IDGenHBox7" class="topBarAvatar" alignItems="Center"><Text id="_IDGenText2" text="{user>/initials}" class="topBarAvatarInitials"/></HBox>
+                    <VBox id="_IDGenVBox4">
+                        <Text id="_IDGenText3" text="{user>/name}" class="topBarUserName"/>
+                        <Text id="_IDGenText4" text="{user>/role}" class="topBarUserRole"/>
+                    </VBox>
+                </HBox>
+            </HBox>
+
+            <ScrollContainer id="_IDGenScrollContainer2" horizontal="false" vertical="true" height="100%" width="100%">
+            <VBox id="_IDGenVBox19" class="cockpitBody">
+
+                <HBox id="_IDGenHBox45" alignItems="Center" class="appsBackRow">
+                    <Link id="_IDGenLink7" text="Back to Applications" press="onNavBack" class="appsBackLink"/>
+                </HBox>
+
+                <!-- Header -->
+                <HBox id="_IDGenHBox46" justifyContent="SpaceBetween" alignItems="Start" class="detailHeaderRow">
+                    <VBox id="_IDGenVBox22">
+                        <HBox id="_IDGenHBox47" alignItems="Center" class="detailTitleRow">
+                            <Title id="_IDGenTitle8" text="{app>/applicationNumber}" level="H2"/>
+                            <HBox id="_IDGenHBox48" class="appsPill {app>statusClass}"><Text id="_IDGenText5" text="{app>/status}"/></HBox>
+                        </HBox>
+                        <Text id="_IDGenText6" text="{app>/subtitle}" class="detailSubtitle"/>
+                    </VBox>
+                    <HBox id="_IDGenHBox49" class="detailActionRow">
+                        <Button id="_IDGenButton5" text="Approve" type="Emphasized" press="onApprove" visible="{app>/canApprove}"/>
+                        <Button id="_IDGenButton6" text="Reject" press="onReject" visible="{app>/canReject}"/>
+                        <Button id="_IDGenButton7" text="Run Validation" press="onRunValidation"/>
+                        <Button id="_IDGenButton8" text="Delete" press="onDelete"/>
+                        <Button id="_IDGenButton9" text="Escalate" press="onEscalate" visible="{app>/canEscalate}"/>
+                        <Button id="_IDGenButton10" text="More" icon="sap-icon://slim-arrow-down" press="onMorePress"/>
+                    </HBox>
+                </HBox>
+
+                <!-- Tabs -->
+               <HBox id="_IDGenHBox80" class="detailTabRow">
+    <Link text="Overview" class="detailTabItem detailTabActive" press="onTabPress" id="tabOverview"/>
+    <Link text="Applicant" class="detailTabItem" press="onTabPress" id="tabApplicant"/>
+    <Link text="Product" class="detailTabItem" press="onTabPress" id="tabProduct"/>
+    <Link text="{= 'Why Blocked? (' + ${app>/exceptions}.length + ')' }" class="detailTabItem" press="onTabPress" id="tabExceptions"/>
+    <Link text="{= 'Documents (' + ${app>/documents}.length + ')' }" class="detailTabItem" press="onTabPress" id="tabDocuments"/>
+    <Link text="{= 'Credit Check (' + ${app>/creditChecks}.length + ')' }" class="detailTabItem" press="onTabPress" id="tabCredit"/>
+    <Link text="{= 'Risk Assessment (' + ${app>/riskAssessments}.length + ')' }" class="detailTabItem" press="onTabPress" id="tabRisk"/>
+    <Link text="Approval History" class="detailTabItem" press="onTabPress" id="tabHistory"/>
+</HBox>
+
+                <!-- Overview KPI strip -->
+                <HBox id="_IDGenHBox81" class="detailKpiStrip">
+                    <VBox id="_IDGenVBox23" class="detailKpiItem">
+                        <HBox id="_IDGenHBox84" class="detailKpiIconBox detailKpiIconBlue"><core:Icon id="_IDGenIcon1" src="sap-icon://document"/></HBox>
+                        <VBox id="_IDGenVBox24"><Text id="_IDGenText7" text="Requested Amount" class="detailKpiLabel"/><ObjectNumber id="_IDGenObjectNumber2" number="{app>/requestedAmount}" unit="INR" class="detailKpiValue"/></VBox>
+                    </VBox>
+                    <VBox id="_IDGenVBox55" class="detailKpiItem">
+                        <HBox id="_IDGenHBox90" class="detailKpiIconBox detailKpiIconOrange"><core:Icon id="_IDGenIcon2" src="sap-icon://calendar"/></HBox>
+                        <VBox id="_IDGenVBox56"><Text id="_IDGenText74" text="Tenure (months)" class="detailKpiLabel"/><Text id="_IDGenText76" text="{app>/tenureMonths}" class="detailKpiValue"/></VBox>
+                    </VBox>
+                    <VBox id="_IDGenVBox57" class="detailKpiItem">
+                        <HBox id="_IDGenHBox91" class="detailKpiIconBox detailKpiIconGreen"><core:Icon id="_IDGenIcon3" src="sap-icon://accept"/></HBox>
+                        <VBox id="_IDGenVBox58"><Text id="_IDGenText77" text="Status" class="detailKpiLabel"/><Text id="_IDGenText78" text="{app>/status}" class="detailKpiValue"/></VBox>
+                    </VBox>
+                    <VBox id="_IDGenVBox59" class="detailKpiItem">
+                        <HBox id="_IDGenHBox92" class="detailKpiIconBox detailKpiIconPurple"><core:Icon id="_IDGenIcon4" src="sap-icon://history"/></HBox>
+                        <VBox id="_IDGenVBox60"><Text id="_IDGenText79" text="Submitted At" class="detailKpiLabel"/><Text id="_IDGenText80" text="{app>/submittedAtLabel}" class="detailKpiValue"/></VBox>
+                    </VBox>
+                </HBox>
+
+                <!-- Applicant + Product cards -->
+                <HBox id="_IDGenHBox93" class="detailCardRow">
+                    <VBox id="_IDGenVBox61" class="detailCard">
+                        <HBox id="_IDGenHBox94" justifyContent="SpaceBetween" alignItems="Center" class="detailCardHeader">
+                            <HBox id="_IDGenHBox95" alignItems="Center"><core:Icon id="_IDGenIcon5" src="sap-icon://person-placeholder" class="detailCardIcon"/><Title id="_IDGenTitle9" text="Applicant Details" level="H4"/></HBox>
+                            <Link id="_IDGenLink8" text="Edit" icon="sap-icon://edit"/>
+                        </HBox>
+                        <HBox id="_IDGenHBox96" class="detailFieldRow"><Text id="_IDGenText81" text="First Name" class="detailFieldLabel"/><Text id="_IDGenText118" text="{app>/applicant/firstName}"/></HBox>
+                        <HBox id="_IDGenHBox97" class="detailFieldRow"><Text id="_IDGenText139" text="Last Name" class="detailFieldLabel"/><Text id="_IDGenText140" text="{app>/applicant/lastName}"/></HBox>
+                        <HBox id="_IDGenHBox98" class="detailFieldRow"><Text id="_IDGenText141" text="Email" class="detailFieldLabel"/><Text id="_IDGenText142" text="{app>/applicant/email}"/></HBox>
+                        <HBox id="_IDGenHBox99" class="detailFieldRow"><Text id="_IDGenText143" text="Phone" class="detailFieldLabel"/><Text id="_IDGenText144" text="{app>/applicant/phone}"/></HBox>
+                    </VBox>
+                    <VBox id="_IDGenVBox62" class="detailCard">
+                        <HBox id="_IDGenHBox100" justifyContent="SpaceBetween" alignItems="Center" class="detailCardHeader">
+                            <HBox id="_IDGenHBox101" alignItems="Center"><core:Icon id="_IDGenIcon6" src="sap-icon://product" class="detailCardIcon"/><Title id="_IDGenTitle10" text="Product Details" level="H4"/></HBox>
+                            <Link id="_IDGenLink9" text="Edit" icon="sap-icon://edit"/>
+                        </HBox>
+                        <HBox id="_IDGenHBox102" class="detailFieldRow"><Text id="_IDGenText145" text="Product Code" class="detailFieldLabel"/><Text id="_IDGenText146" text="{app>/product/productCode}"/></HBox>
+                        <HBox id="_IDGenHBox103" class="detailFieldRow"><Text id="_IDGenText147" text="Product Name" class="detailFieldLabel"/><Text id="_IDGenText148" text="{app>/product/productName}"/></HBox>
+                        <HBox id="_IDGenHBox104" class="detailFieldRow"><Text id="_IDGenText149" text="Min Amount" class="detailFieldLabel"/><ObjectNumber id="_IDGenObjectNumber3" number="{app>/product/minAmount}" unit="INR"/></HBox>
+                        <HBox id="_IDGenHBox105" class="detailFieldRow"><Text id="_IDGenText150" text="Max Amount" class="detailFieldLabel"/><ObjectNumber id="_IDGenObjectNumber4" number="{app>/product/maxAmount}" unit="INR"/></HBox>
+                    </VBox>
+                </HBox>
+
+                <!-- Why Blocked -->
+                <VBox id="_IDGenVBox63" class="detailCard detailSectionCard">
+                    <HBox id="_IDGenHBox106" justifyContent="SpaceBetween" alignItems="Center" class="detailCardHeader">
+                        <HBox id="_IDGenHBox107" alignItems="Center"><core:Icon id="_IDGenIcon24" src="sap-icon://alert" class="detailCardIconRed"/><Title id="_IDGenTitle11" text="{= 'Why Blocked? (Open Exceptions) (' + ${app>/exceptions}.length + ')' }" level="H4"/></HBox>
+                    </HBox>
+                    <Table id="_IDGenTable4" items="{app>/exceptions}" noDataText="No open exceptions">
+                        <columns>
+                            <Column id="_IDGenColumn26"><Text id="_IDGenText151" text="Severity"/></Column>
+                            <Column id="_IDGenColumn27"><Text id="_IDGenText152" text="Reason"/></Column>
+                            <Column id="_IDGenColumn28"><Text id="_IDGenText153" text="Description"/></Column>
+                            <Column id="_IDGenColumn29"><Text id="_IDGenText154" text="Suggested Action"/></Column>
+                            <Column id="_IDGenColumn30"><Text id="_IDGenText155" text="Status"/></Column>
+                        </columns>
+                        <items>
+                            <ColumnListItem id="_IDGenColumnListItem1">
+                                <cells>
+                                    <HBox id="_IDGenHBox108" class="appsPill {app>severityClass}"><Text id="_IDGenText156" text="{app>severity}"/></HBox>
+                                    <Text id="_IDGenText157" text="{app>reasonCode}"/>
+                                    <Text id="_IDGenText158" text="{app>description}"/>
+                                    <Text id="_IDGenText159" text="{app>suggestedAction}"/>
+                                    <HBox id="_IDGenHBox109" class="appsPill appsPillRed"><Text id="_IDGenText160" text="{app>status}"/></HBox>
+                                </cells>
+                            </ColumnListItem>
+                        </items>
+                    </Table>
+                </VBox>
+
+                <!-- Documents -->
+                <VBox id="_IDGenVBox64" class="detailCard detailSectionCard">
+                    <HBox id="_IDGenHBox110" justifyContent="SpaceBetween" alignItems="Center" class="detailCardHeader">
+                        <HBox id="_IDGenHBox111" alignItems="Center"><core:Icon id="_IDGenIcon25" src="sap-icon://document-text" class="detailCardIcon"/><Title id="_IDGenTitle12" text="{= 'Documents (' + ${app>/documents}.length + ')' }" level="H4"/></HBox>
+                    </HBox>
+                    <Table id="_IDGenTable5" items="{app>/documents}" noDataText="No documents">
+                        <columns>
+                            <Column id="_IDGenColumn31"><Text id="_IDGenText161" text="Type"/></Column>
+                            <Column id="_IDGenColumn32"><Text id="_IDGenText162" text="File Name"/></Column>
+                            <Column id="_IDGenColumn33"><Text id="_IDGenText163" text="Expiry Date"/></Column>
+                            <Column id="_IDGenColumn34"><Text id="_IDGenText164" text="Status"/></Column>
+                            <Column id="_IDGenColumn35"><Text id="_IDGenText165" text="Actions"/></Column>
+                        </columns>
+                        <items>
+                            <ColumnListItem id="_IDGenColumnListItem5">
+                                <cells>
+                                    <Text id="_IDGenText166" text="{app>docType}"/>
+                                    <Text id="_IDGenText167" text="{app>fileName}"/>
+                                    <Text id="_IDGenText168" text="{app>expiryDateLabel}"/>
+                                    <HBox id="_IDGenHBox112" class="appsPill {app>docStatusClass}"><Text id="_IDGenText169" text="{app>status}"/></HBox>
+                                    <Link id="_IDGenLink10" text="Download"/>
+                                </cells>
+                            </ColumnListItem>
+                        </items>
+                    </Table>
+                </VBox>
+
+                <!-- Credit Check + Risk Assessment -->
+                <HBox id="_IDGenHBox113" class="detailCardRow">
+                    <VBox id="_IDGenVBox65" class="detailCard">
+                        <HBox id="_IDGenHBox114" alignItems="Center" class="detailCardHeader"><core:Icon id="_IDGenIcon26" src="sap-icon://credit-card" class="detailCardIcon"/><Title id="_IDGenTitle13" text="{= 'Credit Check (' + ${app>/creditChecks}.length + ')' }" level="H4"/></HBox>
+                        <Table id="_IDGenTable6" items="{app>/creditChecks}" noDataText="No credit checks">
+                            <columns>
+                                <Column id="_IDGenColumn36"><Text id="_IDGenText170" text="Score"/></Column>
+                                <Column id="_IDGenColumn37"><Text id="_IDGenText171" text="Grade"/></Column>
+                                <Column id="_IDGenColumn38"><Text id="_IDGenText172" text="Status"/></Column>
+                                <Column id="_IDGenColumn39"><Text id="_IDGenText173" text="Checked At"/></Column>
+                                <Column id="_IDGenColumn40"><Text id="_IDGenText174" text="Comments"/></Column>
+                            </columns>
+                            <items>
+                                <ColumnListItem id="_IDGenColumnListItem6">
+                                    <cells>
+                                        <Text id="_IDGenText175" text="{app>score}"/>
+                                        <Text id="_IDGenText176" text="{app>grade}"/>
+                                        <HBox id="_IDGenHBox115" class="appsPill {app>creditStatusClass}"><Text id="_IDGenText177" text="{app>status}"/></HBox>
+                                        <Text id="_IDGenText178" text="{app>checkedAtLabel}"/>
+                                        <Text id="_IDGenText179" text="{= ${app>comments} || '—' }"/>
+                                    </cells>
+                                </ColumnListItem>
+                            </items>
+                        </Table>
+                    </VBox>
+                    <VBox id="_IDGenVBox66" class="detailCard">
+                        <HBox id="_IDGenHBox116" alignItems="Center" class="detailCardHeader"><core:Icon id="_IDGenIcon27" src="sap-icon://shield" class="detailCardIcon"/><Title id="_IDGenTitle14" text="{= 'Risk Assessment (' + ${app>/riskAssessments}.length + ')' }" level="H4"/></HBox>
+                        <Table id="_IDGenTable7" items="{app>/riskAssessments}" noDataText="No risk assessments">
+                            <columns>
+                                <Column id="_IDGenColumn41"><Text id="_IDGenText180" text="Risk Band"/></Column>
+                                <Column id="_IDGenColumn42"><Text id="_IDGenText181" text="Risk Score"/></Column>
+                                <Column id="_IDGenColumn43"><Text id="_IDGenText182" text="Collateral Coverage"/></Column>
+                                <Column id="_IDGenColumn44"><Text id="_IDGenText183" text="Rationale"/></Column>
+                            </columns>
+                            <items>
+                                <ColumnListItem id="_IDGenColumnListItem7">
+                                    <cells>
+                                        <HBox id="_IDGenHBox117" class="appsPill {app>riskBandClass}"><Text id="_IDGenText184" text="{app>riskBand}"/></HBox>
+                                        <Text id="_IDGenText185" text="{app>riskScore}"/>
+                                        <Text id="_IDGenText186" text="{app>collateralCoverage}"/>
+                                        <Text id="_IDGenText187" text="{app>rationale}"/>
+                                    </cells>
+                                </ColumnListItem>
+                            </items>
+                        </Table>
+                    </VBox>
+                </HBox>
+
+                <!-- Approval History -->
+                <VBox id="_IDGenVBox67" class="detailCard detailSectionCard">
+                    <HBox id="_IDGenHBox118" alignItems="Center" class="detailCardHeader"><core:Icon id="_IDGenIcon28" src="sap-icon://history" class="detailCardIcon"/><Title id="_IDGenTitle15" text="Approval History" level="H4"/></HBox>
+                    <Table id="_IDGenTable8" items="{app>/approvalSteps}" noDataText="No approval history available yet.">
+                        <columns>
+                            <Column id="_IDGenColumn45"><Text id="_IDGenText188" text="Decision"/></Column>
+                            <Column id="_IDGenColumn46"><Text id="_IDGenText189" text="Approver"/></Column>
+                            <Column id="_IDGenColumn47"><Text id="_IDGenText190" text="Decided At"/></Column>
+                            <Column id="_IDGenColumn48"><Text id="_IDGenText191" text="Comments"/></Column>
+                        </columns>
+                        <items>
+                            <ColumnListItem id="_IDGenColumnListItem8">
+                                <cells>
+                                    <Text id="_IDGenText192" text="{app>decision}"/>
+                                    <Text id="_IDGenText193" text="{app>approver}"/>
+                                    <Text id="_IDGenText194" text="{app>decidedAtLabel}"/>
+                                    <Text id="_IDGenText195" text="{= ${app>comments} || '—' }"/>
+                                </cells>
+                            </ColumnListItem>
+                        </items>
+                    </Table>
+                </VBox>
+
+            </VBox>
+            </ScrollContainer>
+        </VBox>
+    </HBox>
+</mvc:View>

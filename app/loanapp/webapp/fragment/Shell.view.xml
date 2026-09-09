@@ -1,0 +1,63 @@
+<core:FragmentDefinition
+    xmlns="sap.m"
+    xmlns:core="sap.ui.core">
+
+    <HBox id="_IDGenHBox72" class="cockpitShell" height="100%">
+        <VBox id="_IDGenVBox44" class="cockpitSidebar" width="220px">
+            <VBox id="_IDGenVBox45" class="sidebarLogo">
+                <Text id="_IDGenText75" text="SAP" class="sidebarLogoText"/>
+            </VBox>
+            <VBox id="_IDGenVBox46" class="sidebarNav">
+                <HBox id="_IDGenHBox86" class="sidebarNavItem" >
+                    <core:Icon id="_IDGenIcon37" src="sap-icon://home" class="sidebarNavIcon"/>
+                    <Text id="_IDGenText119" text="Dashboard"/>
+                </HBox>
+                <HBox id="_IDGenHBox87" class="sidebarNavItem" >
+                    <core:Icon id="_IDGenIcon38" src="sap-icon://document" class="sidebarNavIcon"/>
+                    <Text id="_IDGenText120" text="Applications"/>
+                </HBox>
+                <HBox id="_IDGenHBox88" class="sidebarNavItem" >
+                    <core:Icon id="_IDGenIcon39" src="sap-icon://alert" class="sidebarNavIcon"/>
+                    <Text id="_IDGenText121" text="Exceptions"/>
+                </HBox>
+                <HBox id="_IDGenHBox73" class="sidebarNavItem">
+                    <core:Icon id="_IDGenIcon40" src="sap-icon://list" class="sidebarNavIcon"/>
+                    <Text id="_IDGenText122" text="Queues"/>
+                </HBox>
+                <HBox id="_IDGenHBox74" class="sidebarNavItem">
+                    <core:Icon id="_IDGenIcon41" src="sap-icon://business-objects-experience" class="sidebarNavIcon"/>
+                    <Text id="_IDGenText123" text="Reports"/>
+                </HBox>
+                <HBox id="_IDGenHBox75" class="sidebarNavItem">
+                    <core:Icon id="_IDGenIcon42" src="sap-icon://action-settings" class="sidebarNavIcon"/>
+                    <Text id="_IDGenText124" text="Administration"/>
+                </HBox>
+            </VBox>
+            <VBox id="_IDGenVBox47" class="sidebarFooter">
+                <HBox id="_IDGenHBox76" class="sidebarNavItem">
+                    <core:Icon id="_IDGenIcon43" src="sap-icon://sys-help" class="sidebarNavIcon"/>
+                    <Text id="_IDGenText125" text="Help"/>
+                </HBox>
+            </VBox>
+        </VBox>
+
+        <VBox id="_IDGenVBox48" class="cockpitMain" width="100%">
+            <HBox id="_IDGenHBox77" class="cockpitTopBar" alignItems="Center" justifyContent="SpaceBetween">
+                <VBox id="_IDGenVBox49">
+                    <Text id="_IDGenText126" text="Loan Operations Cockpit" class="topBarTitle"/>
+                    <Text id="_IDGenText127" text="Monitor · Manage · Accelerate" class="topBarSubtitle"/>
+                </VBox>
+                <SearchField id="_IDGenSearchField4" placeholder="Search applications, applicants, or reference number..." width="380px" class="topBarSearch"/>
+                <HBox id="_IDGenHBox78" alignItems="Center" class="topBarRight">
+                    <core:Icon id="_IDGenIcon44" src="sap-icon://bell" class="topBarBellIcon"/>
+                    <HBox id="_IDGenHBox79" class="topBarAvatar" alignItems="Center"><Text id="_IDGenText128" text="{user>/initials}" class="topBarAvatarInitials"/></HBox>
+                    <VBox id="_IDGenVBox50">
+                        <Text id="_IDGenText129" text="{user>/name}" class="topBarUserName"/>
+                        <Text id="_IDGenText130" text="{user>/role}" class="topBarUserRole"/>
+                    </VBox>
+                </HBox>
+            </HBox>
+        </VBox>
+    </HBox>
+
+</core:FragmentDefinition>

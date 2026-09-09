@@ -1,7 +1,8 @@
 sap.ui.define([
     "sap/ui/core/mvc/Controller",
-    "sap/ui/model/json/JSONModel"
-], function (Controller, JSONModel) {
+    "sap/ui/model/json/JSONModel",
+    "loan/cockpit/loanapp/controller/SidebarHelper"
+], function (Controller, JSONModel, SidebarHelper) {
     "use strict";
 
     return Controller.extend("loan.cockpit.loanapp.controller.Dashboard", {
@@ -89,13 +90,13 @@ sap.ui.define([
         },
 
         onNavToList: function () {
-            this.getOwnerComponent().getRouter().navTo("LoanApplicationsList");
+            this.getOwnerComponent().getRouter().navTo("ApplicationsHome");
         },
         onNavFilteredBreached: function () {
-            this.getOwnerComponent().getRouter().navTo("FilteredList", { filterType: "slaBreached", filterValue: "true" });
+            this.getOwnerComponent().getRouter().navTo("ApplicationsHome");
         },
         onNavFilteredException: function () {
-            this.getOwnerComponent().getRouter().navTo("FilteredList", { filterType: "exception", filterValue: "true" });
+            this.getOwnerComponent().getRouter().navTo("ApplicationsHome");
         },
 
         onStatusBarPress: function (oEvent) {
@@ -118,15 +119,19 @@ sap.ui.define([
                 "?query": oFilters
             });
         },
-        onAfterRendering: function () {
-            if (this._kpiClicksWired) return;
-            this._kpiClicksWired = true;
-            this.byId("kpiSlaBreached").attachBrowserEvent("click", this.onNavFilteredBreached, this);
-            this.byId("kpiOpenExceptions").attachBrowserEvent("click", this.onNavFilteredException, this);
-            this.byId("kpiTotalApps").attachBrowserEvent("click", this.onNavToList, this);
-            this.byId("sidebarNavApplications").attachBrowserEvent("click", this.onNavToList, this);
-            this.byId("sidebarNavExceptions").attachBrowserEvent("click", this.onNavFilteredException, this);
-        },
+      onAfterRendering: function () {
+    if (this._kpiClicksWired) return;
+    this._kpiClicksWired = true;
+    const wire = (sId, fn) => {
+        const oControl = this.byId(sId);
+        if (oControl) oControl.attachBrowserEvent("click", fn, this);
+        else console.warn(`onAfterRendering: control '${sId}' not found`);
+    };
+  wire("kpiSlaBreached", this.onNavFilteredBreached);
+            wire("kpiOpenExceptions", this.onNavFilteredException);
+            wire("kpiTotalApps", this.onNavToList);
+            SidebarHelper.wireSidebar(this, "Dashboard");
+},
 
         formatCycleDays: function (v) {
             return (v === null || v === undefined ? 0 : v) + " days";

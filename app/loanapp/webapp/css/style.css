@@ -1,17 +1,29 @@
-/* ===== Shell layout ===== */
+/* =========================================================
+   LOAN OPERATIONS COCKPIT
+   Reference-matched dashboard styling
+   ========================================================= */
+
+
+/* =========================================================
+   SHELL
+   ========================================================= */
+
 .cockpitShell {
-    background: #eef2f9;
+    background: #eef3f9;
+    width: 100%;
+    height: 100%;
 }
 
 .cockpitSidebar {
-    background: #fff;
-    border-right: 1px solid #e5e7eb;
+    background: #ffffff;
+    border-right: 1px solid #dfe5ec;
     height: 100%;
-    padding: 1rem 0;
+    padding: 14px 0;
+    box-sizing: border-box;
 }
 
 .sidebarLogo {
-    padding: 0 1.2rem 1.5rem;
+    padding: 0 18px 20px;
 }
 
 .sidebarLogoText {
@@ -20,361 +32,631 @@
     color: #0a6ed1;
 }
 
+.sidebarNav {
+    width: 100%;
+}
+
 .sidebarNavItem {
-    padding: 10px 1.2rem;
+    height: 40px;
+    padding: 0 18px;
     gap: 10px;
     align-items: center;
     cursor: pointer;
-    color: #444;
-    font-size: 14px;
+    color: #263548;
+    font-size: 13px;
+    box-sizing: border-box;
 }
 
 .sidebarNavItem:hover {
-    background: #f0f4fa;
+    background: #f3f7fb;
 }
 
 .sidebarNavItemActive {
-    background: #e6f1fb;
-    color: #185FA5;
-    font-weight: 500;
+    background: #e5f1fc;
+    color: #0a6ed1;
+    font-weight: 600;
     border-right: 3px solid #0a6ed1;
 }
 
 .sidebarNavIcon {
-    font-size: 16px;
-    margin-right: 4px;
+    font-size: 15px;
+    width: 18px;
+    color: inherit;
 }
 
 .sidebarFooter {
     margin-top: auto;
-    padding: 10px 1.2rem;
+    padding: 10px 0;
 }
 
+
+/* =========================================================
+   MAIN AREA
+   ========================================================= */
+
 .cockpitMain {
-    background: #eef2f9;
+    background: #eef3f9;
+    min-width: 0;
+    height: 100%;
 }
 
 .cockpitTopBar {
-    background: #fff;
-    padding: 12px 24px;
-    border-bottom: 1px solid #e5e7eb;
+    background: #ffffff;
+    padding: 10px 22px;
+    min-height: 50px;
+    border-bottom: 1px solid #dfe5ec;
+    box-sizing: border-box;
 }
 
 .topBarTitle {
-    font-size: 18px;
+    font-size: 17px;
     font-weight: 700;
-    color: #1c1c1c;
+    color: #182b49;
 }
 
 .topBarSubtitle {
-    font-size: 12px;
-    color: #888;
+    font-size: 11px;
+    color: #6a7480;
+    margin-top: 1px;
+}
+
+.topBarSearch {
+    margin-left: 20px;
 }
 
 .topBarBellIcon {
-    font-size: 18px;
-    color: #555;
-    margin-right: 16px;
+    font-size: 17px;
+    color: #4b5563;
+    margin-right: 14px;
 }
 
 .topBarAvatar {
-    width: 36px;
-    height: 36px;
+    width: 34px;
+    height: 34px;
     border-radius: 50%;
     background: #0a6ed1;
     margin-right: 8px;
     justify-content: center;
+    align-items: center;
 }
 
 .topBarAvatarInitials {
-    color: #fff;
+    color: #ffffff;
     font-weight: 600;
-    font-size: 13px;
+    font-size: 12px;
 }
 
 .topBarUserName {
-    font-size: 13px;
+    font-size: 12px;
     font-weight: 600;
+    color: #1c2836;
 }
 
 .topBarUserRole {
-    font-size: 11px;
-    color: #888;
+    font-size: 10px;
+    color: #7a8490;
 }
 
+
+/* =========================================================
+   SCROLL / BODY
+   ========================================================= */
+
 .cockpitBody {
-    padding: 24px;
+    padding: 20px 22px 28px;
+    box-sizing: border-box;
 }
 
 .greetingRow {
-    margin-bottom: 20px;
+    margin-bottom: 14px;
 }
 
 .greetingTitle {
-    font-size: 22px;
+    font-size: 21px;
     font-weight: 700;
-    color: #1c1c1c;
+    color: #182b49;
+    line-height: 1.2;
 }
 
 .greetingSubtitle {
-    font-size: 13px;
-    color: #6a6d70;
-    margin-top: 2px;
+    font-size: 12px;
+    color: #6a7480;
+    margin-top: 3px;
 }
 
 .greetingDate {
-    font-size: 13px;
-    color: #6a6d70;
+    font-size: 11px;
+    color: #6a7480;
 }
 
-/* ===== KPI tiles ===== */
+
+/* =========================================================
+   KPI SECTION
+   EXACT 4-COLUMN GRID
+   ========================================================= */
+
 .kpiSectionContainer {
     width: 100%;
-    margin-bottom: 20px;
+    margin-bottom: 18px;
 }
 
 .kpiSummaryRow {
     display: grid !important;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 12px;
+
+    grid-template-columns:
+        repeat(4, minmax(0, 1fr));
+
+    grid-template-rows:
+        98px 98px;
+
+    gap: 10px;
+
     width: 100%;
+    box-sizing: border-box;
+
+    align-items: stretch;
 }
 
-.kpiCard {
-    background: #fff;
-    border-radius: 12px;
-    padding: 1rem;
+
+/* Every KPI occupies exactly one grid cell */
+
+.kpiSummaryRow>.kpiCard {
+    width: auto !important;
+    height: 98px !important;
+    min-height: 98px !important;
+    max-height: 98px !important;
+
     box-sizing: border-box;
-    min-height: 110px;
+}
+
+
+/* =========================================================
+   KPI CARD
+   ========================================================= */
+
+.kpiCard {
+    background: #ffffff;
+
+    border: 1px solid #edf0f4;
+
+    border-radius: 10px;
+
+    padding: 13px 14px;
+
+    box-sizing: border-box;
+
     display: flex;
     flex-direction: column;
+
     justify-content: space-between;
+
+    overflow: hidden;
+
+    box-shadow: 0 1px 2px rgba(30, 50, 70, 0.03);
 }
 
 .kpiCardTopRow {
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 10px;
+
+    margin-bottom: 2px;
 }
 
 .kpiCardLabel {
-    font-size: 12px;
-    color: #666;
+    font-size: 11px;
+    color: #68727d;
 }
 
 .kpiCardValue {
-    font-size: 26px;
+    font-size: 23px;
     font-weight: 700;
+    line-height: 1.1;
 }
 
+
+/* =========================================================
+   KPI ICONS
+   ========================================================= */
+
 .kpiIconBox {
-    width: 32px;
-    height: 32px;
-    border-radius: 8px;
+    width: 27px;
+    height: 27px;
+
+    border-radius: 7px;
+
     align-items: center;
     justify-content: center;
+
+    flex-shrink: 0;
+}
+
+.kpiIconBox .sapUiIcon {
+    font-size: 13px;
 }
 
 .kpiIconDarkRed {
-    background: #FCEBEB;
-    color: #A32D2D;
+    background: #fdeaea;
+    color: #bb1f25;
 }
 
 .kpiIconOrange {
-    background: #FAEEDA;
-    color: #854F0B;
+    background: #fff2dc;
+    color: #a15c00;
 }
 
 .kpiIconBlue {
-    background: #E6F1FB;
-    color: #185FA5;
+    background: #e5f2ff;
+    color: #0a6ed1;
 }
 
 .kpiIconPurple {
-    background: #EEEDFE;
-    color: #3C3489;
+    background: #eeecff;
+    color: #4935a8;
 }
 
 .kpiIconGreen {
-    background: #EAF3DE;
-    color: #3B6D11;
+    background: #e9f6df;
+    color: #327a18;
 }
 
+
+/* =========================================================
+   KPI COLORS
+   ========================================================= */
+
 .kpiValueDarkRed {
-    color: #A32D2D;
+    color: #bb1f25;
 }
 
 .kpiValueOrange {
-    color: #854F0B;
+    color: #995900;
 }
 
 .kpiValueBlue {
-    color: #185FA5;
+    color: #0a6ed1;
 }
 
 .kpiValuePurple {
-    color: #3C3489;
+    color: #43369a;
 }
 
 .kpiValueGreen {
-    color: #3B6D11;
+    color: #327a18;
 }
 
-/* Clickable tiles: cursor + lift + border tint on hover. */
-.kpiCard:not(.kpiCardNoClick) {
-    cursor: pointer;
-    transition: transform 0.15s ease, box-shadow 0.15s ease, border-color 0.15s ease;
-    border: 1px solid transparent;
-}
 
-.kpiCard:not(.kpiCardNoClick):hover {
-    transform: translateY(-3px);
-    box-shadow: 0 8px 18px rgba(0, 0, 0, 0.12);
-    border-color: #d0d7e2;
-}
+/* =========================================================
+   KPI TRENDS
+   ========================================================= */
 
-.kpiCard:not(.kpiCardNoClick):active {
-    transform: translateY(-1px);
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.10);
-}
-
-.kpiCardNoClick {
-    cursor: default;
-}
-
-.kpiCardNoClick:hover {
-    transform: none;
-    box-shadow: none;
-}
-
-.trendGood {
-    display: flex;
-    align-items: center;
-    gap: 3px;
-    margin-top: 6px;
-    color: #3B6D11;
-    font-size: 12px;
-}
-
-.trendBad {
-    display: flex;
-    align-items: center;
-    gap: 3px;
-    margin-top: 6px;
-    color: #A32D2D;
-    font-size: 12px;
-}
-
+.trendGood,
+.trendBad,
 .trendNeutral {
     display: flex;
     align-items: center;
     gap: 3px;
-    margin-top: 6px;
-    color: #6a6d70;
-    font-size: 12px;
+
+    margin-top: 1px;
+
+    font-size: 10px;
 }
 
+.trendGood {
+    color: #188038;
+}
+
+.trendBad {
+    color: #bb1f25;
+}
+
+.trendNeutral {
+    color: #6a7480;
+}
+
+.trendGood .sapUiIcon,
+.trendBad .sapUiIcon,
+.trendNeutral .sapUiIcon {
+    font-size: 10px;
+}
+
+
+/* =========================================================
+   PROMO CARD
+   ========================================================= */
+
 .kpiPromoCard {
-    background: linear-gradient(135deg, #dceafd, #eaf3ff);
+    background:
+        linear-gradient(135deg,
+            #dcecff 0%,
+            #eaf4ff 100%);
+
+    border: 1px solid #d9e9fa;
+
     justify-content: center;
+
     align-items: flex-start;
+
+    padding: 13px 15px;
 }
 
 .promoTitle {
-    font-size: 16px;
+    font-size: 14px;
     font-weight: 700;
-    color: #185FA5;
+    line-height: 1.15;
+    color: #14559b;
 }
 
 .promoIconBox {
-    width: 44px;
-    height: 44px;
+    width: 34px;
+    height: 34px;
+
     border-radius: 50%;
-    background: #fff;
-    margin-top: 10px;
+
+    background: #ffffff;
+
+    margin-top: 8px;
+
+    justify-content: center;
+    align-items: center;
 }
 
 .promoIcon {
-    color: #3B6D11;
-    font-size: 20px;
+    color: #2f8b20;
+    font-size: 17px;
 }
 
-/* ===== Dashboard panels ===== */
-.dashboardPanel {
-    border-radius: 12px;
-    height: 320px;
-    box-sizing: border-box;
-    display: flex;
-    flex-direction: column;
-}
 
-.dashboardPanel .sapMPanelContent {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-}
+/* =========================================================
+   GENERAL DASHBOARD ROWS
+   ========================================================= */
 
 .dashboardRow3col {
     display: grid !important;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 12px;
+
+    grid-template-columns:
+        repeat(3, minmax(0, 1fr));
+
+    gap: 10px;
+
     width: 100%;
+
+    margin-top: 10px;
+
+    align-items: stretch;
 }
 
 .dashboardRow2col {
     display: grid !important;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 12px;
+
+    grid-template-columns:
+        minmax(0, 1.12fr) minmax(0, 1fr);
+
+    gap: 10px;
+
     width: 100%;
+
+    margin-top: 10px;
+
+    align-items: stretch;
 }
 
-.dashboardRow3col>.sapMPanel,
-.dashboardRow2col>.sapMPanel {
-    margin: 0 !important;
+
+/* =========================================================
+   FIRST CHART ROW
+   Applications Status
+   Exceptions Severity
+   Risk Band
+
+   REFERENCE HEIGHT ≈ 215px
+   ========================================================= */
+
+.dashboardRow3col>.sapMPanel.dashboardPanel {
+    height: 215px !important;
+    min-height: 215px !important;
+    max-height: 215px !important;
+
     width: 100% !important;
-    box-sizing: border-box;
+
+    margin: 0 !important;
+
+    box-sizing: border-box !important;
 }
 
-.dashboardRow2col .dashboardPanel {
-    height: 340px;
+
+/* =========================================================
+   SECOND ANALYTICS ROW
+   Trend + Officer Workload
+
+   REFERENCE HEIGHT ≈ 265px
+   ========================================================= */
+
+.dashboardRow2col>.sapMPanel.dashboardPanel {
+    height: 265px !important;
+    min-height: 265px !important;
+    max-height: 265px !important;
+
+    width: 100% !important;
+
+    margin: 0 !important;
+
+    box-sizing: border-box !important;
 }
 
-.dashboardRow2col .dashboardPanel .sapMTable {
-    max-height: 240px;
-    overflow-y: auto;
+
+/* =========================================================
+   SAP PANEL
+   ========================================================= */
+
+.dashboardPanel {
+    background: #ffffff !important;
+
+    border: 1px solid #e6eaf0 !important;
+
+    border-radius: 10px !important;
+
+    overflow: hidden !important;
+
+    box-shadow:
+        0 1px 3px rgba(30, 50, 70, 0.035) !important;
+
+    box-sizing: border-box !important;
 }
 
-/* Donut + legend */
+
+/* Remove SAP default panel spacing */
+
+.dashboardPanel.sapMPanel {
+    padding: 0 !important;
+}
+
+
+/* =========================================================
+   PANEL HEADER
+   ========================================================= */
+
+.dashboardPanel .sapMPanelWrappingDivTb {
+    height: 38px !important;
+}
+
+.dashboardPanel .sapMTB {
+    height: 38px !important;
+
+    min-height: 38px !important;
+
+    background: #ffffff !important;
+
+    border-bottom: 1px solid #e5e9ee !important;
+
+    padding: 0 12px !important;
+}
+
+.dashboardPanel .sapMTitle {
+    font-size: 13px !important;
+
+    font-weight: 700 !important;
+
+    color: #182b49 !important;
+}
+
+.dashboardPanel .sapMLnk {
+    font-size: 11px !important;
+
+    color: #0a6ed1 !important;
+
+    font-weight: 500 !important;
+}
+
+
+/* =========================================================
+   PANEL CONTENT
+   ========================================================= */
+
+.dashboardPanel .sapMPanelContent {
+    padding: 10px 12px !important;
+
+    border-bottom: none !important;
+
+    box-sizing: border-box !important;
+
+    overflow: hidden !important;
+}
+
+
+/* =========================================================
+   DONUT
+   ========================================================= */
+
 .donutRow {
-    gap: 20px;
+    gap: 14px;
+
     align-items: center;
+
+    justify-content: center;
+
+    height: 155px;
 }
+
+.donutWrapper {
+    position: relative;
+
+    width: 145px;
+    height: 145px;
+
+    flex-shrink: 0;
+}
+
+.donutWrapper .sapVizFrame {
+    width: 145px !important;
+    height: 145px !important;
+}
+
+.donutCenterText {
+    position: absolute;
+
+    top: 50%;
+    left: 50%;
+
+    transform: translate(-50%, -50%);
+
+    align-items: center;
+
+    pointer-events: none;
+}
+
+.donutCenterValue {
+    font-size: 20px;
+
+    font-weight: 700;
+
+    color: #182b49;
+}
+
+.donutCenterLabel {
+    font-size: 9px;
+
+    color: #7a8490;
+}
+
+
+/* =========================================================
+   DONUT LEGEND
+   ========================================================= */
 
 .donutLegend {
-    gap: 10px;
+    gap: 8px;
+
+    min-width: 150px;
 }
 
 .donutLegendRow {
-    gap: 8px;
+    gap: 7px;
+
+    align-items: center;
+
     white-space: nowrap;
 }
 
 .donutLegendDot {
-    width: 10px;
-    height: 10px;
+    width: 9px;
+    height: 9px;
+
     border-radius: 50%;
+
     flex-shrink: 0;
 }
 
 .donutLegendLabel {
-    font-size: 13px;
-    min-width: 110px;
+    font-size: 11px;
+
+    min-width: 92px;
+
+    color: #374151;
 }
 
 .donutLegendValue {
-    color: #6a6d70;
-    font-size: 13px;
+    color: #697586;
+
+    font-size: 10px;
 }
 
 .donutDotBlue {
@@ -390,144 +672,1523 @@
 }
 
 .donutDotGray {
-    background: #c3c2b7;
+    background: #aeb7c2;
 }
 
-/* Risk band bars */
+
+/* =========================================================
+   EXCEPTION CHART
+   ========================================================= */
+
+.dashboardRow3col .sapVizFrame {
+    box-sizing: border-box;
+}
+
+.dashboardRow3col .sapVizFrame {
+    max-height: 160px !important;
+}
+
+
+/* =========================================================
+   RISK BAND
+   ========================================================= */
+
 .riskBarList {
-    gap: 14px;
-    padding: 8px 0;
+    gap: 13px;
+
+    padding: 8px 2px;
+
+    width: 100%;
 }
 
 .riskBarRow {
-    gap: 10px;
+    gap: 9px;
+
+    align-items: center;
 }
 
 .riskBarLabel {
-    width: 70px;
-    font-size: 13px;
+    width: 55px;
+
+    font-size: 10px;
+
+    color: #354052;
+
+    text-transform: uppercase;
 }
 
 .riskBarTrack {
     flex: 1;
-    height: 10px;
-    background: #eef1f4;
+
+    height: 8px;
+
+    background: #edf0f3;
+
     border-radius: 5px;
+
     overflow: hidden;
 }
 
 .riskBarFill {
-    height: 10px;
+    height: 8px;
+
     background: #2a78d6;
+
     border-radius: 5px;
 }
 
 .riskBarValue {
-    width: 24px;
+    width: 20px;
+
     text-align: right;
+
     font-weight: 600;
-    font-size: 13px;
+
+    font-size: 10px;
+
+    color: #344054;
 }
 
-/* Officer + Needs Attention tables */
+
+/* =========================================================
+   SUBMISSION TREND
+   ========================================================= */
+
+.dashboardRow2col .sapVizFrame {
+    width: 100% !important;
+
+    height: 210px !important;
+
+    max-height: 210px !important;
+}
+
+
+/* =========================================================
+   OFFICER WORKLOAD TABLE
+   ========================================================= */
+
+.dashboardRow2col .sapMTable {
+    width: 100% !important;
+
+    margin-top: 0 !important;
+
+    background: #ffffff !important;
+}
+
+.dashboardRow2col .sapMListTblHeaderCell {
+    background: #f7f9fb !important;
+
+    border-bottom: 1px solid #e2e7ed !important;
+
+    padding: 6px 8px !important;
+}
+
+.dashboardRow2col .sapMListTblHeaderCell .sapMText {
+    font-size: 10px !important;
+
+    font-weight: 600 !important;
+
+    color: #344054 !important;
+}
+
+.dashboardRow2col .sapMListTblCell {
+    padding: 6px 8px !important;
+
+    height: 34px !important;
+
+    border-bottom: 1px solid #edf0f3 !important;
+}
+
+.dashboardRow2col .sapMListTblCell .sapMText {
+    font-size: 10px !important;
+
+    color: #344054 !important;
+}
+
 .officerRoleBadge {
-    background: #FAEEDA;
-    color: #854F0B;
-    padding: 2px 8px;
+    background: #fff0d5;
+
+    color: #935c00;
+
+    padding: 2px 7px;
+
     border-radius: 8px;
-    font-size: 12px;
-    font-weight: 500;
+
+    font-size: 9px;
+
+    font-weight: 600;
+
+    white-space: nowrap;
+}
+
+
+/* =========================================================
+   NEEDS ATTENTION
+   ========================================================= */
+
+.dashboardPanel.sapUiSmallMarginTop {
+    margin-top: 10px !important;
+}
+
+
+/* Final panel is intentionally shorter */
+
+#_IDGenPanel5.dashboardPanel {
+    height: 190px !important;
+
+    min-height: 190px !important;
+
+    max-height: 190px !important;
+
+    margin-left: 0 !important;
+
+    margin-right: 0 !important;
+}
+
+
+/* Needs attention content */
+
+#_IDGenPanel5 .sapMPanelContent {
+    padding: 0 10px 6px !important;
+}
+
+#_IDGenPanel5 .sapMListTblHeaderCell {
+    background: #f7f9fb !important;
+
+    padding: 7px 8px !important;
+
+    border-bottom: 1px solid #e1e6ec !important;
+}
+
+#_IDGenPanel5 .sapMListTblHeaderCell .sapMText {
+    font-size: 10px !important;
+
+    font-weight: 600 !important;
+
+    color: #344054 !important;
+}
+
+#_IDGenPanel5 .sapMListTblCell {
+    padding: 6px 8px !important;
+
+    height: 34px !important;
+
+    border-bottom: 1px solid #edf0f3 !important;
+}
+
+#_IDGenPanel5 .sapMListTblCell .sapMText {
+    font-size: 10px !important;
+
+    color: #344054 !important;
+}
+
+#_IDGenPanel5 .sapMObjectStatus {
+    font-size: 10px !important;
 }
 
 .attentionAlertIcon {
-    color: #A32D2D;
-    font-size: 14px;
-    margin-right: 6px;
-}
+    color: #bb1f25;
 
-/* ===== FilteredList page ===== */
-.filteredListPage {
-    background: #f5f6f8;
-}
-
-.filteredListSubtext {
     font-size: 12px;
-    color: #6a6d70;
+
+    margin-right: 5px;
 }
 
-.filteredListCard {
-    background: #fff;
-    border-radius: 12px;
-    padding: 0.5rem;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
+
+/* =========================================================
+   TABLE HOVER
+   ========================================================= */
+
+.sapMListTblRow:hover {
+    background: #f8fafc !important;
 }
 
-.filteredListRow:hover {
-    background: #f7f9fb;
+
+/* =========================================================
+   RESPONSIVE BEHAVIOR
+   ========================================================= */
+
+@media (max-width: 1100px) {
+
+    .cockpitSidebar {
+        width: 190px !important;
+    }
+
+    .kpiSummaryRow {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        grid-template-rows: auto;
+    }
+
+    .kpiSummaryRow>.kpiCard {
+        height: 98px !important;
+    }
+
+    .dashboardRow3col {
+        grid-template-columns: 1fr;
+    }
+
+    .dashboardRow3col>.sapMPanel.dashboardPanel {
+        height: 215px !important;
+    }
+
+    .dashboardRow2col {
+        grid-template-columns: 1fr;
+    }
 }
 
-.filteredListAppNo {
-    font-weight: 500;
+
+/* =========================================================
+   REMOVE UNWANTED SAP MARGINS
+   ========================================================= */
+
+.dashboardRow3col>.sapMPanel,
+.dashboardRow2col>.sapMPanel {
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+}
+
+.sapUiTinyMargin {
+    margin: 0 !important;
+}
+
+.sapUiSmallMarginTop {
+    margin-top: 10px !important;
+}
+
+.donutCenterValue {
+    font-size: 12px;
+    font-weight: 600;
     color: #1c1c1c;
 }
 
-.filteredStatusPill {
-    padding: 3px 10px;
-    border-radius: 10px;
-    font-size: 12px;
-    font-weight: 500;
-    display: inline-flex;
-    align-items: center;
+.donutCenterLabel {
+    font-size: 10px;
+    color: #6a6d70;
 }
 
-.filteredStatusRed {
-    background: #FCEBEB;
-    color: #A32D2D;
-}
-
-.filteredStatusGreen {
-    background: #EAF3DE;
-    color: #3B6D11;
-}
-
-.filteredStatusBlue {
-    background: #E6F1FB;
-    color: #185FA5;
-}
-
-.donutWrapper { position: relative; }
-.donutCenterText {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    align-items: center;
-    pointer-events: none;
-}
-.donutCenterValue { font-size: 20px; font-weight: 700; color: #1c1c1c; }
-.donutCenterLabel { font-size: 11px; color: #6a6d70; }
-
-.dashboardRow3col > .sapMPanel.dashboardPanel,
-.dashboardRow2col > .sapMPanel.dashboardPanel {
-    height: 320px !important;
-    max-height: 320px !important;
-    overflow: hidden;
+.dashboardRow2col>.sapMPanel.dashboardPanel {
+    height: 380px !important;
+    max-height: 380px !important;
+    overflow: hidden !important;
     display: flex !important;
     flex-direction: column !important;
     box-sizing: border-box !important;
 }
 
-.dashboardPanel > .sapMPanelWrappingDiv,
-.dashboardPanel .sapMPanelContent {
+.dashboardRow2col .dashboardPanel .sapMPanelContent {
     flex: 1 1 auto !important;
     display: flex !important;
     flex-direction: column !important;
-    justify-content: center !important;
     overflow: hidden !important;
     min-height: 0 !important;
 }
 
-.dashboardRow2col .sapMPanel.dashboardPanel {
-    height: 340px !important;
-    max-height: 340px !important;
+.dashboardRow2col .dashboardPanel .sapMTable {
+    flex: 1 1 auto !important;
+    overflow-y: auto !important;
+    min-height: 0 !important;
+}
+
+/* =========================================================
+   APPLICATIONS SUBMITTED + OFFICER WORKLOAD
+   FORCE BOTH PANELS TO EXACTLY THE SAME HEIGHT
+   ========================================================= */
+
+.dashboardRow2col {
+    display: grid !important;
+
+    grid-template-columns:
+        minmax(0, 1.12fr) minmax(0, 1fr);
+
+    /* THE ROW controls the height */
+    height: 270px !important;
+    min-height: 270px !important;
+    max-height: 270px !important;
+
+    gap: 10px;
+
+    width: 100%;
+
+    margin-top: 10px !important;
+
+    align-items: stretch !important;
+
+    box-sizing: border-box !important;
+
+    overflow: hidden !important;
+}
+
+
+/*
+   BOTH PANELS MUST FILL THE ROW.
+   Do NOT use a separate 270px height here.
+*/
+
+.dashboardRow2col>.sapMPanel.dashboardPanel {
+    width: 100% !important;
+
+    height: 100% !important;
+
+    min-height: 0 !important;
+
+    max-height: none !important;
+
+    margin: 0 !important;
+
+    padding: 0 !important;
+
+    align-self: stretch !important;
+
+    box-sizing: border-box !important;
+
+    overflow: hidden !important;
+}
+
+
+/* =========================================================
+   SAP PANEL INTERNAL WRAPPERS
+   Prevent content from expanding the panel
+   ========================================================= */
+
+.dashboardRow2col>.sapMPanel.dashboardPanel .sapMPanelWrappingDiv {
+    height: 100% !important;
+
+    min-height: 0 !important;
+
+    max-height: 100% !important;
+
+    overflow: hidden !important;
+
+    box-sizing: border-box !important;
+}
+
+
+.dashboardRow2col>.sapMPanel.dashboardPanel .sapMPanelWrappingDivTb {
+    height: 39px !important;
+
+    min-height: 39px !important;
+
+    max-height: 39px !important;
+
+    box-sizing: border-box !important;
+}
+
+
+/* =========================================================
+   PANEL CONTENT
+   ========================================================= */
+
+.dashboardRow2col>.sapMPanel.dashboardPanel .sapMPanelContent {
+    height: calc(100% - 39px) !important;
+
+    min-height: 0 !important;
+
+    max-height: calc(100% - 39px) !important;
+
+    padding: 8px 12px !important;
+
+    overflow: hidden !important;
+
+    box-sizing: border-box !important;
+}
+
+
+/* =========================================================
+   SUBMISSION CHART
+   ========================================================= */
+
+.dashboardRow2col>.sapMPanel.dashboardPanel:first-child .sapVizFrame {
+    width: 100% !important;
+
+    height: 205px !important;
+
+    max-height: 205px !important;
+
+    box-sizing: border-box !important;
+}
+
+
+/* =========================================================
+   OFFICER TABLE
+   ========================================================= */
+
+.dashboardRow2col>.sapMPanel.dashboardPanel:nth-child(2) .sapMTable {
+    width: 100% !important;
+
+    height: auto !important;
+
+    max-height: 225px !important;
+
+    margin: 0 !important;
+
+    overflow: hidden !important;
+}
+
+
+/* Table rows */
+
+.dashboardRow2col>.sapMPanel.dashboardPanel:nth-child(2) .sapMListTblHeaderCell {
+    height: 36px !important;
+
+    padding: 6px 8px !important;
+
+    box-sizing: border-box !important;
+
+    background: #f7f9fb !important;
+
+    border-bottom: 1px solid #e2e7ed !important;
+}
+
+
+.dashboardRow2col>.sapMPanel.dashboardPanel:nth-child(2) .sapMListTblCell {
+    height: 34px !important;
+
+    padding: 6px 8px !important;
+
+    box-sizing: border-box !important;
+
+    border-bottom: 1px solid #edf0f3 !important;
+}
+
+.dashboardRow2col>.sapMPanel.dashboardPanel {
+    height: 270px !important;
+    min-height: 270px !important;
+    max-height: 270px !important;
+}
+
+/* =========================================================
+   OFFICER WORKLOAD SCROLL
+   ========================================================= */
+
+.officerWorkloadScroll {
+    width: 100% !important;
+
+    height: 220px !important;
+
+    max-height: 220px !important;
+
+    box-sizing: border-box !important;
+
+    overflow-y: auto !important;
+
+    overflow-x: hidden !important;
+}
+
+
+/* Make the table use the full available width */
+
+.officerWorkloadScroll .sapMTable {
+    width: 100% !important;
+
+    margin: 0 !important;
+
+    background: #ffffff !important;
+}
+
+
+/* =========================================================
+   OFFICER TABLE HEADER
+   ========================================================= */
+
+.officerWorkloadScroll .sapMListTblHeaderCell {
+    height: 36px !important;
+
+    padding: 6px 8px !important;
+
+    box-sizing: border-box !important;
+
+    background: #f7f9fb !important;
+
+    border-bottom:
+        1px solid #e2e7ed !important;
+}
+
+.officerWorkloadScroll .sapMListTblHeaderCell .sapMText {
+    font-size: 10px !important;
+
+    font-weight: 600 !important;
+
+    color: #344054 !important;
+}
+
+
+/* =========================================================
+   OFFICER TABLE ROWS
+   ========================================================= */
+
+.officerWorkloadScroll .sapMListTblCell {
+    height: 34px !important;
+
+    padding: 6px 8px !important;
+
+    box-sizing: border-box !important;
+
+    border-bottom:
+        1px solid #edf0f3 !important;
+}
+
+.officerWorkloadScroll .sapMListTblCell .sapMText {
+    font-size: 11px !important;
+
+    color: #344054 !important;
+}
+
+
+/* =========================================================
+   ROLE BADGE
+   ========================================================= */
+
+.officerWorkloadScroll .officerRoleBadge {
+    background: #fff0d5;
+
+    color: #935c00;
+
+    padding: 3px 7px;
+
+    border-radius: 8px;
+
+    font-size: 9px;
+
+    font-weight: 600;
+
+    white-space: nowrap;
+}
+
+
+/* =========================================================
+   SCROLLBAR
+   ========================================================= */
+
+.officerWorkloadScroll::-webkit-scrollbar {
+    width: 7px;
+}
+
+.officerWorkloadScroll::-webkit-scrollbar-track {
+    background: #f4f6f8;
+
+    border-radius: 4px;
+}
+
+.officerWorkloadScroll::-webkit-scrollbar-thumb {
+    background: #c3cbd5;
+
+    border-radius: 4px;
+}
+
+.officerWorkloadScroll::-webkit-scrollbar-thumb:hover {
+    background: #9da8b5;
+}
+
+/* =========================================================
+   FIRST CHART ROW
+   ALL 3 PANELS MUST HAVE EXACTLY THE SAME HEIGHT
+   ========================================================= */
+
+.dashboardRow3col {
+    display: grid !important;
+
+    grid-template-columns:
+        repeat(3, minmax(0, 1fr)) !important;
+
+    grid-template-rows:
+        210px !important;
+
+    grid-auto-rows:
+        210px !important;
+
+    gap: 10px !important;
+
+    width: 100% !important;
+
+    height: 210px !important;
+
+    min-height: 210px !important;
+
+    max-height: 210px !important;
+
+    margin-top: 10px !important;
+
+    align-items: stretch !important;
+
+    box-sizing: border-box !important;
+
+    overflow: visible !important;
+}
+
+
+/* =========================================================
+   FORCE EACH OF THE 3 PANELS TO FILL THE ROW
+   ========================================================= */
+
+.dashboardRow3col>.sapMPanel {
+    width: 100% !important;
+
+    height: 210px !important;
+
+    min-height: 210px !important;
+
+    max-height: 210px !important;
+
+    margin: 0 !important;
+
+    padding: 0 !important;
+
+    align-self: stretch !important;
+
+    box-sizing: border-box !important;
+
+    overflow: hidden !important;
+}
+
+
+/* =========================================================
+   EXTRA SPECIFICITY FOR RISK BAND PANEL
+   ========================================================= */
+
+.dashboardRow3col>.sapMPanel:nth-child(3) {
+    width: 100% !important;
+
+    height: 210px !important;
+
+    min-height: 210px !important;
+
+    max-height: 210px !important;
+
+    align-self: stretch !important;
+
+    box-sizing: border-box !important;
+
+    margin: 0 !important;
+}
+
+
+/* =========================================================
+   SAP PANEL OUTER WRAPPER
+   ========================================================= */
+
+.dashboardRow3col>.sapMPanel>.sapMPanelWrappingDiv {
+    height: 210px !important;
+
+    min-height: 210px !important;
+
+    max-height: 210px !important;
+
+    box-sizing: border-box !important;
+
+    overflow: hidden !important;
+}
+
+
+/* =========================================================
+   SAP PANEL HEADER
+   ========================================================= */
+
+.dashboardRow3col .sapMPanelWrappingDivTb {
+    height: 39px !important;
+
+    min-height: 39px !important;
+
+    max-height: 39px !important;
+
+    box-sizing: border-box !important;
+}
+
+
+/* =========================================================
+   PANEL CONTENT
+   ========================================================= */
+
+.dashboardRow3col .sapMPanelContent {
+    height: 171px !important;
+
+    min-height: 171px !important;
+
+    max-height: 171px !important;
+
+    box-sizing: border-box !important;
+
+    padding: 8px 12px !important;
+
+    overflow: hidden !important;
+}
+
+/* =========================================================
+   RISK BAND
+   ========================================================= */
+
+.dashboardRow3col>.sapMPanel:nth-child(3) {
+    height: 210px !important;
+    min-height: 210px !important;
+    max-height: 210px !important;
+
+    display: flex !important;
+    flex-direction: column !important;
+
+    overflow: hidden !important;
+}
+
+
+/* Risk panel internal wrapper */
+
+.dashboardRow3col>.sapMPanel:nth-child(3) .sapMPanelWrappingDiv {
+    height: 210px !important;
+    min-height: 210px !important;
+    max-height: 210px !important;
+
+    display: flex !important;
+    flex-direction: column !important;
+}
+
+
+/* Risk panel content */
+
+.dashboardRow3col>.sapMPanel:nth-child(3) .sapMPanelContent {
+    height: 171px !important;
+    min-height: 171px !important;
+    max-height: 171px !important;
+
+    flex: 1 1 auto !important;
+
+    box-sizing: border-box !important;
+
+    padding: 15px 12px !important;
+
+    overflow: hidden !important;
+}
+
+
+/* Risk bars */
+
+.riskBarList {
+    width: 100% !important;
+
+    gap: 16px !important;
+
+    padding: 10px 2px !important;
+
+    box-sizing: border-box !important;
+}
+
+.riskBarRow {
+    width: 100% !important;
+
+    min-height: 25px !important;
+
+    gap: 9px !important;
+
+    align-items: center !important;
+
+    box-sizing: border-box !important;
+}
+
+.riskBarLabel {
+    width: 55px !important;
+
+    min-width: 55px !important;
+
+    font-size: 11px !important;
+
+    color: #354052 !important;
+
+    text-transform: uppercase;
+}
+
+.riskBarTrack {
+    flex: 1 1 auto !important;
+
+    height: 9px !important;
+
+    background: #edf0f3 !important;
+
+    border-radius: 5px !important;
+
+    overflow: hidden !important;
+}
+
+.riskBarFill {
+    height: 9px !important;
+
+    background: #2a78d6 !important;
+
+    border-radius: 5px !important;
+}
+
+.riskBarValue {
+    width: 18px !important;
+
+    text-align: right !important;
+
+    font-weight: 600 !important;
+
+    font-size: 11px !important;
+
+    color: #344054 !important;
+}
+
+.appsPage {
+    background: #eef2f9;
+}
+
+.appsSubtext {
+    font-size: 12px;
+    color: #6a6d70;
+}
+
+.appsSearch {
+    margin: 12px 0;
+}
+
+.kanbanScroll {
+    padding-bottom: 8px;
+}
+
+.kanbanRow {
+    gap: 14px;
+}
+
+.kanbanColumn {
+    min-width: 260px;
+    flex-shrink: 0;
+}
+
+.kanbanColumnHeader {
+    gap: 8px;
+    margin-bottom: 10px;
+}
+
+.kanbanColumnBadge {
+    padding: 3px 10px;
+    border-radius: 10px;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.kanbanColumnCount {
+    color: #6a6d70;
+    font-size: 13px;
+}
+
+.kanbanBadgeGray {
+    background: #eef0f2;
+    color: #52525b;
+}
+
+.kanbanBadgeOrange {
+    background: #FAEEDA;
+    color: #854F0B;
+}
+
+.kanbanBadgePurple {
+    background: #EEEDFE;
+    color: #3C3489;
+}
+
+.kanbanBadgeBlue {
+    background: #E6F1FB;
+    color: #185FA5;
+}
+
+.kanbanBadgeGreen {
+    background: #EAF3DE;
+    color: #3B6D11;
+}
+
+.kanbanCardList {
+    gap: 10px;
+}
+
+.kanbanCard {
+    background: #fff;
+    border-radius: 10px;
+    padding: 12px;
+    cursor: pointer;
+    border: 1px solid #eee;
+    transition: box-shadow 0.15s;
+}
+
+.kanbanCard:hover {
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+}
+
+.kanbanCardTop {
+    gap: 8px;
+    margin-bottom: 8px;
+}
+
+.kanbanCardIcon {
+    font-size: 16px;
+    color: #6a6d70;
+    background: #f3f4f5;
+    padding: 6px;
+    border-radius: 6px;
+}
+
+.kanbanCardName {
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.kanbanCardSub {
+    font-size: 11px;
+    color: #999;
+}
+
+.kanbanCardAmountRow {
+    margin-bottom: 6px;
+}
+
+.kanbanCardAmount {
+    font-weight: 700;
+    font-size: 13px;
+}
+
+.kanbanCardRisk {
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.kanbanCardFooter {
+    font-size: 11px;
+    color: #888;
+}
+
+.appsTableCard {
+    background: #fff;
+    border-radius: 12px;
+    padding: 16px;
+}
+
+.appsTableHeader {
+    margin-bottom: 12px;
+}
+
+.appsPill {
+    padding: 2px 10px;
+    border-radius: 10px;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.appsPillRed {
+    background: #FCEBEB;
+    color: #A32D2D;
+}
+
+.appsPillOrange {
+    background: #FAEEDA;
+    color: #854F0B;
+}
+
+.appsPillGreen {
+    background: #EAF3DE;
+    color: #3B6D11;
+}
+
+.appsPillBlue {
+    background: #E6F1FB;
+    color: #185FA5;
+}
+
+.appsPillGray {
+    background: #eef0f2;
+    color: #52525b;
+}
+
+.kanbanCardListItem {
+    background: transparent !important;
+    border: none !important;
+    padding: 0 !important;
+    margin-bottom: 10px;
+}
+
+.kanbanCardListItem:hover {
+    background: transparent !important;
+}
+
+.appsBackRow {
+    margin-bottom: 8px;
+}
+
+.appsBackLink {
+    font-size: 13px;
+}
+
+.appsKpiRow {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+    margin-bottom: 16px;
+}
+
+.appsKpiCard {
+    background: #fff;
+    border-radius: 12px;
+    padding: 14px;
+    flex-direction: row;
+    gap: 12px;
+    align-items: flex-start;
+}
+
+.appsKpiIconBox {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.appsKpiIconBlue {
+    background: #E6F1FB;
+    color: #185FA5;
+}
+
+.appsKpiIconGreen {
+    background: #EAF3DE;
+    color: #3B6D11;
+}
+
+.appsKpiIconRed {
+    background: #FCEBEB;
+    color: #A32D2D;
+}
+
+.appsKpiIconPurple {
+    background: #EEEDFE;
+    color: #3C3489;
+}
+
+.appsKpiBlue {
+    background: #F0F7FE;
+}
+
+.appsKpiGreen {
+    background: #F2F8ED;
+}
+
+.appsKpiRed {
+    background: #FDF1F1;
+}
+
+.appsKpiPurple {
+    background: #F5F3FE;
+}
+
+.appsFilterCard {
+    background: #fff;
+    border-radius: 12px;
+    padding: 16px;
+    margin-bottom: 16px;
+}
+
+.appsFilterRow {
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+.appsFilterField {
+    min-width: 160px;
+}
+
+.appsFilterSearch {
+    min-width: 240px;
+}
+
+.appsFilterGo {
+    margin-left: 4px;
+}
+
+.appsFilterBadgeRow {
+    margin-top: 10px;
+}
+
+.appsCountBadge {
+    background: #E6F1FB;
+    color: #185FA5;
+    padding: 3px 10px;
+    border-radius: 10px;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.appsTableCard {
+    background: #fff;
+    border-radius: 12px;
+    padding: 16px;
+}
+
+.appsTableHeader {
+    margin-bottom: 12px;
+}
+
+.appsPill {
+    padding: 2px 10px;
+    border-radius: 10px;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.appsPillRed {
+    background: #FCEBEB;
+    color: #A32D2D;
+}
+
+.appsPillOrange {
+    background: #FAEEDA;
+    color: #854F0B;
+}
+
+.appsPillGreen {
+    background: #EAF3DE;
+    color: #3B6D11;
+}
+
+.appsPillBlue {
+    background: #E6F1FB;
+    color: #185FA5;
+}
+
+.appsPillPurple {
+    background: #EEEDFE;
+    color: #3C3489;
+}
+
+.appsPillGray {
+    background: #eef0f2;
+    color: #52525b;
+}
+
+.kanbanScroll {
+    padding-bottom: 8px;
+}
+
+.kanbanRow {
+    gap: 14px;
+}
+
+.kanbanColumn {
+    min-width: 260px;
+    flex-shrink: 0;
+}
+
+.kanbanColumnHeader {
+    gap: 8px;
+    margin-bottom: 10px;
+}
+
+.kanbanColumnBadge {
+    padding: 3px 10px;
+    border-radius: 10px;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.kanbanColumnCount {
+    color: #6a6d70;
+    font-size: 13px;
+}
+
+.kanbanBadgeGray {
+    background: #eef0f2;
+    color: #52525b;
+}
+
+.kanbanBadgeOrange {
+    background: #FAEEDA;
+    color: #854F0B;
+}
+
+.kanbanBadgePurple {
+    background: #EEEDFE;
+    color: #3C3489;
+}
+
+.kanbanBadgeBlue {
+    background: #E6F1FB;
+    color: #185FA5;
+}
+
+.kanbanBadgeGreen {
+    background: #EAF3DE;
+    color: #3B6D11;
+}
+
+.kanbanCardList {
+    gap: 10px;
+}
+
+.kanbanCardListItem {
+    background: transparent !important;
+    border: none !important;
+    padding: 0 !important;
+    margin-bottom: 10px;
+}
+
+.kanbanCardListItem:hover {
+    background: transparent !important;
+}
+
+.kanbanCard {
+    background: #fff;
+    border-radius: 10px;
+    padding: 12px;
+    cursor: pointer;
+    border: 1px solid #eee;
+    transition: box-shadow 0.15s;
+}
+
+.kanbanCard:hover {
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+}
+
+.kanbanCardTop {
+    gap: 8px;
+    margin-bottom: 8px;
+}
+
+.kanbanCardIcon {
+    font-size: 16px;
+    color: #6a6d70;
+    background: #f3f4f5;
+    padding: 6px;
+    border-radius: 6px;
+}
+
+.kanbanCardName {
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.kanbanCardSub {
+    font-size: 11px;
+    color: #999;
+}
+
+.kanbanCardAmountRow {
+    margin-bottom: 6px;
+}
+
+.kanbanCardAmount {
+    font-weight: 700;
+    font-size: 13px;
+}
+
+.kanbanCardFooter {
+    font-size: 11px;
+    color: #888;
+}
+
+.kanbanColumn {
+    min-width: 260px;
+    width: 260px;
+    flex-shrink: 0;
+    box-sizing: border-box;
+}
+
+.kanbanCardList {
+    gap: 10px;
+}
+
+.kanbanCard {
+    background: #fff;
+    border-radius: 10px;
+    padding: 12px;
+    cursor: pointer;
+    border: 1px solid #eee;
+    transition: box-shadow 0.15s;
+    min-height: 110px;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.kanbanCardFooter {
+    font-size: 11px;
+    color: #888;
+    overflow: hidden;
+}
+
+.kanbanCardMeta {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    max-width: 130px;
+}
+
+.kanbanColumnBadge {
+    padding: 4px 12px;
+    border-radius: 12px;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.kanbanBadgeNew {
+    background: #FCEBEB;
+    color: #A32D2D;
+}
+.kanbanBadgeInReview {
+    background: #FAEEDA;
+    color: #854F0B;
+}
+.kanbanBadgePendingInfo {
+    background: #EEEDFE;
+    color: #3C3489;
+}
+.kanbanBadgeApproved {
+    background: #EAF3DE;
+    color: #3B6D11;
+}
+.kanbanBadgeReady {
+    background: #EAF3DE;
+    color: #3B6D11;
+}
+.kanbanBadgeRejected,
+.kanbanBadgeEscalated {
+    background: #eef0f2;
+    color: #52525b;
+}
+
+.detailTabRow {
+    gap: 24px;
+    border-bottom: 1px solid #e5e7eb;
+    padding-bottom: 0;
+    margin-bottom: 16px;
+}
+.detailTabItem {
+    font-size: 13px;
+    color: #6a6d70 !important;
+    text-decoration: none !important;
+    padding-bottom: 10px;
+    cursor: pointer;
+}
+.detailTabItem:hover {
+    color: #185FA5 !important;
+}
+.detailTabActive {
+    color: #185FA5 !important;
+    font-weight: 600;
+    border-bottom: 2px solid #185FA5;
+}
+
+.detailHeaderRow {
+    margin-bottom: 12px;
+}
+.detailTitleRow {
+    gap: 10px;
+}
+.detailSubtitle {
+    font-size: 13px;
+    color: #6a6d70;
+    margin-top: 4px;
+}
+.detailActionRow {
+    gap: 8px;
+}
+
+.detailTabRow {
+    gap: 24px;
+    border-bottom: 1px solid #e5e7eb;
+    margin-bottom: 20px;
+}
+.detailTabItem {
+    font-size: 13px;
+    color: #6a6d70 !important;
+    text-decoration: none !important;
+    padding-bottom: 10px;
+    cursor: pointer;
+}
+.detailTabItem:hover {
+    color: #185FA5 !important;
+}
+.detailTabActive {
+    color: #185FA5 !important;
+    font-weight: 600;
+    border-bottom: 2px solid #185FA5;
+}
+
+.detailKpiStrip {
+    background: #F0F7FE;
+    border-radius: 12px;
+    padding: 16px 20px;
+    gap: 40px;
+    margin-bottom: 20px;
+}
+.detailKpiItem {
+    flex-direction: row;
+    gap: 12px;
+    align-items: center;
+}
+.detailKpiIconBox {
+    width: 36px;
+    height: 36px;
+    border-radius: 8px;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+.detailKpiIconBlue { background: #E6F1FB; color: #185FA5; }
+.detailKpiIconOrange { background: #FAEEDA; color: #854F0B; }
+.detailKpiIconGreen { background: #EAF3DE; color: #3B6D11; }
+.detailKpiIconPurple { background: #EEEDFE; color: #3C3489; }
+.detailKpiLabel {
+    font-size: 12px;
+    color: #6a6d70;
+}
+.detailKpiValue {
+    font-size: 15px;
+    font-weight: 600;
+    color: #1c1c1c;
+    display: block;
+}
+
+.detailCardRow {
+    gap: 16px;
+    margin-bottom: 20px;
+}
+.detailCard {
+    background: #fff;
+    border-radius: 12px;
+    padding: 18px 20px;
+    flex: 1;
+    box-sizing: border-box;
+}
+.detailSectionCard {
+    width: 100%;
+}
+.detailCardHeader {
+    margin-bottom: 14px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid #eee;
+}
+.detailCardIcon {
+    font-size: 16px;
+    color: #185FA5;
+    margin-right: 8px;
+}
+.detailCardIconRed {
+    font-size: 16px;
+    color: #A32D2D;
+    margin-right: 8px;
+}
+.detailFieldRow {
+    justify-content: space-between;
+    padding: 8px 0;
+    border-bottom: 1px solid #f5f5f5;
+}
+.detailFieldLabel {
+    color: #6a6d70;
+    font-size: 13px;
+}
+
+.detailKpiStrip {
+    margin-bottom: 24px;
+}
+
+.detailCardRow {
+    margin-bottom: 24px;
+}
+
+.detailSectionCard {
+    margin-bottom: 24px;
 }
