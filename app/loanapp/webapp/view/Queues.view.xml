@@ -1,0 +1,102 @@
+<mvc:View
+    controllerName="loan.cockpit.loanapp.controller.Queues"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns="sap.m"
+    xmlns:core="sap.ui.core"
+    displayBlock="true">
+
+    <HBox id="_IDGenHBox147" class="cockpitShell" height="100%">
+        <core:Fragment fragmentName="loan.cockpit.loanapp.fragment.Sidebar" type="XML"/>
+
+        <VBox id="_IDGenVBox112" class="cockpitMain" width="100%">
+            <HBox id="_IDGenHBox148" class="cockpitTopBar" alignItems="Center" justifyContent="SpaceBetween">
+                <VBox id="_IDGenVBox113">
+                    <Text id="_IDGenText235" text="Loan Operations Cockpit" class="topBarTitle"/>
+                    <Text id="_IDGenText236" text="Monitor · Manage · Accelerate" class="topBarSubtitle"/>
+                </VBox>
+                <SearchField id="_IDGenSearchField8" placeholder="Search applications, applicants, or reference number..." width="380px" class="topBarSearch"/>
+                <HBox id="_IDGenHBox149" alignItems="Center" class="topBarRight">
+                    <core:Icon id="_IDGenIcon58" src="sap-icon://bell" class="topBarBellIcon"/>
+                    <HBox id="_IDGenHBox150" class="topBarAvatar" alignItems="Center"><Text id="_IDGenText237" text="{user>/initials}" class="topBarAvatarInitials"/></HBox>
+                    <VBox id="_IDGenVBox114">
+                        <Text id="_IDGenText238" text="{user>/name}" class="topBarUserName"/>
+                        <Text id="_IDGenText239" text="{user>/role}" class="topBarUserRole"/>
+                    </VBox>
+                </HBox>
+            </HBox>
+
+            <ScrollContainer id="_IDGenScrollContainer5" horizontal="false" vertical="true" height="100%" width="100%">
+            <VBox id="_IDGenVBox115" class="cockpitBody">
+
+                <Title id="_IDGenTitle22" text="Work Queues" level="H2" class="greetingTitle"/>
+                <Text id="_IDGenText240" text="Applications grouped by assigned officer, so you can see who owns what." class="greetingSubtitle detailSubtitle"/>
+
+                <!-- KPI row -->
+                <HBox id="_IDGenHBox151" class="appsKpiRow">
+                    <VBox id="_IDGenVBox116" class="appsKpiCard appsKpiBlue">
+                        <HBox id="_IDGenHBox152" class="appsKpiIconBox appsKpiIconBlue"><core:Icon id="_IDGenIcon59" src="sap-icon://list"/></HBox>
+                        <VBox id="_IDGenVBox117">
+                            <Text id="_IDGenText241" text="Total in Queue" class="kpiCardLabel"/>
+                            <Text id="_IDGenText242" text="{queues>/kpi/total}" class="kpiCardValue kpiValueBlue"/>
+                        </VBox>
+                    </VBox>
+                    <VBox id="_IDGenVBox118" class="appsKpiCard appsKpiRed">
+                        <HBox id="_IDGenHBox153" class="appsKpiIconBox appsKpiIconRed"><core:Icon id="_IDGenIcon60" src="sap-icon://person-placeholder"/></HBox>
+                        <VBox id="_IDGenVBox119">
+                            <Text id="_IDGenText243" text="Unassigned" class="kpiCardLabel"/>
+                            <Text id="_IDGenText244" text="{queues>/kpi/unassigned}" class="kpiCardValue kpiValueDarkRed"/>
+                        </VBox>
+                    </VBox>
+                    <VBox id="_IDGenVBox120" class="appsKpiCard appsKpiPurple">
+                        <HBox id="_IDGenHBox154" class="appsKpiIconBox appsKpiIconOrange"><core:Icon id="_IDGenIcon61" src="sap-icon://history"/></HBox>
+                        <VBox id="_IDGenVBox121">
+                            <Text id="_IDGenText245" text="Aged &gt; 5 Days" class="kpiCardLabel"/>
+                            <Text id="_IDGenText246" text="{queues>/kpi/aged}" class="kpiCardValue kpiValueOrange"/>
+                        </VBox>
+                    </VBox>
+                    <VBox id="_IDGenVBox122" class="appsKpiCard appsKpiGreen">
+                        <HBox id="_IDGenHBox155" class="appsKpiIconBox appsKpiIconGreen"><core:Icon id="_IDGenIcon62" src="sap-icon://official-service"/></HBox>
+                        <VBox id="_IDGenVBox123">
+                            <Text id="_IDGenText247" text="Officers with Load" class="kpiCardLabel"/>
+                            <Text id="_IDGenText248" text="{queues>/kpi/officersWithLoad}" class="kpiCardValue kpiValueGreen"/>
+                        </VBox>
+                    </VBox>
+                </HBox>
+
+                <!-- Queue columns -->
+                <ScrollContainer id="_IDGenScrollContainer6" horizontal="true" vertical="false" width="100%" class="kanbanScroll">
+                    <HBox id="_IDGenHBox156" items="{queues>/columns}" class="kanbanRow">
+                        <VBox id="_IDGenVBox124" class="kanbanColumn">
+                            <HBox id="_IDGenHBox157" alignItems="Center" class="kanbanColumnHeader">
+                                <HBox id="_IDGenHBox158" class="kanbanColumnBadge {queues>badgeClass}"><Text id="_IDGenText249" text="{queues>label}"/></HBox>
+                                <Text id="_IDGenText250" text="{queues>count}" class="kanbanColumnCount"/>
+                            </HBox>
+                            <List id="_IDGenList1" items="{queues>items}" showSeparators="None" class="kanbanCardList">
+                                <CustomListItem id="_IDGenCustomListItem" type="Active" press="onCardPress" class="kanbanCardListItem">
+                                    <VBox id="_IDGenVBox125" class="kanbanCard">
+                                        <HBox id="_IDGenHBox159" alignItems="Center" class="kanbanCardTop">
+                                            <core:Icon id="_IDGenIcon63" src="sap-icon://building" class="kanbanCardIcon"/>
+                                            <VBox id="_IDGenVBox126">
+                                                <Text id="_IDGenText251" text="{queues>applicantName}" class="kanbanCardName"/>
+                                                <Text id="_IDGenText252" text="{queues>applicationNumber}" class="kanbanCardSub"/>
+                                            </VBox>
+                                        </HBox>
+                                        <HBox id="_IDGenHBox160" justifyContent="SpaceBetween" class="kanbanCardAmountRow">
+                                            <Text id="_IDGenText253" text="{= '₹' + ${queues>requestedAmount} }" class="kanbanCardAmount"/>
+                                            <HBox id="_IDGenHBox161" class="appsPill {queues>statusClass}"><Text id="_IDGenText254" text="{queues>statusLabel}"/></HBox>
+                                        </HBox>
+                                        <HBox id="_IDGenHBox162" justifyContent="SpaceBetween" class="kanbanCardFooter">
+                                            <Text id="_IDGenText255" text="{= ${queues>ageDays} + ' days old' }" class="kanbanCardMeta"/>
+                                        </HBox>
+                                    </VBox>
+                                </CustomListItem>
+                            </List>
+                        </VBox>
+                    </HBox>
+                </ScrollContainer>
+
+            </VBox>
+            </ScrollContainer>
+        </VBox>
+    </HBox>
+</mvc:View>

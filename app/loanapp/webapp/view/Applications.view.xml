@@ -32,20 +32,14 @@
             <ScrollContainer id="_IDGenScrollContainer1" horizontal="false" vertical="true" height="100%" width="100%">
             <VBox id="_IDGenVBox28" class="cockpitBody">
 
-                <HBox id="_IDGenHBox53" alignItems="Center" class="appsBackRow">
-                    <Link id="_IDGenLink6" text="Back to Dashboard" press="onNavBack" class="appsBackLink"/>
-                     <SegmentedButton id="_IDGenSegmentedButton" selectedKey="{apps>/viewMode}" selectionChange="onViewModeChange" class="appsViewToggle">
-                            <items>
-                                <SegmentedButtonItem id="_IDGenSegBtnTable" key="table" icon="sap-icon://table-view" text="Table"/>
-                                <SegmentedButtonItem id="_IDGenSegBtnCards" key="cards" icon="sap-icon://grid" text="Cards"/>
-                            </items>
-                        </SegmentedButton>
-                </HBox>
+               
                 <HBox id="_IDGenHBox54" justifyContent="SpaceBetween" alignItems="End" class="greetingRow">
                     <VBox id="_IDGenVBox29">
                         <Text id="_IDGenText87" text="Loan Applications" class="greetingTitle"/>
                         <Text id="_IDGenText88" text="Review, monitor and manage all loan applications." class="greetingSubtitle"/>
-                    </VBox>
+                     <Button id="_IDGenButton13" text="New Application" type="Emphasized" icon="sap-icon://add" press="onNavToCreate"/>
+               
+               </VBox>
                     <HBox id="_IDGenHBox1"  alignItems="Center" class="appsHeaderRight">
                         <Text id="_IDGenText89" text="{user>/todayLabel}" class="greetingDate"/>
                        
@@ -147,7 +141,15 @@
                     </HBox>
                     <Table id="_IDGenTable3" items="{apps>/filteredRows}" noDataText="No applications found">
                         <columns>
-                            <Column id="_IDGenColumn17"><Text id="_IDGenText103" text="Application No."/></Column>
+                            <Column id="_IDGenColumn17">
+    <HBox id="_IDGenHBox128" alignItems="Center" class="sortableColumnHeader">
+        <Text id="_IDGenText103" text="Application No."/>
+        <core:Icon id="_IDGenIcon45"
+            src="{= ${apps>/sortDirection} === 'asc' ? 'sap-icon://sort-ascending' : (${apps>/sortDirection} === 'desc' ? 'sap-icon://sort-descending' : 'sap-icon://sort') }"
+            press="onSortByApplicationNumber"
+            class="sortIcon"/>
+    </HBox>
+</Column>
                             <Column id="_IDGenColumn18"><Text id="_IDGenText104" text="Applicant"/></Column>
                             <Column id="_IDGenColumn19"><Text id="_IDGenText105" text="Product"/></Column>
                             <Column id="_IDGenColumn20" hAlign="End"><Text id="_IDGenText106" text="Requested Amount"/></Column>

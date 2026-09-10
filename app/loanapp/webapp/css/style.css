@@ -2192,3 +2192,16 @@
 .detailSectionCard {
     margin-bottom: 24px;
 }
+
+.sortableColumnHeader {
+    gap: 4px;
+    align-items: center;
+}
+.sortIcon {
+    font-size: 12px;
+    color: #6a6d70;
+}
+
+.deleteLink {
+    color: #A32D2D !important;
+}

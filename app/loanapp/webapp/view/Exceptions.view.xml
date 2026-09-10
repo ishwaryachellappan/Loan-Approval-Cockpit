@@ -1,0 +1,126 @@
+<mvc:View
+    controllerName="loan.cockpit.loanapp.controller.Exceptions"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns="sap.m"
+    xmlns:core="sap.ui.core"
+    displayBlock="true">
+
+    <HBox id="_IDGenHBox134" class="cockpitShell" height="100%">
+        <core:Fragment fragmentName="loan.cockpit.loanapp.fragment.Sidebar" type="XML"/>
+
+        <VBox id="_IDGenVBox94" class="cockpitMain" width="100%">
+            <HBox id="_IDGenHBox135" class="cockpitTopBar" alignItems="Center" justifyContent="SpaceBetween">
+                <VBox id="_IDGenVBox95">
+                    <Text id="_IDGenText208" text="Loan Operations Cockpit" class="topBarTitle"/>
+                    <Text id="_IDGenText209" text="Monitor · Manage · Accelerate" class="topBarSubtitle"/>
+                </VBox>
+                <SearchField id="_IDGenSearchField6" placeholder="Search applications, applicants, or reference number..." width="380px" class="topBarSearch"/>
+                <HBox id="_IDGenHBox136" alignItems="Center" class="topBarRight">
+                    <core:Icon id="_IDGenIcon53" src="sap-icon://bell" class="topBarBellIcon"/>
+                    <HBox id="_IDGenHBox137" class="topBarAvatar" alignItems="Center"><Text id="_IDGenText210" text="{user>/initials}" class="topBarAvatarInitials"/></HBox>
+                    <VBox id="_IDGenVBox96">
+                        <Text id="_IDGenText211" text="{user>/name}" class="topBarUserName"/>
+                        <Text id="_IDGenText212" text="{user>/role}" class="topBarUserRole"/>
+                    </VBox>
+                </HBox>
+            </HBox>
+
+            <ScrollContainer id="_IDGenScrollContainer4" horizontal="false" vertical="true" height="100%" width="100%">
+            <VBox id="_IDGenVBox97" class="cockpitBody">
+
+                <Title id="_IDGenTitle20" text="Exception Queue" level="H2" class="greetingTitle"/>
+                <Text id="_IDGenText213" text="All open exceptions blocking applications across the pipeline." class="greetingSubtitle detailSubtitle"/>
+
+                <!-- KPI row -->
+                <HBox id="_IDGenHBox138" class="appsKpiRow">
+                    <VBox id="_IDGenVBox99" class="appsKpiCard appsKpiRed">
+                        <HBox id="_IDGenHBox139" class="appsKpiIconBox appsKpiIconRed"><core:Icon id="_IDGenIcon54" src="sap-icon://alert"/></HBox>
+                        <VBox id="_IDGenVBox100">
+                            <Text id="_IDGenText214" text="Total Open" class="kpiCardLabel"/>
+                            <Text id="_IDGenText215" text="{exceptions>/kpi/total}" class="kpiCardValue kpiValueDarkRed"/>
+                        </VBox>
+                    </VBox>
+                    <VBox id="_IDGenVBox101" class="appsKpiCard appsKpiRed">
+                        <HBox id="_IDGenHBox140" class="appsKpiIconBox appsKpiIconRed"><core:Icon id="_IDGenIcon55" src="sap-icon://message-error"/></HBox>
+                        <VBox id="_IDGenVBox102">
+                            <Text id="_IDGenText216" text="Critical" class="kpiCardLabel"/>
+                            <Text id="_IDGenText217" text="{exceptions>/kpi/critical}" class="kpiCardValue kpiValueDarkRed"/>
+                        </VBox>
+                    </VBox>
+                    <VBox id="_IDGenVBox103" class="appsKpiCard appsKpiPurple">
+                        <HBox id="_IDGenHBox141" class="appsKpiIconBox appsKpiIconOrange"><core:Icon id="_IDGenIcon56" src="sap-icon://message-warning"/></HBox>
+                        <VBox id="_IDGenVBox104">
+                            <Text id="_IDGenText218" text="Major" class="kpiCardLabel"/>
+                            <Text id="_IDGenText219" text="{exceptions>/kpi/major}" class="kpiCardValue kpiValueOrange"/>
+                        </VBox>
+                    </VBox>
+                    <VBox id="_IDGenVBox105" class="appsKpiCard appsKpiBlue">
+                        <HBox id="_IDGenHBox142" class="appsKpiIconBox appsKpiIconBlue"><core:Icon id="_IDGenIcon57" src="sap-icon://document"/></HBox>
+                        <VBox id="_IDGenVBox106">
+                            <Text id="_IDGenText220" text="Applications Affected" class="kpiCardLabel"/>
+                            <Text id="_IDGenText221" text="{exceptions>/kpi/appsAffected}" class="kpiCardValue kpiValueBlue"/>
+                        </VBox>
+                    </VBox>
+                </HBox>
+
+                <!-- Filter bar -->
+                <VBox id="_IDGenVBox107" class="appsFilterCard">
+                    <HBox id="_IDGenHBox143" alignItems="End" class="appsFilterRow">
+                        <VBox id="_IDGenVBox108" class="appsFilterField appsFilterSearch">
+                            <Label id="_IDGenLabel27" text="Search"/>
+                            <SearchField id="_IDGenSearchField7" value="{exceptions>/searchTerm}" liveChange="onSearchChange" placeholder="Search by application no. or reason..."/>
+                        </VBox>
+                        <VBox id="_IDGenVBox109" class="appsFilterField">
+                            <Label id="_IDGenLabel28" text="Severity"/>
+                            <Select id="_IDGenSelect8" selectedKey="{exceptions>/filterSeverity}" change="onFilterChange">
+                                <core:Item id="_IDGenItem31" key="ALL" text="All"/>
+                                <core:Item id="_IDGenItem32" key="Critical" text="Critical"/>
+                                <core:Item id="_IDGenItem33" key="Major" text="Major"/>
+                                <core:Item id="_IDGenItem34" key="Minor" text="Minor"/>
+                            </Select>
+                        </VBox>
+                        <VBox id="_IDGenVBox110" class="appsFilterField">
+                            <Label id="_IDGenLabel29" text="Reason"/>
+                            <Select id="_IDGenSelect9" selectedKey="{exceptions>/filterReason}" change="onFilterChange" items="{exceptions>/reasonOptions}">
+                                <core:Item id="_IDGenItem35" key="{exceptions>key}" text="{exceptions>text}"/>
+                            </Select>
+                        </VBox>
+                        <Button id="_IDGenButton30" text="Reset" type="Transparent" press="onFilterReset"/>
+                    </HBox>
+                </VBox>
+
+                <!-- Table -->
+                <VBox id="_IDGenVBox111" class="appsTableCard">
+                    <HBox id="_IDGenHBox144" justifyContent="SpaceBetween" alignItems="Center" class="appsTableHeader">
+                        <Title id="_IDGenTitle21" text="{= 'Open Exceptions (' + ${exceptions>/filteredRows}.length + ')' }" level="H3"/>
+                    </HBox>
+                    <Table id="_IDGenTable9" items="{exceptions>/filteredRows}" noDataText="No open exceptions">
+                        <columns>
+                            <Column id="_IDGenColumn49"><Text id="_IDGenText222" text="Severity"/></Column>
+                            <Column id="_IDGenColumn50"><Text id="_IDGenText223" text="Application No."/></Column>
+                            <Column id="_IDGenColumn51"><Text id="_IDGenText224" text="Applicant"/></Column>
+                            <Column id="_IDGenColumn52"><Text id="_IDGenText225" text="Reason"/></Column>
+                            <Column id="_IDGenColumn53"><Text id="_IDGenText226" text="Description"/></Column>
+                            <Column id="_IDGenColumn54"><Text id="_IDGenText227" text="Suggested Action"/></Column>
+                            <Column id="_IDGenColumn55"/>
+                        </columns>
+                        <items>
+                            <ColumnListItem id="_IDGenColumnListItem10" type="Navigation" press="onRowPress">
+                                <cells>
+                                    <HBox id="_IDGenHBox145" class="appsPill {exceptions>severityClass}"><Text id="_IDGenText228" text="{exceptions>severity}"/></HBox>
+                                    <Text id="_IDGenText229" text="{exceptions>applicationNumber}"/>
+                                    <Text id="_IDGenText230" text="{= ${exceptions>applicantName} || '—' }"/>
+                                    <Text id="_IDGenText231" text="{exceptions>reasonCode}"/>
+                                    <Text id="_IDGenText232" text="{exceptions>description}"/>
+                                    <Text id="_IDGenText233" text="{exceptions>suggestedAction}"/>
+                                </cells>
+                            </ColumnListItem>
+                        </items>
+                    </Table>
+                </VBox>
+
+            </VBox>
+            </ScrollContainer>
+        </VBox>
+    </HBox>
+</mvc:View>

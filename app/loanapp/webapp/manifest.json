@@ -52,7 +52,8 @@
         "sap.fe.templates": {},
         "sap.f": {},
         "sap.suite.ui.microchart": {},
-        "sap.viz": {}
+        "sap.viz": {},
+        "sap.ui.unified": {}
       }
     },
     "contentDensities": {
@@ -90,42 +91,62 @@
     "routing": {
       "config": {},
       "routes": [
-    {
-        "pattern": "Dashboard",
-        "name": "Dashboard",
-        "target": "Dashboard"
-    },
-    {
-        "pattern": "",
-        "name": "DashboardRoot",
-        "target": "Dashboard"
-    },
-    {
-        "pattern": "Applications:?query:",
-        "name": "ApplicationsHome",
-        "target": "ApplicationsHome"
-    },
-    {
-        "pattern": "LoanApplicationDetail/{key}",
-        "name": "ApplicationDetail",
-        "target": "ApplicationDetail"
-    },
-    {
-        "pattern": "FilteredList/{filterType}/{filterValue}",
-        "name": "FilteredList",
-        "target": "FilteredList"
-    },
-    {
-        "pattern": "ApplicationsList:?query:",
-        "name": "LoanApplicationsList",
-        "target": "LoanApplicationsList"
-    },
-    {
-        "pattern": "LoanApplications({key}):?query:",
-        "name": "LoanApplicationsObjectPage",
-        "target": "LoanApplicationsObjectPage"
-    }
-],
+        {
+          "pattern": "Dashboard",
+          "name": "Dashboard",
+          "target": "Dashboard"
+        },
+        {
+          "pattern": "",
+          "name": "DashboardRoot",
+          "target": "Dashboard"
+        },
+        {
+          "pattern": "Applications:?query:",
+          "name": "ApplicationsHome",
+          "target": "ApplicationsHome"
+        },
+        {
+          "pattern": "LoanApplicationDetail/{key}",
+          "name": "ApplicationDetail",
+          "target": "ApplicationDetail"
+        },
+        {
+          "pattern": "FilteredList/{filterType}/{filterValue}",
+          "name": "FilteredList",
+          "target": "FilteredList"
+        },
+        {
+          "pattern": "ApplicationsList:?query:",
+          "name": "LoanApplicationsList",
+          "target": "LoanApplicationsList"
+        },
+        {
+          "pattern": "LoanApplications({key}):?query:",
+          "name": "LoanApplicationsObjectPage",
+          "target": "LoanApplicationsObjectPage"
+        },
+        {
+          "pattern": "CreateApplication",
+          "name": "CreateApplication",
+          "target": "CreateApplicationPage"
+        },
+        {
+          "pattern": "Exceptions:?query:",
+          "name": "ExceptionsHome",
+          "target": "ExceptionsPage"
+        },
+        {
+          "pattern": "Queues:?query:",
+          "name": "QueuesHome",
+          "target": "QueuesPage"
+        },
+        {
+          "pattern": "Reports:?query:",
+          "name": "ReportsHome",
+          "target": "ReportsPage"
+        }
+      ],
       "targets": {
         "LoanApplicationsList": {
           "type": "Component",
@@ -195,6 +216,11 @@
             }
           }
         },
+        "CreateApplicationPage": {
+          "type": "View",
+          "id": "CreateApplicationPage",
+          "name": "loan.cockpit.loanapp.view.CreateApplication"
+        },
         "ApplicationDetail": {
           "type": "View",
           "id": "ApplicationDetail",
@@ -214,6 +240,21 @@
           "type": "View",
           "id": "ApplicationsHome",
           "name": "loan.cockpit.loanapp.view.Applications"
+        },
+        "ExceptionsPage": {
+          "type": "View",
+          "id": "ExceptionsPage",
+          "name": "loan.cockpit.loanapp.view.Exceptions"
+        },
+        "QueuesPage": {
+          "type": "View",
+          "id": "QueuesPage",
+          "name": "loan.cockpit.loanapp.view.Queues"
+        },
+        "ReportsPage": {
+          "type": "View",
+          "id": "ReportsPage",
+          "name": "loan.cockpit.loanapp.view.Reports"
         }
       }
     }

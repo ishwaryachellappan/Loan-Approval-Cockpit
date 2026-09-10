@@ -53,9 +53,9 @@ sap.ui.define([
         },
 
         onRowPress: function (oEvent) {
-            const oCtx = oEvent.getSource().getBindingContext("filtered");
-            const sID = oCtx.getProperty("ID");
-            this.getOwnerComponent().getRouter().navTo("LoanApplicationsObjectPage", { key: sID });
-        }
+    const oCtx = oEvent.getSource().getBindingContext("filtered");
+    const sID = oCtx.getProperty("ID");
+    this.getOwnerComponent().getRouter().navTo("ApplicationDetail", { key: sID });
+}
     });
 });

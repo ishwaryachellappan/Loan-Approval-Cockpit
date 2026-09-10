@@ -1,5 +1,8 @@
 const cds = require('@sap/cds');
+require('dotenv').config();
+const twilio = require('twilio');
 
+const twilioClient = twilio(process.env.TWILIO_ACCOUNT_SID, process.env.TWILIO_AUTH_TOKEN);
 module.exports = cds.service.impl(async function () {
     const { Documents, CreditChecks, Exceptions, Rules, LoanApplications, LoanProducts, Officers, Applicants, ApprovalSteps, AuditLogs } = this.entities;
     // --- Helpers ---
@@ -100,6 +103,10 @@ module.exports = cds.service.impl(async function () {
         await recordApprovalStep(tx, appID, approver, 'APPROVED', comments);
         await tx.run(UPDATE(LoanApplications, appID).with({ status: 'APPROVED' }));
         await recordAudit(tx, appID, approver, app.status, 'APPROVED', comments || 'Approved by officer');
+        const applicant = await tx.run(SELECT.one.from('Applicants').where({ ID: app.applicant_ID }));
+        await sendApprovalSms(applicant?.phone, app.applicationNumber);
+
+        return true;
         return true;
     });
 
@@ -523,5 +530,22 @@ module.exports = cds.service.impl(async function () {
         return scored.slice(0, 3);
     });
 
+    async function sendApprovalSms(phone, applicationNumber) {
+        if (!phone) {
+            console.warn(`No phone number on file — skipping SMS for ${applicationNumber}`);
+            return;
+        }
+        const formattedPhone = phone.startsWith('+') ? phone : `+91${phone}`;
 
+        try {
+            await twilioClient.messages.create({
+                body: `Your loan application ${applicationNumber} has been approved.`,
+                from: process.env.TWILIO_PHONE_NUMBER,
+                to: formattedPhone
+            });
+            console.log(`Approval SMS sent to ${formattedPhone} for ${applicationNumber}`);
+        } catch (e) {
+            console.error(`Failed to send approval SMS for ${applicationNumber}:`, e.message);
+        }
+    }
 });

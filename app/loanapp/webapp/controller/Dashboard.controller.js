@@ -138,11 +138,11 @@ sap.ui.define([
         },
 
 
-        onPriorityAppPress: function (oEvent) {
-            const oCtx = oEvent.getSource().getBindingContext("dashboard");
-            const sID = oCtx.getProperty("ID");
-            this.getOwnerComponent().getRouter().navTo("LoanApplicationsObjectPage", { key: sID });
-        },
+     onPriorityAppPress: function (oEvent) {
+    const oCtx = oEvent.getSource().getBindingContext("dashboard");
+    const sID = oCtx.getProperty("ID");
+    this.getOwnerComponent().getRouter().navTo("ApplicationDetail", { key: sID });
+},
 
         formatTrendIcon: function (v) {
             if (v === null || v === undefined) return "";
@@ -171,11 +171,7 @@ sap.ui.define([
             return "trendNeutral";
         },
 
-        onPriorityAppPress: function (oEvent) {
-            const oCtx = oEvent.getSource().getBindingContext("dashboard");
-            const sID = oCtx.getProperty("ID");
-            this.getOwnerComponent().getRouter().navTo("LoanApplicationsObjectPage", { key: sID });
-        }
+       
 
     });
 });

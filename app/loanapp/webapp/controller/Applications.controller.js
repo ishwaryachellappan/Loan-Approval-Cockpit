@@ -5,17 +5,17 @@ sap.ui.define([
 ], function (Controller, JSONModel, SidebarHelper) {
     "use strict";
 
-   const STATUS_META = {
-    DRAFT:            { label: "New",         statusClass: "appsPillGray",   badgeClass: "kanbanBadgeNew"        },
-    SUBMITTED:        { label: "Submitted",    statusClass: "appsPillBlue",   badgeClass: "kanbanBadgeInReview"   },
-    VALIDATING:       { label: "In Review",    statusClass: "appsPillOrange", badgeClass: "kanbanBadgeInReview"   },
-    EXCEPTION:        { label: "Exception",    statusClass: "appsPillRed",    badgeClass: "kanbanBadgePendingInfo"},
-    READY_FOR_REVIEW: { label: "Ready",        statusClass: "appsPillGreen",  badgeClass: "kanbanBadgeReady"      },
-    UNDERWRITING:     { label: "Review",       statusClass: "appsPillPurple", badgeClass: "kanbanBadgePendingInfo"},
-    APPROVED:         { label: "Approved",     statusClass: "appsPillGreen",  badgeClass: "kanbanBadgeApproved"   },
-    REJECTED:         { label: "Rejected",     statusClass: "appsPillGray",   badgeClass: "kanbanBadgeRejected"   },
-    ESCALATED:        { label: "Escalated",    statusClass: "appsPillGray",   badgeClass: "kanbanBadgeEscalated"  }
-};
+    const STATUS_META = {
+        DRAFT: { label: "New", statusClass: "appsPillGray", badgeClass: "kanbanBadgeNew" },
+        SUBMITTED: { label: "Submitted", statusClass: "appsPillBlue", badgeClass: "kanbanBadgeInReview" },
+        VALIDATING: { label: "In Review", statusClass: "appsPillOrange", badgeClass: "kanbanBadgeInReview" },
+        EXCEPTION: { label: "Exception", statusClass: "appsPillRed", badgeClass: "kanbanBadgePendingInfo" },
+        READY_FOR_REVIEW: { label: "Ready", statusClass: "appsPillGreen", badgeClass: "kanbanBadgeReady" },
+        UNDERWRITING: { label: "Review", statusClass: "appsPillPurple", badgeClass: "kanbanBadgePendingInfo" },
+        APPROVED: { label: "Approved", statusClass: "appsPillGreen", badgeClass: "kanbanBadgeApproved" },
+        REJECTED: { label: "Rejected", statusClass: "appsPillGray", badgeClass: "kanbanBadgeRejected" },
+        ESCALATED: { label: "Escalated", statusClass: "appsPillGray", badgeClass: "kanbanBadgeEscalated" }
+    };
 
     const COLUMN_ORDER = ["New", "Submitted", "In Review", "Exception", "Ready", "Review", "Approved", "Rejected", "Escalated"];
 
@@ -32,6 +32,12 @@ sap.ui.define([
                 kpi: { total: 0, ready: 0, exceptions: 0, submitted: 0, totalTrend: null }
             }), "apps");
             this._setGreetingModel();
+            this._loadApplications();
+            this.getOwnerComponent().getRouter().getRoute("ApplicationsHome")
+                .attachPatternMatched(this._onRouteMatched, this);
+        },
+
+        _onRouteMatched: function () {
             this._loadApplications();
         },
 
@@ -73,7 +79,7 @@ sap.ui.define([
 
         _shapeRow: function (app) {
             const meta = STATUS_META[app.status] || { label: "Other", statusClass: "appsPillGray", badgeClass: "kanbanBadgeGray" };
-   const risk = (app.riskAssessments && app.riskAssessments[0]) || null;
+            const risk = (app.riskAssessments && app.riskAssessments[0]) || null;
             const openExceptions = (app.exceptions || []).filter(e => e.status === "OPEN");
 
             let priorityLabel = "Low", priorityClass = "appsPillBlue";
@@ -96,7 +102,7 @@ sap.ui.define([
                 statusLabel: meta.label,
                 statusClass: meta.statusClass,
                 priorityLabel, priorityClass,
-                 badgeClass: meta.badgeClass,
+                badgeClass: meta.badgeClass,
                 issueText: openExceptions.length ? (openExceptions[0].description || openExceptions[0].reasonCode) : ""
             };
         },
@@ -135,17 +141,17 @@ sap.ui.define([
 
 
             model.setProperty("/filteredRows", filtered);
-            
-             this._buildColumns(filtered);
-             console.log("columns:", JSON.stringify(columns, null, 2));
+
+            this._buildColumns(filtered);
+            console.log("columns:", JSON.stringify(columns, null, 2));
 
         },
 
-       onCardPress: function (oEvent) {
-    const oCtx = oEvent.getSource().getBindingContext("apps");
-    if (!oCtx) return;
-    this.getOwnerComponent().getRouter().navTo("ApplicationDetail", { key: oCtx.getProperty("ID") });
-},
+        onCardPress: function (oEvent) {
+            const oCtx = oEvent.getSource().getBindingContext("apps");
+            if (!oCtx) return;
+            this.getOwnerComponent().getRouter().navTo("ApplicationDetail", { key: oCtx.getProperty("ID") });
+        },
 
         formatTrendIcon: function (v) {
             if (v === null || v === undefined) return "";
@@ -216,5 +222,26 @@ sap.ui.define([
         onViewModeChange: function (oEvent) {
             this.getView().getModel("apps").setProperty("/viewMode", oEvent.getParameter("item").getKey());
         },
+
+        onNavToCreate: function () {
+            this.getOwnerComponent().getRouter().navTo("CreateApplication");
+        },
+
+        onSortByApplicationNumber: function () {
+    const model = this.getView().getModel("apps");
+    const current = model.getProperty("/sortDirection");
+    const next = current === "asc" ? "desc" : "asc";
+
+    const rows = model.getProperty("/filteredRows").slice();
+    rows.sort((a, b) => {
+        const cmp = (a.applicationNumber || "").localeCompare(b.applicationNumber || "", undefined, { numeric: true });
+        return next === "asc" ? cmp : -cmp;
+    });
+
+    model.setProperty("/filteredRows", rows);
+    model.setProperty("/sortDirection", next);
+},
+
+
     });
 });

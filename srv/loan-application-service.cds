@@ -77,7 +77,7 @@ type PriorityApplication {
 
 service LoanApplicationService {
 
-    @odata.draft.enabled
+   
     entity Applicants       as projection on db.Applicants;
 
 

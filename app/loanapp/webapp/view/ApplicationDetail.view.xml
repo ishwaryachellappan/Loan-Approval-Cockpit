@@ -88,7 +88,7 @@
                     <VBox id="_IDGenVBox61" class="detailCard">
                         <HBox id="_IDGenHBox94" justifyContent="SpaceBetween" alignItems="Center" class="detailCardHeader">
                             <HBox id="_IDGenHBox95" alignItems="Center"><core:Icon id="_IDGenIcon5" src="sap-icon://person-placeholder" class="detailCardIcon"/><Title id="_IDGenTitle9" text="Applicant Details" level="H4"/></HBox>
-                            <Link id="_IDGenLink8" text="Edit" icon="sap-icon://edit"/>
+                          <Link id="_IDGenLink8" text="Edit" icon="sap-icon://edit" press="onEditApplicant"/>
                         </HBox>
                         <HBox id="_IDGenHBox96" class="detailFieldRow"><Text id="_IDGenText81" text="First Name" class="detailFieldLabel"/><Text id="_IDGenText118" text="{app>/applicant/firstName}"/></HBox>
                         <HBox id="_IDGenHBox97" class="detailFieldRow"><Text id="_IDGenText139" text="Last Name" class="detailFieldLabel"/><Text id="_IDGenText140" text="{app>/applicant/lastName}"/></HBox>
@@ -98,13 +98,23 @@
                     <VBox id="_IDGenVBox62" class="detailCard">
                         <HBox id="_IDGenHBox100" justifyContent="SpaceBetween" alignItems="Center" class="detailCardHeader">
                             <HBox id="_IDGenHBox101" alignItems="Center"><core:Icon id="_IDGenIcon6" src="sap-icon://product" class="detailCardIcon"/><Title id="_IDGenTitle10" text="Product Details" level="H4"/></HBox>
-                            <Link id="_IDGenLink9" text="Edit" icon="sap-icon://edit"/>
+                           <Link id="_IDGenLink9" text="Edit" icon="sap-icon://edit" press="onEditLoanDetails"/>
                         </HBox>
                         <HBox id="_IDGenHBox102" class="detailFieldRow"><Text id="_IDGenText145" text="Product Code" class="detailFieldLabel"/><Text id="_IDGenText146" text="{app>/product/productCode}"/></HBox>
                         <HBox id="_IDGenHBox103" class="detailFieldRow"><Text id="_IDGenText147" text="Product Name" class="detailFieldLabel"/><Text id="_IDGenText148" text="{app>/product/productName}"/></HBox>
                         <HBox id="_IDGenHBox104" class="detailFieldRow"><Text id="_IDGenText149" text="Min Amount" class="detailFieldLabel"/><ObjectNumber id="_IDGenObjectNumber3" number="{app>/product/minAmount}" unit="INR"/></HBox>
                         <HBox id="_IDGenHBox105" class="detailFieldRow"><Text id="_IDGenText150" text="Max Amount" class="detailFieldLabel"/><ObjectNumber id="_IDGenObjectNumber4" number="{app>/product/maxAmount}" unit="INR"/></HBox>
                     </VBox>
+                    <VBox id="_IDGenVBox98" class="detailCard detailSectionCard">
+    <HBox id="_IDGenHBox129" justifyContent="SpaceBetween" alignItems="Center" class="detailCardHeader">
+        <HBox id="_IDGenHBox132" alignItems="Center"><core:Icon id="_IDGenIcon30" src="sap-icon://official-service" class="detailCardIcon"/><Title id="_IDGenTitle19" text="Assigned Officer" level="H4"/></HBox>
+        <Button id="_IDGenButton27" text="Assign Officer" press="onOpenAssignOfficer"/>
+    </HBox>
+    <HBox id="_IDGenHBox133" class="detailFieldRow">
+        <Text id="_IDGenText205" text="Current Assignment" class="detailFieldLabel"/>
+        <Text id="_IDGenText206" text="{app>/assignedOfficerName}"/>
+    </HBox>
+</VBox>
                 </HBox>
 
                 <!-- Why Blocked -->
@@ -138,7 +148,8 @@
                 <VBox id="_IDGenVBox64" class="detailCard detailSectionCard">
                     <HBox id="_IDGenHBox110" justifyContent="SpaceBetween" alignItems="Center" class="detailCardHeader">
                         <HBox id="_IDGenHBox111" alignItems="Center"><core:Icon id="_IDGenIcon25" src="sap-icon://document-text" class="detailCardIcon"/><Title id="_IDGenTitle12" text="{= 'Documents (' + ${app>/documents}.length + ')' }" level="H4"/></HBox>
-                    </HBox>
+                    <Button id="_IDGenButton14" text="Upload Document" icon="sap-icon://upload" press="onUploadDocument"/>
+</HBox>
                     <Table id="_IDGenTable5" items="{app>/documents}" noDataText="No documents">
                         <columns>
                             <Column id="_IDGenColumn31"><Text id="_IDGenText161" text="Type"/></Column>
@@ -154,7 +165,10 @@
                                     <Text id="_IDGenText167" text="{app>fileName}"/>
                                     <Text id="_IDGenText168" text="{app>expiryDateLabel}"/>
                                     <HBox id="_IDGenHBox112" class="appsPill {app>docStatusClass}"><Text id="_IDGenText169" text="{app>status}"/></HBox>
-                                    <Link id="_IDGenLink10" text="Download"/>
+<HBox id="_IDGenHBox146" alignItems="Center">
+    <Link id="_IDGenLink10" text="Download" press="onDownloadDocument"/>
+    <Link id="_IDGenLink12" text="Delete" press="onDeleteDocument" class="deleteLink sapUiTinyMarginBegin"/>
+</HBox>
                                 </cells>
                             </ColumnListItem>
                         </items>
@@ -164,8 +178,11 @@
                 <!-- Credit Check + Risk Assessment -->
                 <HBox id="_IDGenHBox113" class="detailCardRow">
                     <VBox id="_IDGenVBox65" class="detailCard">
-                        <HBox id="_IDGenHBox114" alignItems="Center" class="detailCardHeader"><core:Icon id="_IDGenIcon26" src="sap-icon://credit-card" class="detailCardIcon"/><Title id="_IDGenTitle13" text="{= 'Credit Check (' + ${app>/creditChecks}.length + ')' }" level="H4"/></HBox>
-                        <Table id="_IDGenTable6" items="{app>/creditChecks}" noDataText="No credit checks">
+                      <HBox id="_IDGenHBox114" justifyContent="SpaceBetween" alignItems="Center" class="detailCardHeader">
+    <HBox id="_IDGenHBox130" alignItems="Center"><core:Icon id="_IDGenIcon26" src="sap-icon://credit-card" class="detailCardIcon"/><Title id="_IDGenTitle13" text="{= 'Credit Check (' + ${app>/creditChecks}.length + ')' }" level="H4"/></HBox>
+    <Button id="_IDGenButton25" text="Complete Credit Check" press="onCompleteCreditCheck" visible="{app>/hasPendingCreditCheck}"/>
+</HBox>
+  <Table id="_IDGenTable6" items="{app>/creditChecks}" noDataText="No credit checks">
                             <columns>
                                 <Column id="_IDGenColumn36"><Text id="_IDGenText170" text="Score"/></Column>
                                 <Column id="_IDGenColumn37"><Text id="_IDGenText171" text="Grade"/></Column>
@@ -187,8 +204,11 @@
                         </Table>
                     </VBox>
                     <VBox id="_IDGenVBox66" class="detailCard">
-                        <HBox id="_IDGenHBox116" alignItems="Center" class="detailCardHeader"><core:Icon id="_IDGenIcon27" src="sap-icon://shield" class="detailCardIcon"/><Title id="_IDGenTitle14" text="{= 'Risk Assessment (' + ${app>/riskAssessments}.length + ')' }" level="H4"/></HBox>
-                        <Table id="_IDGenTable7" items="{app>/riskAssessments}" noDataText="No risk assessments">
+                        <HBox id="_IDGenHBox116" justifyContent="SpaceBetween" alignItems="Center" class="detailCardHeader">
+    <HBox id="_IDGenHBox131" alignItems="Center"><core:Icon id="_IDGenIcon27" src="sap-icon://shield" class="detailCardIcon"/><Title id="_IDGenTitle14" text="{= 'Risk Assessment (' + ${app>/riskAssessments}.length + ')' }" level="H4"/></HBox>
+    <Button id="_IDGenButton26" text="Complete Risk Assessment" press="onCompleteRiskAssessment" visible="{app>/hasPendingRiskAssessment}"/>
+</HBox>
+ <Table id="_IDGenTable7" items="{app>/riskAssessments}" noDataText="No risk assessments">
                             <columns>
                                 <Column id="_IDGenColumn41"><Text id="_IDGenText180" text="Risk Band"/></Column>
                                 <Column id="_IDGenColumn42"><Text id="_IDGenText181" text="Risk Score"/></Column>
@@ -234,6 +254,168 @@
 
             </VBox>
             </ScrollContainer>
+
+            <Dialog id="editApplicantDialog" title="Edit Applicant" contentWidth="400px">
+    <content>
+        <VBox id="_IDGenVBox82" class="sapUiSmallMargin">
+            <Label id="_IDGenLabel12" text="First Name"/>
+            <Input id="editApplicantFirstName" value="{edit>/firstName}"/>
+            <Label id="_IDGenLabel13" text="Last Name" class="sapUiSmallMarginTop"/>
+            <Input id="editApplicantLastName" value="{edit>/lastName}"/>
+            <Label id="_IDGenLabel14" text="Email" class="sapUiSmallMarginTop"/>
+            <Input id="editApplicantEmail" value="{edit>/email}" type="Email"/>
+            <Label id="_IDGenLabel15" text="Phone" class="sapUiSmallMarginTop"/>
+            <Input id="editApplicantPhone" value="{edit>/phone}"/>
+        </VBox>
+    </content>
+    <beginButton>
+        <Button id="_IDGenButton15" text="Save" type="Emphasized" press="onSaveApplicantEdit"/>
+    </beginButton>
+    <endButton>
+        <Button id="_IDGenButton16" text="Cancel" press="onCancelApplicantEdit"/>
+    </endButton>
+</Dialog>
+
+<Dialog id="editLoanDetailsDialog" title="Edit Loan Details" contentWidth="400px">
+    <content>
+        <VBox id="_IDGenVBox83" class="sapUiSmallMargin">
+            <Label id="_IDGenLabel16" text="Requested Amount"/>
+            <Input id="editRequestedAmount" value="{edit>/requestedAmount}" type="Number"/>
+            <Label id="_IDGenLabel17" text="Tenure (months)" class="sapUiSmallMarginTop"/>
+            <Input id="editTenureMonths" value="{edit>/tenureMonths}" type="Number"/>
+        </VBox>
+    </content>
+    <beginButton>
+        <Button id="_IDGenButton17" text="Save" type="Emphasized" press="onSaveLoanDetailsEdit"/>
+    </beginButton>
+    <endButton>
+        <Button id="_IDGenButton18" text="Cancel" press="onCancelLoanDetailsEdit"/>
+    </endButton>
+</Dialog>
+
+<Dialog id="uploadDocumentDialog" title="Upload Document" contentWidth="420px" xmlns:u="sap.ui.unified">
+    <content>
+        <VBox id="_IDGenVBox84" class="sapUiSmallMargin">
+            <Label id="_IDGenLabel18" text="Document Type"/>
+            <Select id="uploadDocType" selectedKey="{upload>/docType}">
+                <core:Item id="_IDGenItem19" key="ID_PROOF" text="ID Proof"/>
+                <core:Item id="_IDGenItem20" key="INCOME_PROOF" text="Income Proof"/>
+                <core:Item id="_IDGenItem21" key="COLLATERAL" text="Collateral Document"/>
+                <core:Item id="_IDGenItem22" key="OTHER" text="Other"/>
+            </Select>
+            <Label id="_IDGenLabel19" text="File" class="sapUiSmallMarginTop"/>
+            <u:FileUploader
+                id="documentFileUploader"
+                width="100%"
+                fileType="pdf,jpg,jpeg,png"
+                change="onFileSelected"
+                placeholder="Choose a file..."/>
+        </VBox>
+    </content>
+    <beginButton>
+        <Button id="_IDGenButton19" text="Upload" type="Emphasized" press="onConfirmUpload" enabled="{upload>/canSubmit}"/>
+    </beginButton>
+    <endButton>
+        <Button id="_IDGenButton20" text="Cancel" press="onCancelUpload"/>
+    </endButton>
+</Dialog>
+
+<Dialog id="completeCreditCheckDialog" title="Complete Credit Check" contentWidth="420px">
+    <content>
+        <VBox id="_IDGenVBox87" class="sapUiSmallMargin">
+            <SegmentedButton id="_IDGenSegmentedButton3" selectedKey="{credit>/mode}" selectionChange="onCreditModeChange" class="sapUiSmallMarginBottom">
+                <items>
+                    <SegmentedButtonItem id="_IDGenSegmentedButtonItem2" key="manual" text="Manual Entry"/>
+                    <SegmentedButtonItem id="_IDGenSegmentedButtonItem5" key="auto" text="Auto-Generate"/>
+                </items>
+            </SegmentedButton>
+
+            <VBox id="_IDGenVBox88" visible="{= ${credit>/mode} === 'manual' }">
+                <Label id="_IDGenLabel21" text="Score (300–900)"/>
+                <Input id="_IDGenInput6" value="{credit>/score}" type="Number"/>
+                <Label id="_IDGenLabel22" text="Grade" class="sapUiSmallMarginTop"/>
+                <Select id="_IDGenSelect6" selectedKey="{credit>/grade}">
+                    <core:Item id="_IDGenItem23" key="A" text="A"/>
+                    <core:Item id="_IDGenItem24" key="B" text="B"/>
+                    <core:Item id="_IDGenItem25" key="C" text="C"/>
+                    <core:Item id="_IDGenItem26" key="D" text="D"/>
+                </Select>
+            </VBox>
+
+            <VBox id="_IDGenVBox89" visible="{= ${credit>/mode} === 'auto' }">
+                <Text id="_IDGenText203" text="A plausible score and grade will be generated automatically based on the application's requested amount and product." class="detailSubtitle"/>
+            </VBox>
+        </VBox>
+    </content>
+    <beginButton>
+        <Button id="_IDGenButton21" text="Submit" type="Emphasized" press="onSubmitCreditCheck"/>
+    </beginButton>
+    <endButton>
+        <Button id="_IDGenButton22" text="Cancel" press="onCancelCreditCheck"/>
+    </endButton>
+</Dialog>
+
+<Dialog id="completeRiskAssessmentDialog" title="Complete Risk Assessment" contentWidth="420px">
+    <content>
+        <VBox id="_IDGenVBox90" class="sapUiSmallMargin">
+            <SegmentedButton id="_IDGenSegmentedButton4" selectedKey="{risk>/mode}" selectionChange="onRiskModeChange" class="sapUiSmallMarginBottom">
+                <items>
+                    <SegmentedButtonItem id="_IDGenSegmentedButtonItem6" key="manual" text="Manual Entry"/>
+                    <SegmentedButtonItem id="_IDGenSegmentedButtonItem7" key="auto" text="Auto-Generate"/>
+                </items>
+            </SegmentedButton>
+
+            <VBox id="_IDGenVBox91" visible="{= ${risk>/mode} === 'manual' }">
+                <Label id="_IDGenLabel23" text="Risk Band"/>
+                <Select id="_IDGenSelect7" selectedKey="{risk>/riskBand}">
+                    <core:Item id="_IDGenItem27" key="LOW" text="Low"/>
+                    <core:Item id="_IDGenItem28" key="MEDIUM" text="Medium"/>
+                    <core:Item id="_IDGenItem29" key="HIGH" text="High"/>
+                    <core:Item id="_IDGenItem30" key="CRITICAL" text="Critical"/>
+                </Select>
+                <Label id="_IDGenLabel24" text="Risk Score" class="sapUiSmallMarginTop"/>
+                <Input id="_IDGenInput7" value="{risk>/riskScore}" type="Number"/>
+                <Label id="_IDGenLabel25" text="Collateral Coverage (%)" class="sapUiSmallMarginTop"/>
+                <Input id="_IDGenInput8" value="{risk>/collateralCoverage}" type="Number"/>
+                <Label id="_IDGenLabel26" text="Rationale" class="sapUiSmallMarginTop"/>
+                <TextArea id="_IDGenTextArea1" value="{risk>/rationale}" rows="3"/>
+            </VBox>
+
+            <VBox id="_IDGenVBox92" visible="{= ${risk>/mode} === 'auto' }">
+                <Text id="_IDGenText204" text="A risk band, score, and rationale will be generated automatically based on the application's loan-to-limit ratio." class="detailSubtitle"/>
+            </VBox>
+        </VBox>
+    </content>
+    <beginButton>
+        <Button id="_IDGenButton23" text="Submit" type="Emphasized" press="onSubmitRiskAssessment"/>
+    </beginButton>
+    <endButton>
+        <Button id="_IDGenButton24" text="Cancel" press="onCancelRiskAssessment"/>
+    </endButton>
+</Dialog>
+
+<Dialog id="assignOfficerDialog" title="Assign Officer" contentWidth="500px">
+    <content>
+        <VBox id="_IDGenVBox93" class="sapUiSmallMargin">
+            <BusyIndicator id="_IDGenBusyIndicator" visible="{assign>/loading}" class="sapUiMediumMarginTop"/>
+            <Text id="_IDGenText207" text="No eligible officers found for this application's amount." visible="{= !${assign>/loading} &amp;&amp; ${assign>/candidates}.length === 0 }"/>
+            <List id="_IDGenList" items="{assign>/candidates}" mode="SingleSelectLeft" selectionChange="onCandidateSelect" visible="{= !${assign>/loading} }">
+                <StandardListItem id="_IDGenStandardListItem1"
+                    title="{assign>name}"
+                    description="{assign>rationale}"
+                    info="{= 'Score: ' + ${assign>score} }"
+                    infoState="None"/>
+            </List>
+        </VBox>
+    </content>
+    <beginButton>
+        <Button id="_IDGenButton28" text="Assign" type="Emphasized" press="onConfirmAssignOfficer" enabled="{assign>/canSubmit}"/>
+    </beginButton>
+    <endButton>
+        <Button id="_IDGenButton29" text="Cancel" press="onCancelAssignOfficer"/>
+    </endButton>
+</Dialog>
+
         </VBox>
     </HBox>
 </mvc:View>

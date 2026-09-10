@@ -263,6 +263,12 @@ annotate service.Documents with @(UI.LineItem: [
     }
 ]);
 
+annotate service.Documents with @(
+    Core.MediaType: mediaType
+) {
+    content @Core.MediaType: mediaType
+};
+
 annotate service.CreditChecks with @(UI.LineItem: [
     {
         $Type: 'UI.DataField',

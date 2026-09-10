@@ -19,14 +19,14 @@
     <core:Icon id="_IDGenIcon48" src="sap-icon://alert" class="sidebarNavIcon"/>
     <Text id="_IDGenText134" text="Exceptions"/>
 </HBox>
-            <HBox id="_IDGenHBox82" class="sidebarNavItem">
-                <core:Icon id="_IDGenIcon49" src="sap-icon://list" class="sidebarNavIcon"/>
-                <Text id="_IDGenText135" text="Queues"/>
-            </HBox>
-            <HBox id="_IDGenHBox83" class="sidebarNavItem">
-                <core:Icon id="_IDGenIcon50" src="sap-icon://business-objects-experience" class="sidebarNavIcon"/>
-                <Text id="_IDGenText136" text="Reports"/>
-            </HBox>
+            <HBox id="sidebarNavQueues" class="sidebarNavItem">
+    <core:Icon id="_IDGenIcon64" src="sap-icon://list" class="sidebarNavIcon"/>
+    <Text id="_IDGenText135" text="Queues"/>
+</HBox>
+            <HBox id="sidebarNavReports" class="sidebarNavItem">
+    <core:Icon id="_IDGenIcon50" src="sap-icon://business-objects-experience" class="sidebarNavIcon"/>
+    <Text id="_IDGenText136" text="Reports"/>
+</HBox>
             <HBox id="_IDGenHBox85" class="sidebarNavItem">
                 <core:Icon id="_IDGenIcon51" src="sap-icon://action-settings" class="sidebarNavIcon"/>
                 <Text id="_IDGenText137" text="Administration"/>

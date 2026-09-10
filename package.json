@@ -2,7 +2,9 @@
   "dependencies": {
     "@cap-js/sqlite": "^3.0.2",
     "@sap/cds": "^10.0.6",
-    "node.js": "^0.0.1-security"
+    "dotenv": "^17.4.2",
+    "node.js": "^0.0.1-security",
+    "twilio": "^6.1.0"
   },
   "devDependencies": {
     "@sap/cds-dk": "^10.0.7",

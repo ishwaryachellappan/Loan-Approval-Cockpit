@@ -1,0 +1,152 @@
+<mvc:View
+    controllerName="loan.cockpit.loanapp.controller.Reports"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns="sap.m"
+    xmlns:core="sap.ui.core"
+    xmlns:viz="sap.viz.ui5.controls"
+    xmlns:viz.data="sap.viz.ui5.data"
+    xmlns:viz.feeds="sap.viz.ui5.controls.common.feeds"
+    displayBlock="true">
+
+    <HBox id="_IDGenHBox53" class="cockpitShell" height="100%">
+        <core:Fragment fragmentName="loan.cockpit.loanapp.fragment.Sidebar" type="XML"/>
+
+        <VBox id="_IDGenVBox127" class="cockpitMain" width="100%">
+            <HBox id="_IDGenHBox82" class="cockpitTopBar" alignItems="Center" justifyContent="SpaceBetween">
+                <VBox id="_IDGenVBox128">
+                    <Text id="_IDGenText256" text="Loan Operations Cockpit" class="topBarTitle"/>
+                    <Text id="_IDGenText257" text="Monitor · Manage · Accelerate" class="topBarSubtitle"/>
+                </VBox>
+                <SearchField id="_IDGenSearchField9" placeholder="Search applications, applicants, or reference number..." width="380px" class="topBarSearch"/>
+                <HBox id="_IDGenHBox163" alignItems="Center" class="topBarRight">
+                    <core:Icon id="_IDGenIcon49" src="sap-icon://bell" class="topBarBellIcon"/>
+                    <HBox id="_IDGenHBox164" class="topBarAvatar" alignItems="Center"><Text id="_IDGenText258" text="{user>/initials}" class="topBarAvatarInitials"/></HBox>
+                    <VBox id="_IDGenVBox129">
+                        <Text id="_IDGenText259" text="{user>/name}" class="topBarUserName"/>
+                        <Text id="_IDGenText260" text="{user>/role}" class="topBarUserRole"/>
+                    </VBox>
+                </HBox>
+            </HBox>
+
+            <ScrollContainer id="_IDGenScrollContainer7" horizontal="false" vertical="true" height="100%" width="100%">
+            <VBox id="_IDGenVBox130" class="cockpitBody">
+
+                <Title id="_IDGenTitle23" text="Reports" level="H2" class="greetingTitle"/>
+                <Text id="_IDGenText261" text="Operational analytics across exceptions, officers, and product mix." class="greetingSubtitle detailSubtitle"/>
+
+                <!-- Summary KPI row -->
+                <HBox id="_IDGenHBox165" class="appsKpiRow">
+                    <VBox id="_IDGenVBox131" class="appsKpiCard appsKpiBlue">
+                        <HBox id="_IDGenHBox166" class="appsKpiIconBox appsKpiIconBlue"><core:Icon id="_IDGenIcon65" src="sap-icon://document"/></HBox>
+                        <VBox id="_IDGenVBox132">
+                            <Text id="_IDGenText262" text="Total Applications" class="kpiCardLabel"/>
+                            <Text id="_IDGenText263" text="{reports>/kpi/total}" class="kpiCardValue kpiValueBlue"/>
+                        </VBox>
+                    </VBox>
+                    <VBox id="_IDGenVBox133" class="appsKpiCard appsKpiGreen">
+                        <HBox id="_IDGenHBox167" class="appsKpiIconBox appsKpiIconGreen"><core:Icon id="_IDGenIcon66" src="sap-icon://accept"/></HBox>
+                        <VBox id="_IDGenVBox134">
+                            <Text id="_IDGenText264" text="Approval Rate" class="kpiCardLabel"/>
+                            <Text id="_IDGenText265" text="{= ${reports>/kpi/approvalRate} + '%' }" class="kpiCardValue kpiValueGreen"/>
+                        </VBox>
+                    </VBox>
+                    <VBox id="_IDGenVBox135" class="appsKpiCard appsKpiPurple">
+                        <HBox id="_IDGenHBox168" class="appsKpiIconBox appsKpiIconPurple"><core:Icon id="_IDGenIcon67" src="sap-icon://time-entry-request"/></HBox>
+                        <VBox id="_IDGenVBox136">
+                            <Text id="_IDGenText266" text="Avg. Cycle Time" class="kpiCardLabel"/>
+                            <Text id="_IDGenText267" text="{= ${reports>/kpi/avgCycleDays} !== null ? ${reports>/kpi/avgCycleDays} + ' days' : '—' }" class="kpiCardValue kpiValuePurple"/>
+                        </VBox>
+                    </VBox>
+                    <VBox id="_IDGenVBox137" class="appsKpiCard appsKpiRed">
+                        <HBox id="_IDGenHBox169" class="appsKpiIconBox appsKpiIconRed"><core:Icon id="_IDGenIcon68" src="sap-icon://alert"/></HBox>
+                        <VBox id="_IDGenVBox138">
+                            <Text id="_IDGenText268" text="Exception Rate" class="kpiCardLabel"/>
+                            <Text id="_IDGenText269" text="{= ${reports>/kpi/exceptionRate} + '%' }" class="kpiCardValue kpiValueDarkRed"/>
+                        </VBox>
+                    </VBox>
+                </HBox>
+
+                <!-- Row 1: Exception Reasons + Product Mix -->
+                <HBox id="_IDGenHBox170" class="dashboardRow2col">
+                    <Panel id="_IDGenPanel6" headerText="Top Exception Reasons" class="sapUiTinyMargin dashboardPanel" width="100%">
+                        <viz:VizFrame id="_IDGenVizFrame3" vizType="bar" height="260px" width="100%"
+                            vizProperties="{
+                                'plotArea': { 'colorPalette': ['#e34948'] },
+                                'legend': { 'visible': false },
+                                'title': { 'visible': false },
+                                'categoryAxis': { 'title': { 'visible': false } },
+                                'valueAxis': { 'title': { 'visible': false } }
+                            }">
+                            <viz:dataset>
+                                <viz.data:FlattenedDataset id="_IDGenFlattenedDataset3" data="{reports>/exceptionReasons}">
+                                    <viz.data:dimensions>
+                                        <viz.data:DimensionDefinition id="_IDGenDimensionDefinition3" name="Reason" value="{reports>reason}"/>
+                                    </viz.data:dimensions>
+                                    <viz.data:measures>
+                                        <viz.data:MeasureDefinition id="_IDGenMeasureDefinition3" name="Count" value="{reports>count}"/>
+                                    </viz.data:measures>
+                                </viz.data:FlattenedDataset>
+                            </viz:dataset>
+                            <viz:feeds>
+                                <viz.feeds:FeedItem id="_IDGenFeedItem" uid="valueAxis" type="Measure" values="Count"/>
+                                <viz.feeds:FeedItem id="_IDGenFeedItem8" uid="categoryAxis" type="Dimension" values="Reason"/>
+                            </viz:feeds>
+                        </viz:VizFrame>
+                    </Panel>
+
+                    <Panel id="_IDGenPanel7" headerText="Applications by Product" class="sapUiTinyMargin dashboardPanel" width="100%">
+                        <viz:VizFrame id="_IDGenVizFrame4" vizType="donut" height="260px" width="100%"
+                            vizProperties="{
+                                'plotArea': { 'colorPalette': ['#2a78d6','#1baf7a','#6250d6','#eb9c4b'] },
+                                'legend': { 'visible': true, 'position': 'right' },
+                                'title': { 'visible': false }
+                            }">
+                            <viz:dataset>
+                                <viz.data:FlattenedDataset id="_IDGenFlattenedDataset4" data="{reports>/productMix}">
+                                    <viz.data:dimensions>
+                                        <viz.data:DimensionDefinition id="_IDGenDimensionDefinition4" name="Product" value="{reports>product}"/>
+                                    </viz.data:dimensions>
+                                    <viz.data:measures>
+                                        <viz.data:MeasureDefinition id="_IDGenMeasureDefinition4" name="Count" value="{reports>count}"/>
+                                    </viz.data:measures>
+                                </viz.data:FlattenedDataset>
+                            </viz:dataset>
+                            <viz:feeds>
+                                <viz.feeds:FeedItem id="_IDGenFeedItem9" uid="size" type="Measure" values="Count"/>
+                                <viz.feeds:FeedItem id="_IDGenFeedItem10" uid="color" type="Dimension" values="Product"/>
+                            </viz:feeds>
+                        </viz:VizFrame>
+                    </Panel>
+                </HBox>
+
+                <!-- Row 2: Officer Performance -->
+                <Panel id="_IDGenPanel8" headerText="Officer Performance" class="sapUiTinyMargin sapUiSmallMarginTop dashboardPanel" width="100%">
+                    <Table id="_IDGenTable10" items="{reports>/officerPerformance}" noDataText="No officer data">
+                        <columns>
+                            <Column id="_IDGenColumn56"><Text id="_IDGenText270" text="Officer"/></Column>
+                            <Column id="_IDGenColumn57" hAlign="Center"><Text id="_IDGenText271" text="Assigned"/></Column>
+                            <Column id="_IDGenColumn58" hAlign="Center"><Text id="_IDGenText272" text="Approved"/></Column>
+                            <Column id="_IDGenColumn59" hAlign="Center"><Text id="_IDGenText273" text="Rejected"/></Column>
+                            <Column id="_IDGenColumn60" hAlign="Center"><Text id="_IDGenText274" text="Open"/></Column>
+                            <Column id="_IDGenColumn61" hAlign="Center"><Text id="_IDGenText275" text="Approval Rate"/></Column>
+                        </columns>
+                        <items>
+                            <ColumnListItem id="_IDGenColumnListItem9">
+                                <cells>
+                                    <Text id="_IDGenText276" text="{reports>name}"/>
+                                    <Text id="_IDGenText277" text="{reports>assigned}"/>
+                                    <Text id="_IDGenText278" text="{reports>approved}"/>
+                                    <Text id="_IDGenText279" text="{reports>rejected}"/>
+                                    <Text id="_IDGenText280" text="{reports>open}"/>
+                                    <Text id="_IDGenText281" text="{= ${reports>approvalRate} + '%' }"/>
+                                </cells>
+                            </ColumnListItem>
+                        </items>
+                    </Table>
+                </Panel>
+
+            </VBox>
+            </ScrollContainer>
+        </VBox>
+    </HBox>
+</mvc:View>

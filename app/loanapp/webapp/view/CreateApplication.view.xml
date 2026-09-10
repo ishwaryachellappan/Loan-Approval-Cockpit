@@ -1,0 +1,111 @@
+<mvc:View
+    controllerName="loan.cockpit.loanapp.controller.CreateApplication"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns="sap.m"
+    xmlns:core="sap.ui.core"
+    displayBlock="true">
+
+    <HBox id="_IDGenHBox119" class="cockpitShell" height="100%">
+        <core:Fragment fragmentName="loan.cockpit.loanapp.fragment.Sidebar" type="XML"/>
+
+        <VBox id="_IDGenVBox1" class="cockpitMain" width="100%">
+            <HBox id="_IDGenHBox120" class="cockpitTopBar" alignItems="Center" justifyContent="SpaceBetween">
+                <VBox id="_IDGenVBox68">
+                    <Text id="_IDGenText196" text="Loan Operations Cockpit" class="topBarTitle"/>
+                    <Text id="_IDGenText197" text="Monitor · Manage · Accelerate" class="topBarSubtitle"/>
+                </VBox>
+                <SearchField id="_IDGenSearchField5" placeholder="Search applications, applicants, or reference number..." width="380px" class="topBarSearch"/>
+                <HBox id="_IDGenHBox121" alignItems="Center" class="topBarRight">
+                    <core:Icon id="_IDGenIcon29" src="sap-icon://bell" class="topBarBellIcon"/>
+                    <HBox id="_IDGenHBox122" class="topBarAvatar" alignItems="Center"><Text id="_IDGenText198" text="{user>/initials}" class="topBarAvatarInitials"/></HBox>
+                    <VBox id="_IDGenVBox69">
+                        <Text id="_IDGenText199" text="{user>/name}" class="topBarUserName"/>
+                        <Text id="_IDGenText200" text="{user>/role}" class="topBarUserRole"/>
+                    </VBox>
+                </HBox>
+            </HBox>
+
+            <ScrollContainer id="_IDGenScrollContainer3" horizontal="false" vertical="true" height="100%" width="100%">
+            <VBox id="_IDGenVBox70" class="cockpitBody">
+
+                <HBox id="_IDGenHBox123" alignItems="Center" class="appsBackRow">
+                    <Link id="_IDGenLink11" text="Back to Applications" press="onNavBack" class="appsBackLink"/>
+                </HBox>
+                <Title id="_IDGenTitle16" text="New Loan Application" level="H2" class="greetingTitle"/>
+                <Text id="_IDGenText201" text="Create a new application for an existing or new applicant." class="greetingSubtitle detailSubtitle"/>
+
+                <VBox id="_IDGenVBox71" class="detailCard" >
+                    <Title id="_IDGenTitle17" text="Applicant" level="H4"/>
+                    <SegmentedButton id="_IDGenSegmentedButton1" selectedKey="{create>/applicantMode}" selectionChange="onApplicantModeChange" class="sapUiSmallMarginTop">
+                        <items>
+                            <SegmentedButtonItem id="_IDGenSegmentedButtonItem" key="existing" text="Existing Applicant"/>
+                            <SegmentedButtonItem id="_IDGenSegmentedButtonItem1" key="new" text="New Applicant"/>
+                        </items>
+                    </SegmentedButton>
+
+                   <VBox id="_IDGenVBox72" visible="{= ${create>/applicantMode} === 'existing' }" class="sapUiSmallMarginTop">
+    <SegmentedButton id="_IDGenSegmentedButton2" selectedKey="{create>/existingLookupMode}" selectionChange="onLookupModeChange" class="sapUiSmallMarginBottom">
+        <items>
+            <SegmentedButtonItem id="_IDGenSegmentedButtonItem3" key="byName" text="By Applicant Name"/>
+            <SegmentedButtonItem id="_IDGenSegmentedButtonItem4" key="byAppNumber" text="By Application No."/>
+        </items>
+    </SegmentedButton>
+
+    <VBox id="_IDGenVBox85" visible="{= ${create>/existingLookupMode} === 'byName' }">
+        <Label id="_IDGenLabel4" text="Select Applicant"/>
+        <Select id="_IDGenSelect3" selectedKey="{create>/existingApplicantId}" items="{create>/applicants}">
+            <core:Item id="_IDGenItem16" key="{create>ID}" text="{= ${create>firstName} + ' ' + ${create>lastName} }"/>
+        </Select>
+    </VBox>
+
+    <VBox id="_IDGenVBox86" visible="{= ${create>/existingLookupMode} === 'byAppNumber' }">
+        <Label id="_IDGenLabel20" text="Select Existing Application"/>
+        <Select id="_IDGenSelect5" selectedKey="{create>/existingApplicationId}" items="{create>/existingApplications}" change="onExistingApplicationChange">
+            <core:Item id="_IDGenItem17" key="{create>ID}" text="{= ${create>applicationNumber} + ' — ' + ${create>applicantName} }"/>
+        </Select>
+    </VBox>
+</VBox>
+
+                    <VBox id="_IDGenVBox73" visible="{= ${create>/applicantMode} === 'new' }" class="sapUiSmallMarginTop">
+                        <HBox id="_IDGenHBox124" class="detailCardRow">
+                            <VBox id="_IDGenVBox74" class="appsFilterField"><Label id="_IDGenLabel5" text="First Name"/><Input id="_IDGenInput" value="{create>/newApplicant/firstName}"/></VBox>
+                            <VBox id="_IDGenVBox75" class="appsFilterField"><Label id="_IDGenLabel6" text="Last Name"/><Input id="_IDGenInput1" value="{create>/newApplicant/lastName}"/></VBox>
+                        </HBox>
+                        <HBox id="_IDGenHBox125" class="detailCardRow">
+                            <VBox id="_IDGenVBox76" class="appsFilterField"><Label id="_IDGenLabel7" text="Email"/><Input id="_IDGenInput2" value="{create>/newApplicant/email}" type="Email"/></VBox>
+                            <VBox id="_IDGenVBox77" class="appsFilterField"><Label id="_IDGenLabel8" text="Phone"/><Input id="_IDGenInput3" value="{create>/newApplicant/phone}"/></VBox>
+                        </HBox>
+                    </VBox>
+                </VBox>
+
+                <VBox id="_IDGenVBox78" class="detailCard">
+                    <Title id="_IDGenTitle18" text="Loan Details" level="H4"/>
+                    <HBox id="_IDGenHBox126" class="detailCardRow sapUiSmallMarginTop">
+                        <VBox id="_IDGenVBox79" class="appsFilterField">
+                            <Label id="_IDGenLabel9" text="Product"/>
+                            <Select id="_IDGenSelect4" selectedKey="{create>/productId}" items="{create>/products}" change="onProductChange">
+                                <core:Item id="_IDGenItem18" key="{create>ID}" text="{create>productName}"/>
+                            </Select>
+                        </VBox>
+                        <VBox id="_IDGenVBox80" class="appsFilterField">
+                            <Label id="_IDGenLabel10" text="Requested Amount"/>
+                            <Input id="_IDGenInput4" value="{create>/requestedAmount}" type="Number"/>
+                            <Text id="_IDGenText202" text="{create>/amountHint}" class="detailKpiLabel"/>
+                        </VBox>
+                        <VBox id="_IDGenVBox81" class="appsFilterField">
+                            <Label id="_IDGenLabel11" text="Tenure (months)"/>
+                            <Input id="_IDGenInput5" value="{create>/tenureMonths}" type="Number"/>
+                        </VBox>
+                    </HBox>
+                </VBox>
+
+                <HBox id="_IDGenHBox127" class="detailActionRow sapUiSmallMarginTop">
+                    <Button id="_IDGenButton11" text="Create Application" type="Emphasized" press="onSubmit"/>
+                    <Button id="_IDGenButton12" text="Cancel" press="onNavBack"/>
+                </HBox>
+
+            </VBox>
+            </ScrollContainer>
+        </VBox>
+    </HBox>
+</mvc:View>

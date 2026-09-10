@@ -57,6 +57,8 @@ entity Documents : cuid, managed {
     status      : String(20); // PENDING, VERIFIED, EXPIRED, REJECTED
     expiryDate  : Date;
     fileName    : String(255);
+    mediaType   : String(100);
+    content     : LargeBinary;
 }
 
 entity CreditChecks : cuid, managed {

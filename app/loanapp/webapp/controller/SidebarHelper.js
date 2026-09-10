@@ -2,10 +2,12 @@ sap.ui.define([], function () {
     "use strict";
 
     const NAV_MAP = {
-        Dashboard: { id: "sidebarNavDashboard", route: "Dashboard" },
-        Applications: { id: "sidebarNavApplications", route: "ApplicationsHome" },
-        Exceptions: { id: "sidebarNavExceptions", route: "FilteredList", params: { filterType: "exception", filterValue: "true" } }
-    };
+    Dashboard: { id: "sidebarNavDashboard", route: "Dashboard" },
+    Applications: { id: "sidebarNavApplications", route: "ApplicationsHome" },
+    Exceptions: { id: "sidebarNavExceptions", route: "ExceptionsHome" },
+    Queues: { id: "sidebarNavQueues", route: "QueuesHome" },
+    Reports: { id: "sidebarNavReports", route: "ReportsHome" }
+};
 
     return {
         wireSidebar: function (oController, sActivePage) {
