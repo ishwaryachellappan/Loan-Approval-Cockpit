@@ -145,6 +145,11 @@
           "pattern": "Reports:?query:",
           "name": "ReportsHome",
           "target": "ReportsPage"
+        },
+        {
+          "pattern": "Administration:?query:",
+          "name": "AdministrationHome",
+          "target": "AdministrationPage"
         }
       ],
       "targets": {
@@ -255,6 +260,11 @@
           "type": "View",
           "id": "ReportsPage",
           "name": "loan.cockpit.loanapp.view.Reports"
+        },
+        "AdministrationPage": {
+          "type": "View",
+          "id": "AdministrationPage",
+          "name": "loan.cockpit.loanapp.view.Administration"
         }
       }
     }

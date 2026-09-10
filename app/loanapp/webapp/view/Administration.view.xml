@@ -1,0 +1,195 @@
+<mvc:View
+    controllerName="loan.cockpit.loanapp.controller.Administration"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns="sap.m"
+    xmlns:core="sap.ui.core"
+    displayBlock="true">
+
+    <HBox id="_IDGenHBox83" class="cockpitShell" height="100%">
+        <core:Fragment fragmentName="loan.cockpit.loanapp.fragment.Sidebar" type="XML"/>
+
+        <VBox id="_IDGenVBox139" class="cockpitMain" width="100%">
+            <HBox id="_IDGenHBox171" class="cockpitTopBar" alignItems="Center" justifyContent="SpaceBetween">
+                <VBox id="_IDGenVBox140">
+                    <Text id="_IDGenText234" text="Loan Operations Cockpit" class="topBarTitle"/>
+                    <Text id="_IDGenText282" text="Monitor · Manage · Accelerate" class="topBarSubtitle"/>
+                </VBox>
+                <SearchField id="_IDGenSearchField10" placeholder="Search applications, applicants, or reference number..." width="380px" class="topBarSearch"/>
+                <HBox id="_IDGenHBox172" alignItems="Center" class="topBarRight">
+                    <core:Icon id="_IDGenIcon69" src="sap-icon://bell" class="topBarBellIcon"/>
+                    <HBox id="_IDGenHBox173" class="topBarAvatar" alignItems="Center"><Text id="_IDGenText283" text="{user>/initials}" class="topBarAvatarInitials"/></HBox>
+                    <VBox id="_IDGenVBox141">
+                        <Text id="_IDGenText284" text="{user>/name}" class="topBarUserName"/>
+                        <Text id="_IDGenText285" text="{user>/role}" class="topBarUserRole"/>
+                    </VBox>
+                </HBox>
+            </HBox>
+
+            <ScrollContainer id="_IDGenScrollContainer8" horizontal="false" vertical="true" height="100%" width="100%">
+            <VBox id="_IDGenVBox142" class="cockpitBody">
+
+                <Title id="_IDGenTitle24" text="Administration" level="H2" class="greetingTitle"/>
+                <Text id="_IDGenText286" text="Manage officers, loan products, and validation rules." class="greetingSubtitle detailSubtitle"/>
+
+                <IconTabBar id="_IDGenIconTabBar" selectedKey="{admin>/activeTab}" select="onTabSelect" class="sapUiSmallMarginTop">
+                    <items>
+                        <IconTabFilter id="_IDGenIconTabFilter" key="officers" text="Officers" icon="sap-icon://official-service"/>
+                        <IconTabFilter id="_IDGenIconTabFilter1" key="products" text="Loan Products" icon="sap-icon://product"/>
+                        <IconTabFilter id="_IDGenIconTabFilter2" key="rules" text="Rules" icon="sap-icon://validate"/>
+                    </items>
+                </IconTabBar>
+
+                <!-- Officers -->
+                <VBox id="_IDGenVBox143" class="appsTableCard" visible="{= ${admin>/activeTab} === 'officers' }">
+                    <HBox id="_IDGenHBox174" justifyContent="SpaceBetween" alignItems="Center" class="appsTableHeader">
+                        <Title id="_IDGenTitle25" text="{= 'Officers (' + ${admin>/officers}.length + ')' }" level="H3"/>
+                        <Button id="_IDGenButton31" text="Add Officer" type="Emphasized" icon="sap-icon://add" press="onAddOfficer"/>
+                    </HBox>
+                    <Table id="_IDGenTable11" items="{admin>/officers}" noDataText="No officers">
+                        <columns>
+                            <Column id="_IDGenColumn62"><Text id="_IDGenText287" text="Name"/></Column>
+                            <Column id="_IDGenColumn63"><Text id="_IDGenText288" text="Authority Level"/></Column>
+                            <Column id="_IDGenColumn64" hAlign="End"><Text id="_IDGenText289" text="Max Approval Amount"/></Column>
+                            <Column id="_IDGenColumn65"><Text id="_IDGenText290" text="Expertise"/></Column>
+                            <Column id="_IDGenColumn66"/>
+                        </columns>
+                        <items>
+                            <ColumnListItem id="_IDGenColumnListItem11">
+                                <cells>
+                                    <Text id="_IDGenText291" text="{admin>name}"/>
+                                    <HBox id="_IDGenHBox175" class="officerRoleBadge"><Text id="_IDGenText292" text="{admin>authorityLevel}"/></HBox>
+                                    <ObjectNumber id="_IDGenObjectNumber5" number="{admin>maxApprovalAmt}" unit="INR"/>
+                                    <Text id="_IDGenText293" text="{admin>expertise}"/>
+                                    <HBox id="_IDGenHBox176">
+                                        <Link id="_IDGenLink6" text="Edit" press="onEditOfficer" class="sapUiTinyMarginEnd"/>
+                                        <Link id="_IDGenLink13" text="Delete" press="onDeleteOfficer" class="deleteLink"/>
+                                    </HBox>
+                                </cells>
+                            </ColumnListItem>
+                        </items>
+                    </Table>
+                </VBox>
+
+                <!-- Products -->
+                <VBox id="_IDGenVBox144" class="appsTableCard" visible="{= ${admin>/activeTab} === 'products' }">
+                    <HBox id="_IDGenHBox177" justifyContent="SpaceBetween" alignItems="Center" class="appsTableHeader">
+                        <Title id="_IDGenTitle26" text="{= 'Loan Products (' + ${admin>/products}.length + ')' }" level="H3"/>
+                        <Button id="_IDGenButton32" text="Add Product" type="Emphasized" icon="sap-icon://add" press="onAddProduct"/>
+                    </HBox>
+                    <Table id="_IDGenTable12" items="{admin>/products}" noDataText="No products">
+                        <columns>
+                            <Column id="_IDGenColumn67"><Text id="_IDGenText294" text="Code"/></Column>
+                            <Column id="_IDGenColumn68"><Text id="_IDGenText295" text="Name"/></Column>
+                            <Column id="_IDGenColumn69"><Text id="_IDGenText296" text="Category"/></Column>
+                            <Column id="_IDGenColumn70" hAlign="End"><Text id="_IDGenText297" text="Min Amount"/></Column>
+                            <Column id="_IDGenColumn71" hAlign="End"><Text id="_IDGenText298" text="Max Amount"/></Column>
+                            <Column id="_IDGenColumn72" hAlign="Center"><Text id="_IDGenText299" text="Active"/></Column>
+                            <Column id="_IDGenColumn73"/>
+                        </columns>
+                        <items>
+                            <ColumnListItem id="_IDGenColumnListItem12">
+                                <cells>
+                                    <Text id="_IDGenText300" text="{admin>productCode}"/>
+                                    <Text id="_IDGenText301" text="{admin>productName}"/>
+                                    <Text id="_IDGenText302" text="{= ${admin>category} || '—' }"/>
+                                    <ObjectNumber id="_IDGenObjectNumber6" number="{admin>minAmount}" unit="INR"/>
+                                    <ObjectNumber id="_IDGenObjectNumber7" number="{admin>maxAmount}" unit="INR"/>
+                                    <HBox id="_IDGenHBox178" justifyContent="Center"><HBox id="_IDGenHBox179" class="{= ${admin>active} ? 'appsPill appsPillGreen' : 'appsPill appsPillGray' }"><Text id="_IDGenText303" text="{= ${admin>active} ? 'Active' : 'Inactive' }"/></HBox></HBox>
+                                    <HBox id="_IDGenHBox180">
+                                        <Link id="_IDGenLink14" text="Edit" press="onEditProduct" class="sapUiTinyMarginEnd"/>
+                                        <Link id="_IDGenLink15" text="Delete" press="onDeleteProduct" class="deleteLink"/>
+                                    </HBox>
+                                </cells>
+                            </ColumnListItem>
+                        </items>
+                    </Table>
+                </VBox>
+
+                <!-- Rules -->
+                <VBox id="_IDGenVBox145" class="appsTableCard" visible="{= ${admin>/activeTab} === 'rules' }">
+                    <HBox id="_IDGenHBox181" justifyContent="SpaceBetween" alignItems="Center" class="appsTableHeader">
+                        <Title id="_IDGenTitle27" text="{= 'Rules (' + ${admin>/rules}.length + ')' }" level="H3"/>
+                    </HBox>
+                    <Table id="_IDGenTable13" items="{admin>/rules}" noDataText="No rules">
+                        <columns>
+                            <Column id="_IDGenColumn74"><Text id="_IDGenText304" text="Code"/></Column>
+                            <Column id="_IDGenColumn75"><Text id="_IDGenText305" text="Layer"/></Column>
+                            <Column id="_IDGenColumn76"><Text id="_IDGenText306" text="Description"/></Column>
+                            <Column id="_IDGenColumn77"><Text id="_IDGenText307" text="Severity"/></Column>
+                            <Column id="_IDGenColumn78" hAlign="Center"><Text id="_IDGenText308" text="Active"/></Column>
+                        </columns>
+                        <items>
+                            <ColumnListItem id="_IDGenColumnListItem13">
+                                <cells>
+                                    <Text id="_IDGenText309" text="{admin>code}"/>
+                                    <Text id="_IDGenText310" text="{admin>layer}"/>
+                                    <Text id="_IDGenText311" text="{admin>description}"/>
+                                    <Text id="_IDGenText312" text="{admin>severity}"/>
+                                    <HBox id="_IDGenHBox182" justifyContent="Center"><HBox id="_IDGenHBox183" class="{= ${admin>active} ? 'appsPill appsPillGreen' : 'appsPill appsPillGray' }"><Text id="_IDGenText313" text="{= ${admin>active} ? 'Active' : 'Inactive' }"/></HBox></HBox>
+                                </cells>
+                            </ColumnListItem>
+                        </items>
+                    </Table>
+                </VBox>
+
+            </VBox>
+            </ScrollContainer>
+        </VBox>
+    </HBox>
+
+    <!-- Officer dialog -->
+    <Dialog id="officerDialog" title="{admin>/officerDialogTitle}" contentWidth="400px">
+        <content>
+            <VBox id="_IDGenVBox146" class="sapUiSmallMargin">
+                <Label id="_IDGenLabel30" text="Name"/>
+                <Input id="_IDGenInput9" value="{officerEdit>/name}"/>
+                <Label id="_IDGenLabel31" text="Authority Level" class="sapUiSmallMarginTop"/>
+                <Select id="_IDGenSelect10" selectedKey="{officerEdit>/authorityLevel}">
+                    <core:Item id="_IDGenItem37" key="JUNIOR" text="Junior"/>
+                    <core:Item id="_IDGenItem38" key="SENIOR" text="Senior"/>
+                    <core:Item id="_IDGenItem39" key="SENIOR_MANAGER" text="Senior Manager"/>
+                </Select>
+                <Label id="_IDGenLabel32" text="Max Approval Amount" class="sapUiSmallMarginTop"/>
+                <Input id="_IDGenInput10" value="{officerEdit>/maxApprovalAmt}" type="Number"/>
+                <Label id="_IDGenLabel33" text="Expertise" class="sapUiSmallMarginTop"/>
+                <Select id="_IDGenSelect11" selectedKey="{officerEdit>/expertise}">
+                    <core:Item id="_IDGenItem40" key="PERSONAL_LOAN" text="Personal Loan"/>
+                    <core:Item id="_IDGenItem41" key="HOME_LOAN" text="Home Loan"/>
+                    <core:Item id="_IDGenItem42" key="AUTO_LOAN" text="Auto Loan"/>
+                </Select>
+            </VBox>
+        </content>
+        <beginButton><Button id="_IDGenButton33" text="Save" type="Emphasized" press="onSaveOfficer"/></beginButton>
+        <endButton><Button id="_IDGenButton34" text="Cancel" press="onCancelOfficer"/></endButton>
+    </Dialog>
+
+    <!-- Product dialog -->
+    <Dialog id="productDialog" title="{admin>/productDialogTitle}" contentWidth="420px">
+        <content>
+            <VBox id="_IDGenVBox147" class="sapUiSmallMargin">
+                <Label id="_IDGenLabel34" text="Product Code"/>
+                <Input id="_IDGenInput11" value="{productEdit>/productCode}"/>
+                <Label id="_IDGenLabel35" text="Product Name" class="sapUiSmallMarginTop"/>
+                <Input id="_IDGenInput12" value="{productEdit>/productName}"/>
+                <Label id="_IDGenLabel36" text="Category" class="sapUiSmallMarginTop"/>
+                <Select id="_IDGenSelect12" selectedKey="{productEdit>/category}">
+                    <core:Item id="_IDGenItem43" key="PERSONAL_LOAN" text="Personal Loan"/>
+                    <core:Item id="_IDGenItem44" key="HOME_LOAN" text="Home Loan"/>
+                    <core:Item id="_IDGenItem45" key="AUTO_LOAN" text="Auto Loan"/>
+                </Select>
+                <Label id="_IDGenLabel37" text="Min Amount" class="sapUiSmallMarginTop"/>
+                <Input id="_IDGenInput13" value="{productEdit>/minAmount}" type="Number"/>
+                <Label id="_IDGenLabel38" text="Max Amount" class="sapUiSmallMarginTop"/>
+                <Input id="_IDGenInput14" value="{productEdit>/maxAmount}" type="Number"/>
+                <Label id="_IDGenLabel39" text="Min Tenure (months)" class="sapUiSmallMarginTop"/>
+                <Input id="_IDGenInput15" value="{productEdit>/minTenureMonths}" type="Number"/>
+                <Label id="_IDGenLabel40" text="Max Tenure (months)" class="sapUiSmallMarginTop"/>
+                <Input id="_IDGenInput16" value="{productEdit>/maxTenureMonths}" type="Number"/>
+                <CheckBox id="_IDGenCheckBox" text="Active" selected="{productEdit>/active}" class="sapUiSmallMarginTop"/>
+            </VBox>
+        </content>
+        <beginButton><Button id="_IDGenButton35" text="Save" type="Emphasized" press="onSaveProduct"/></beginButton>
+        <endButton><Button id="_IDGenButton36" text="Cancel" press="onCancelProduct"/></endButton>
+    </Dialog>
+
+</mvc:View>

@@ -27,16 +27,16 @@
     <core:Icon id="_IDGenIcon50" src="sap-icon://business-objects-experience" class="sidebarNavIcon"/>
     <Text id="_IDGenText136" text="Reports"/>
 </HBox>
-            <HBox id="_IDGenHBox85" class="sidebarNavItem">
-                <core:Icon id="_IDGenIcon51" src="sap-icon://action-settings" class="sidebarNavIcon"/>
-                <Text id="_IDGenText137" text="Administration"/>
-            </HBox>
+           <HBox id="sidebarNavAdministration" class="sidebarNavItem">
+    <core:Icon id="_IDGenIcon51" src="sap-icon://action-settings" class="sidebarNavIcon"/>
+    <Text id="_IDGenText137" text="Administration"/>
+</HBox>
         </VBox>
         <VBox id="_IDGenVBox54" class="sidebarFooter">
-            <HBox id="_IDGenHBox89" class="sidebarNavItem">
-                <core:Icon id="_IDGenIcon52" src="sap-icon://sys-help" class="sidebarNavIcon"/>
-                <Text id="_IDGenText138" text="Help"/>
-            </HBox>
+           <HBox id="sidebarNavHelp" class="sidebarNavItem">
+    <core:Icon id="_IDGenIcon70" src="sap-icon://sys-help" class="sidebarNavIcon"/>
+    <Text id="_IDGenText138" text="Help"/>
+</HBox>
         </VBox>
     </VBox>
 
