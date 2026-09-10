@@ -110,6 +110,7 @@ sap.ui.define([
             if (this._sidebarWired) return;
             this._sidebarWired = true;
             SidebarHelper.wireSidebar(this, "Exceptions");
+             SidebarHelper.wireGlobalSearch(this);
         }
     });
 });

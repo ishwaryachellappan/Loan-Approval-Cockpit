@@ -35,11 +35,16 @@ sap.ui.define([
             this._loadApplications();
             this.getOwnerComponent().getRouter().getRoute("ApplicationsHome")
                 .attachPatternMatched(this._onRouteMatched, this);
+                
         },
 
-        _onRouteMatched: function () {
-            this._loadApplications();
-        },
+       _onRouteMatched: function (oEvent) {
+    const oQuery = (oEvent.getParameter("arguments") || {})["?query"] || {};
+    if (oQuery.search) {
+        this.getView().getModel("apps").setProperty("/searchTerm", oQuery.search);
+    }
+    this._loadApplications();
+},
 
         _setGreetingModel: function () {
             const todayLabel = new Date().toLocaleDateString("en-US", { weekday: "long", day: "numeric", month: "long", year: "numeric" });
@@ -174,6 +179,7 @@ sap.ui.define([
             if (this._sidebarWired) return;
             this._sidebarWired = true;
             SidebarHelper.wireSidebar(this, "Applications");
+             SidebarHelper.wireGlobalSearch(this);
         },
 
         _loadApplications: async function () {

@@ -9,21 +9,7 @@
         <core:Fragment fragmentName="loan.cockpit.loanapp.fragment.Sidebar" type="XML"/>
 
         <VBox id="_IDGenVBox139" class="cockpitMain" width="100%">
-            <HBox id="_IDGenHBox171" class="cockpitTopBar" alignItems="Center" justifyContent="SpaceBetween">
-                <VBox id="_IDGenVBox140">
-                    <Text id="_IDGenText234" text="Loan Operations Cockpit" class="topBarTitle"/>
-                    <Text id="_IDGenText282" text="Monitor · Manage · Accelerate" class="topBarSubtitle"/>
-                </VBox>
-                <SearchField id="_IDGenSearchField10" placeholder="Search applications, applicants, or reference number..." width="380px" class="topBarSearch"/>
-                <HBox id="_IDGenHBox172" alignItems="Center" class="topBarRight">
-                    <core:Icon id="_IDGenIcon69" src="sap-icon://bell" class="topBarBellIcon"/>
-                    <HBox id="_IDGenHBox173" class="topBarAvatar" alignItems="Center"><Text id="_IDGenText283" text="{user>/initials}" class="topBarAvatarInitials"/></HBox>
-                    <VBox id="_IDGenVBox141">
-                        <Text id="_IDGenText284" text="{user>/name}" class="topBarUserName"/>
-                        <Text id="_IDGenText285" text="{user>/role}" class="topBarUserRole"/>
-                    </VBox>
-                </HBox>
-            </HBox>
+           <core:Fragment fragmentName="loan.cockpit.loanapp.fragment.TopBar" type="XML"/>
 
             <ScrollContainer id="_IDGenScrollContainer8" horizontal="false" vertical="true" height="100%" width="100%">
             <VBox id="_IDGenVBox142" class="cockpitBody">

@@ -9,21 +9,7 @@
         <core:Fragment fragmentName="loan.cockpit.loanapp.fragment.Sidebar" type="XML"/>
 
         <VBox id="_IDGenVBox2" class="cockpitMain" width="100%">
-            <HBox id="_IDGenHBox5" class="cockpitTopBar" alignItems="Center" justifyContent="SpaceBetween">
-                <VBox id="_IDGenVBox3">
-                    <Text id="_IDGenText" text="Loan Operations Cockpit" class="topBarTitle"/>
-                    <Text id="_IDGenText1" text="Monitor · Manage · Accelerate" class="topBarSubtitle"/>
-                </VBox>
-                <SearchField id="_IDGenSearchField3" placeholder="Search applications, applicants, or reference number..." width="380px" class="topBarSearch"/>
-                <HBox id="_IDGenHBox6" alignItems="Center" class="topBarRight">
-                    <core:Icon id="_IDGenIcon" src="sap-icon://bell" class="topBarBellIcon"/>
-                    <HBox id="_IDGenHBox7" class="topBarAvatar" alignItems="Center"><Text id="_IDGenText2" text="{user>/initials}" class="topBarAvatarInitials"/></HBox>
-                    <VBox id="_IDGenVBox4">
-                        <Text id="_IDGenText3" text="{user>/name}" class="topBarUserName"/>
-                        <Text id="_IDGenText4" text="{user>/role}" class="topBarUserRole"/>
-                    </VBox>
-                </HBox>
-            </HBox>
+           <core:Fragment fragmentName="loan.cockpit.loanapp.fragment.TopBar" type="XML"/>
 
             <ScrollContainer id="_IDGenScrollContainer2" horizontal="false" vertical="true" height="100%" width="100%">
             <VBox id="_IDGenVBox19" class="cockpitBody">
@@ -53,18 +39,18 @@
 
                 <!-- Tabs -->
                <HBox id="_IDGenHBox80" class="detailTabRow">
-    <Link text="Overview" class="detailTabItem detailTabActive" press="onTabPress" id="tabOverview"/>
-    <Link text="Applicant" class="detailTabItem" press="onTabPress" id="tabApplicant"/>
-    <Link text="Product" class="detailTabItem" press="onTabPress" id="tabProduct"/>
-    <Link text="{= 'Why Blocked? (' + ${app>/exceptions}.length + ')' }" class="detailTabItem" press="onTabPress" id="tabExceptions"/>
-    <Link text="{= 'Documents (' + ${app>/documents}.length + ')' }" class="detailTabItem" press="onTabPress" id="tabDocuments"/>
-    <Link text="{= 'Credit Check (' + ${app>/creditChecks}.length + ')' }" class="detailTabItem" press="onTabPress" id="tabCredit"/>
-    <Link text="{= 'Risk Assessment (' + ${app>/riskAssessments}.length + ')' }" class="detailTabItem" press="onTabPress" id="tabRisk"/>
-    <Link text="Approval History" class="detailTabItem" press="onTabPress" id="tabHistory"/>
+    <Link text="Overview" class="{= ${ui>/activeTab} === 'overview' ? 'detailTabItem detailTabActive' : 'detailTabItem' }" press="onTabPress" id="tabOverview"/>
+<Link text="Applicant" class="{= ${ui>/activeTab} === 'applicant' ? 'detailTabItem detailTabActive' : 'detailTabItem' }" press="onTabPress" id="tabApplicant"/>
+<Link text="Product" class="{= ${ui>/activeTab} === 'product' ? 'detailTabItem detailTabActive' : 'detailTabItem' }" press="onTabPress" id="tabProduct"/>
+<Link text="{= 'Why Blocked? (' + ${app>/exceptions}.length + ')' }" class="{= ${ui>/activeTab} === 'exceptions' ? 'detailTabItem detailTabActive' : 'detailTabItem' }" press="onTabPress" id="tabExceptions"/>
+<Link text="{= 'Documents (' + ${app>/documents}.length + ')' }" class="{= ${ui>/activeTab} === 'documents' ? 'detailTabItem detailTabActive' : 'detailTabItem' }" press="onTabPress" id="tabDocuments"/>
+<Link text="{= 'Credit Check (' + ${app>/creditChecks}.length + ')' }" class="{= ${ui>/activeTab} === 'credit' ? 'detailTabItem detailTabActive' : 'detailTabItem' }" press="onTabPress" id="tabCredit"/>
+<Link text="{= 'Risk Assessment (' + ${app>/riskAssessments}.length + ')' }" class="{= ${ui>/activeTab} === 'risk' ? 'detailTabItem detailTabActive' : 'detailTabItem' }" press="onTabPress" id="tabRisk"/>
+<Link text="Approval History" class="{= ${ui>/activeTab} === 'history' ? 'detailTabItem detailTabActive' : 'detailTabItem' }" press="onTabPress" id="tabHistory"/>
 </HBox>
 
                 <!-- Overview KPI strip -->
-                <HBox id="_IDGenHBox81" class="detailKpiStrip">
+            <HBox id="_IDGenHBox81" class="detailKpiStrip" visible="{= ${ui>/activeTab} === 'overview' }">
                     <VBox id="_IDGenVBox23" class="detailKpiItem">
                         <HBox id="_IDGenHBox84" class="detailKpiIconBox detailKpiIconBlue"><core:Icon id="_IDGenIcon1" src="sap-icon://document"/></HBox>
                         <VBox id="_IDGenVBox24"><Text id="_IDGenText7" text="Requested Amount" class="detailKpiLabel"/><ObjectNumber id="_IDGenObjectNumber2" number="{app>/requestedAmount}" unit="INR" class="detailKpiValue"/></VBox>
@@ -85,8 +71,8 @@
 
                 <!-- Applicant + Product cards -->
                 <HBox id="_IDGenHBox93" class="detailCardRow">
-                    <VBox id="_IDGenVBox61" class="detailCard">
-                        <HBox id="_IDGenHBox94" justifyContent="SpaceBetween" alignItems="Center" class="detailCardHeader">
+                    <VBox id="_IDGenVBox61" class="detailCard" visible="{= ${ui>/activeTab} === 'overview' || ${ui>/activeTab} === 'applicant' }">
+         <HBox id="_IDGenHBox94" justifyContent="SpaceBetween" alignItems="Center" class="detailCardHeader">
                             <HBox id="_IDGenHBox95" alignItems="Center"><core:Icon id="_IDGenIcon5" src="sap-icon://person-placeholder" class="detailCardIcon"/><Title id="_IDGenTitle9" text="Applicant Details" level="H4"/></HBox>
                           <Link id="_IDGenLink8" text="Edit" icon="sap-icon://edit" press="onEditApplicant"/>
                         </HBox>
@@ -95,7 +81,8 @@
                         <HBox id="_IDGenHBox98" class="detailFieldRow"><Text id="_IDGenText141" text="Email" class="detailFieldLabel"/><Text id="_IDGenText142" text="{app>/applicant/email}"/></HBox>
                         <HBox id="_IDGenHBox99" class="detailFieldRow"><Text id="_IDGenText143" text="Phone" class="detailFieldLabel"/><Text id="_IDGenText144" text="{app>/applicant/phone}"/></HBox>
                     </VBox>
-                    <VBox id="_IDGenVBox62" class="detailCard">
+                  <VBox id="_IDGenVBox62" class="detailCard" visible="{= ${ui>/activeTab} === 'overview' || ${ui>/activeTab} === 'product' }">
+    
                         <HBox id="_IDGenHBox100" justifyContent="SpaceBetween" alignItems="Center" class="detailCardHeader">
                             <HBox id="_IDGenHBox101" alignItems="Center"><core:Icon id="_IDGenIcon6" src="sap-icon://product" class="detailCardIcon"/><Title id="_IDGenTitle10" text="Product Details" level="H4"/></HBox>
                            <Link id="_IDGenLink9" text="Edit" icon="sap-icon://edit" press="onEditLoanDetails"/>
@@ -105,7 +92,7 @@
                         <HBox id="_IDGenHBox104" class="detailFieldRow"><Text id="_IDGenText149" text="Min Amount" class="detailFieldLabel"/><ObjectNumber id="_IDGenObjectNumber3" number="{app>/product/minAmount}" unit="INR"/></HBox>
                         <HBox id="_IDGenHBox105" class="detailFieldRow"><Text id="_IDGenText150" text="Max Amount" class="detailFieldLabel"/><ObjectNumber id="_IDGenObjectNumber4" number="{app>/product/maxAmount}" unit="INR"/></HBox>
                     </VBox>
-                    <VBox id="_IDGenVBox98" class="detailCard detailSectionCard">
+                    <VBox id="_IDGenVBox98" class="detailCard detailSectionCard" visible="{= ${ui>/activeTab} === 'overview' }">
     <HBox id="_IDGenHBox129" justifyContent="SpaceBetween" alignItems="Center" class="detailCardHeader">
         <HBox id="_IDGenHBox132" alignItems="Center"><core:Icon id="_IDGenIcon30" src="sap-icon://official-service" class="detailCardIcon"/><Title id="_IDGenTitle19" text="Assigned Officer" level="H4"/></HBox>
         <Button id="_IDGenButton27" text="Assign Officer" press="onOpenAssignOfficer"/>
@@ -118,7 +105,7 @@
                 </HBox>
 
                 <!-- Why Blocked -->
-                <VBox id="_IDGenVBox63" class="detailCard detailSectionCard">
+              <VBox id="_IDGenVBox63" class="detailCard detailSectionCard" visible="{= ${ui>/activeTab} === 'overview' || ${ui>/activeTab} === 'exceptions' }">
                     <HBox id="_IDGenHBox106" justifyContent="SpaceBetween" alignItems="Center" class="detailCardHeader">
                         <HBox id="_IDGenHBox107" alignItems="Center"><core:Icon id="_IDGenIcon24" src="sap-icon://alert" class="detailCardIconRed"/><Title id="_IDGenTitle11" text="{= 'Why Blocked? (Open Exceptions) (' + ${app>/exceptions}.length + ')' }" level="H4"/></HBox>
                     </HBox>
@@ -177,7 +164,7 @@
 
                 <!-- Credit Check + Risk Assessment -->
                 <HBox id="_IDGenHBox113" class="detailCardRow">
-                    <VBox id="_IDGenVBox65" class="detailCard">
+                   <VBox id="_IDGenVBox65" class="detailCard" visible="{= ${ui>/activeTab} === 'overview' || ${ui>/activeTab} === 'credit' }">
                       <HBox id="_IDGenHBox114" justifyContent="SpaceBetween" alignItems="Center" class="detailCardHeader">
     <HBox id="_IDGenHBox130" alignItems="Center"><core:Icon id="_IDGenIcon26" src="sap-icon://credit-card" class="detailCardIcon"/><Title id="_IDGenTitle13" text="{= 'Credit Check (' + ${app>/creditChecks}.length + ')' }" level="H4"/></HBox>
     <Button id="_IDGenButton25" text="Complete Credit Check" press="onCompleteCreditCheck" visible="{app>/hasPendingCreditCheck}"/>
@@ -203,8 +190,8 @@
                             </items>
                         </Table>
                     </VBox>
-                    <VBox id="_IDGenVBox66" class="detailCard">
-                        <HBox id="_IDGenHBox116" justifyContent="SpaceBetween" alignItems="Center" class="detailCardHeader">
+                  <VBox id="_IDGenVBox66" class="detailCard" visible="{= ${ui>/activeTab} === 'overview' || ${ui>/activeTab} === 'risk' }">
+           <HBox id="_IDGenHBox116" justifyContent="SpaceBetween" alignItems="Center" class="detailCardHeader">
     <HBox id="_IDGenHBox131" alignItems="Center"><core:Icon id="_IDGenIcon27" src="sap-icon://shield" class="detailCardIcon"/><Title id="_IDGenTitle14" text="{= 'Risk Assessment (' + ${app>/riskAssessments}.length + ')' }" level="H4"/></HBox>
     <Button id="_IDGenButton26" text="Complete Risk Assessment" press="onCompleteRiskAssessment" visible="{app>/hasPendingRiskAssessment}"/>
 </HBox>
@@ -230,7 +217,7 @@
                 </HBox>
 
                 <!-- Approval History -->
-                <VBox id="_IDGenVBox67" class="detailCard detailSectionCard">
+              <VBox id="_IDGenVBox67" class="detailCard detailSectionCard" visible="{= ${ui>/activeTab} === 'overview' || ${ui>/activeTab} === 'history' }">
                     <HBox id="_IDGenHBox118" alignItems="Center" class="detailCardHeader"><core:Icon id="_IDGenIcon28" src="sap-icon://history" class="detailCardIcon"/><Title id="_IDGenTitle15" text="Approval History" level="H4"/></HBox>
                     <Table id="_IDGenTable8" items="{app>/approvalSteps}" noDataText="No approval history available yet.">
                         <columns>

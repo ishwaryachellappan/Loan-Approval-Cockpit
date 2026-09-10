@@ -131,6 +131,7 @@ sap.ui.define([
             wire("kpiOpenExceptions", this.onNavFilteredException);
             wire("kpiTotalApps", this.onNavToList);
             SidebarHelper.wireSidebar(this, "Dashboard");
+             SidebarHelper.wireGlobalSearch(this);
 },
 
         formatCycleDays: function (v) {

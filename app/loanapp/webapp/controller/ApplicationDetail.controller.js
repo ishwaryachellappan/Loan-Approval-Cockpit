@@ -7,6 +7,7 @@ sap.ui.define([
 
     return Controller.extend("loan.cockpit.loanapp.controller.ApplicationDetail", {
         onInit: function () {
+            this.getView().setModel(new JSONModel({ activeTab: "overview" }), "ui");
             this.getOwnerComponent().getRouter().getRoute("ApplicationDetail")
                 .attachPatternMatched(this._onMatched, this);
         },
@@ -28,6 +29,10 @@ sap.ui.define([
     } catch (e) {
         console.error("Failed to load application detail:", e);
     }
+},
+
+formatTabClass: function (sActiveTab, sThisTab) {
+    return sActiveTab === sThisTab ? "detailTabItem detailTabActive" : "detailTabItem";
 },
 
         _shapeAndSetModel: function (app) {
@@ -121,9 +126,22 @@ app.assignedOfficerName = app.assignedOfficer ? `${app.assignedOfficer.name} (${
         onMorePress: function () { sap.m.MessageToast.show("More actions coming soon"); },
 
         onTabPress: function (oEvent) {
-            const sId = oEvent.getSource().getId();
-            // Placeholder: full section show/hide wiring can be added once sections are split into named containers
-        },
+    const sId = oEvent.getSource().getId();
+    const tabMap = {
+        tabOverview: "overview",
+        tabApplicant: "applicant",
+        tabProduct: "product",
+        tabExceptions: "exceptions",
+        tabDocuments: "documents",
+        tabCredit: "credit",
+        tabRisk: "risk",
+        tabHistory: "history"
+    };
+    const sTab = tabMap[sId];
+    if (sTab) {
+        this.getView().getModel("ui").setProperty("/activeTab", sTab);
+    }
+},
 
         onNavBack: function () {
             this.getOwnerComponent().getRouter().navTo("ApplicationsHome");
@@ -133,6 +151,7 @@ app.assignedOfficerName = app.assignedOfficer ? `${app.assignedOfficer.name} (${
             if (this._sidebarWired) return;
             this._sidebarWired = true;
             SidebarHelper.wireSidebar(this, "Applications");
+             SidebarHelper.wireGlobalSearch(this);
         },
 
         onEditApplicant: function () {

@@ -46,5 +46,20 @@ sap.ui.define([], function () {
                 console.warn("SidebarHelper: control 'sidebarNavHelp' not found");
             }
         },
+
+         wireGlobalSearch: function (oController) {
+        const oSearchField = oController.byId("globalSearchField");
+        if (!oSearchField) {
+            console.warn("SidebarHelper: control 'globalSearchField' not found");
+            return;
+        }
+        oSearchField.attachEvent("search", function (oEvent) {
+            const sTerm = oEvent.getParameter("query") || oEvent.getParameter("newValue") || "";
+            if (!sTerm.trim()) return;
+            oController.getOwnerComponent().getRouter().navTo("ApplicationsHome", {
+                "?query": { search: sTerm }
+            });
+        });
+    }
     };
 });

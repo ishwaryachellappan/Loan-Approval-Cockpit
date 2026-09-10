@@ -13,21 +13,7 @@
         <!-- Main content -->
         <VBox id="_IDGenVBox25" class="cockpitMain" width="100%">
 
-            <HBox id="_IDGenHBox50" class="cockpitTopBar" alignItems="Center" justifyContent="SpaceBetween">
-                <VBox id="_IDGenVBox26">
-                    <Text id="_IDGenText82" text="Loan Operations Cockpit" class="topBarTitle"/>
-                    <Text id="_IDGenText83" text="Monitor · Manage · Accelerate" class="topBarSubtitle"/>
-                </VBox>
-                <SearchField id="_IDGenSearchField1" placeholder="Search applications, applicants, or reference number..." width="380px" class="topBarSearch"/>
-                <HBox id="_IDGenHBox51" alignItems="Center" class="topBarRight">
-                    <core:Icon id="_IDGenIcon31" src="sap-icon://bell" class="topBarBellIcon"/>
-                    <HBox id="_IDGenHBox52" class="topBarAvatar" alignItems="Center"><Text id="_IDGenText84" text="{user>/initials}" class="topBarAvatarInitials"/></HBox>
-                    <VBox id="_IDGenVBox27">
-                        <Text id="_IDGenText85" text="{user>/name}" class="topBarUserName"/>
-                        <Text id="_IDGenText86" text="{user>/role}" class="topBarUserRole"/>
-                    </VBox>
-                </HBox>
-            </HBox>
+            <core:Fragment fragmentName="loan.cockpit.loanapp.fragment.TopBar" type="XML"/>
 
             <ScrollContainer id="_IDGenScrollContainer1" horizontal="false" vertical="true" height="100%" width="100%">
             <VBox id="_IDGenVBox28" class="cockpitBody">
